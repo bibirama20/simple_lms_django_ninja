@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Daftar Courses (API v2) - Sagara Course</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+    background: #eef4ff;
+    margin: 0;
+    color: #2c3e50;
+}
+
+/* HEADER */
+.header {
+    background: #fff;
+    padding: 18px 40px;
+    box-shadow: 0 2px 12px rgba(25,118,210,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #1565c0, #42a5f5);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.nav a {
+    text-decoration: none;
+    color: #1976d2;
+    font-weight: 500;
+    margin-left: 20px;
+}
+
+.nav a:hover { color: #0d47a1; }
+
+/* HERO */
+.hero {
+    background: linear-gradient(120deg, #1565c0 0%, #42a5f5 50%, #7e57c2 100%);
+    color: #fff;
+    padding: 30px 40px;
+    text-align: center;
+}
+
+.hero h1 {
+    margin: 0 0 4px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.hero p {
+    margin: 0;
+    opacity: 0.9;
+    font-weight: 300;
+    font-size: 14px;
+}
+
+/* CONTAINER */
+.container {
+    max-width: 1000px;
+    margin: 30px auto 60px;
+    padding: 0 30px;
+}
+
+.card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 12px 30px rgba(21,101,192,0.10);
+}
+
+/* TOOLBAR */
+.toolbar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.toolbar input, .toolbar select, .toolbar button {
+    padding: 11px 14px;
+    border-radius: 10px;
+    border: 1.5px solid #dce8fb;
+    font-family: inherit;
+    font-size: 14px;
+    background: #f8fbff;
+}
+
+.toolbar input { flex: 1 1 220px; }
+.toolbar select { flex: 0 0 auto; }
+
+.toolbar button {
+    background: linear-gradient(90deg, #1e88e5, #7e57c2);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.toolbar button:hover { opacity: 0.9; }
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+thead th {
+    text-align: left;
+    background: #f1f7ff;
+    color: #0d47a1;
+    padding: 12px 14px;
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+thead th:first-child { border-radius: 10px 0 0 10px; }
+thead th:last-child { border-radius: 0 10px 10px 0; text-align: right; }
+
+tbody td {
+    padding: 14px;
+    border-bottom: 1px solid #eef4ff;
+    vertical-align: top;
+}
+
+tbody td:last-child { text-align: right; font-weight: 600; color: #0d47a1; white-space: nowrap; }
+
+tbody tr:hover { background: #f8fbff; }
+
+.course-name { font-weight: 600; color: #1a2b4a; }
+.course-teacher { font-size: 12px; color: #8aa0c2; margin-top: 2px; }
+
+.empty-row td {
+    text-align: center;
+    color: #9aacc9;
+    padding: 40px 14px;
+}
+
+/* PAGINATION */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.page-info {
+    font-size: 13px;
+    color: #8aa0c2;
+}
+
+.page-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.page-buttons button {
+    min-width: 38px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1.5px solid #dce8fb;
+    background: #f8fbff;
+    color: #1565c0;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.page-buttons button:hover:not(:disabled) {
+    background: #e3f2fd;
+}
+
+.page-buttons button.active {
+    background: linear-gradient(90deg, #1e88e5, #7e57c2);
+    color: #fff;
+    border-color: transparent;
+}
+
+.page-buttons button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="logo">🌊 Sagara Course</div>
+
+    <div class="nav">
+        <a href="/">Dashboard</a>
+        <a href="/courses/create/">Manajemen Course</a>
+    </div>
+</div>
+
+<div class="hero">
+    <h1>📊 Daftar Courses (API v2)</h1>
+    <p>Pencarian, sorting, dan pagination diambil langsung dari /api/v2/courses</p>
+</div>
+
+<div class="container">
+    <div class="card">
+
+        <div class="toolbar">
+            <input type="text" id="searchInput" placeholder="Cari nama / deskripsi course...">
+
+            <select id="sortSelect">
+                <option value="id">Sort: ID (lama → baru)</option>
+                <option value="-id">Sort: ID (baru → lama)</option>
+                <option value="name">Sort: Nama (A-Z)</option>
+                <option value="-name">Sort: Nama (Z-A)</option>
+                <option value="price">Sort: Harga (termurah)</option>
+                <option value="-price">Sort: Harga (termahal)</option>
+            </select>
+
+            <select id="limitSelect">
+                <option value="5">5 per page</option>
+                <option value="10">10 per page</option>
+                <option value="20">20 per page</option>
+            </select>
+
+            <button id="searchBtn">🔍 Search</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nama Course</th>
+                    <th>Deskripsi</th>
+                    <th>Harga</th>
+                </tr>
+            </thead>
+            <tbody id="courseTableBody">
+                <tr class="empty-row"><td colspan="4">Memuat data...</td></tr>
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            <div class="page-info" id="pageInfo"></div>
+            <div class="page-buttons" id="pageButtons"></div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+const API_URL = '/api/v2/courses';
+
+let state = {
+    skip: 0,
+    limit: 5,
+    sort: 'id',
+    search: ''
+};
+
+function formatPrice(price) {
+    return 'Rp ' + price.toLocaleString('id-ID');
+}
+
+async function loadCourses() {
+    const tbody = document.getElementById('courseTableBody');
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="4">Memuat data...</td></tr>';
+
+    const params = new URLSearchParams({
+        skip: state.skip,
+        limit: state.limit,
+        sort: state.sort,
+    });
+
+    if (state.search) {
+        params.set('search', state.search);
+    }
+
+    try {
+        const res = await fetch(`${API_URL}?${params.toString()}`);
+
+        if (res.status === 429) {
+            tbody.innerHTML = '<tr class="empty-row"><td colspan="4">⏳ Terlalu banyak request, coba lagi sebentar lagi (throttling aktif).</td></tr>';
+            return;
+        }
+
+        const data = await res.json();
+        renderTable(data.items);
+        renderPagination(data.total, data.per_page);
+    } catch (err) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="4">❌ Gagal memuat data</td></tr>';
+    }
+}
+
+function renderTable(items) {
+    const tbody = document.getElementById('courseTableBody');
+
+    if (!items.length) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="4">Course tidak ditemukan</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = items.map(course => `
+        <tr>
+            <td>${course.id}</td>
+            <td>
+                <div class="course-name">${course.name}</div>
+                <div class="course-teacher">👨‍🏫 ${course.teacher.username}</div>
+            </td>
+            <td>${course.description}</td>
+            <td>${formatPrice(course.price)}</td>
+        </tr>
+    `).join('');
+}
+
+function renderPagination(total, perPage) {
+    const totalPages = Math.max(1, Math.ceil(total / perPage));
+    const currentPage = Math.floor(state.skip / perPage) + 1;
+
+    document.getElementById('pageInfo').textContent =
+        `Menampilkan halaman ${currentPage} dari ${totalPages} (${total} course)`;
+
+    const pageButtons = document.getElementById('pageButtons');
+    let html = '';
+
+    html += `<button ${currentPage === 1 ? 'disabled' : ''} data-page="${currentPage - 1}">‹ Prev</button>`;
+
+    for (let p = 1; p <= totalPages; p++) {
+        html += `<button class="${p === currentPage ? 'active' : ''}" data-page="${p}">${p}</button>`;
+    }
+
+    html += `<button ${currentPage === totalPages ? 'disabled' : ''} data-page="${currentPage + 1}">Next ›</button>`;
+
+    pageButtons.innerHTML = html;
+
+    pageButtons.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const page = parseInt(btn.dataset.page, 10);
+            state.skip = (page - 1) * state.limit;
+            loadCourses();
+        });
+    });
+}
+
+document.getElementById('searchBtn').addEventListener('click', () => {
+    state.search = document.getElementById('searchInput').value.trim();
+    state.skip = 0;
+    loadCourses();
+});
+
+document.getElementById('searchInput').addEventListener('keyup', (e) => {
+    if (e.key === 'Enter') {
+        document.getElementById('searchBtn').click();
+    }
+});
+
+document.getElementById('sortSelect').addEventListener('change', (e) => {
+    state.sort = e.target.value;
+    state.skip = 0;
+    loadCourses();
+});
+
+document.getElementById('limitSelect').addEventListener('change', (e) => {
+    state.limit = parseInt(e.target.value, 10);
+    state.skip = 0;
+    loadCourses();
+});
+
+loadCourses();
+</script>
+
+</body>
+</html>

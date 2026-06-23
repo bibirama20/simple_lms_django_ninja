@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Video & File</title>
+
+<style>
+body {
+    font-family: 'Segoe UI';
+    background: #f4f9ff;
+    margin: 0;
+}
+
+.header {
+    background: #fff;
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.logo {
+    font-weight: bold;
+    color: #1565c0;
+}
+
+.nav a {
+    margin-left: 15px;
+    text-decoration: none;
+    color: #1976d2;
+}
+
+.container {
+    width: 80%;
+    margin: 40px auto;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.title {
+    font-weight: bold;
+    color: #1565c0;
+    margin-bottom: 10px;
+}
+
+iframe {
+    width: 100%;
+    height: 300px;
+    border-radius: 10px;
+}
+
+.file a {
+    display: inline-block;
+    margin-top: 10px;
+    color: #2e7d32;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="logo">🌊 Sagara Course</div>
+
+    <div class="nav">
+        <a href="/">Dashboard</a>
+        <a href="/comments/">Diskusi</a>
+        <a href="/content/add/">➕ Tambah Konten</a>
+    </div>
+</div>
+
+<div class="container">
+
+<h2>🎥 Video & File Pembelajaran</h2>
+
+{% for content in contents %}
+<div class="card">
+
+    <div class="title">{{ content.name }}</div>
+    <div>{{ content.description }}</div>
+
+{% if content.video_url %}
+<iframe
+    width="100%"
+    height="315"
+    src="{{ content.video_url }}"
+    title="YouTube video player"
+    frameborder="0"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen>
+</iframe>
+{% endif %}
+
+    {% if content.file_attachment %}
+    <div class="file">
+        📄 <a href="{{ content.file_attachment.url }}" target="_blank">
+            Download File
+        </a>
+    </div>
+    {% endif %}
+
+    <!-- ========================= -->
+    <!-- FORM KOMENTAR -->
+    <!-- ========================= -->
+    <hr>
+
+    <h4>💬 Komentar</h4>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="hidden" name="content_id" value="{{ content.id }}">
+
+        <textarea
+            name="comment"
+            placeholder="Tulis komentar..."
+            required
+            style="width:100%; padding:10px; border-radius:8px;">
+        </textarea>
+
+        <br><br>
+
+        <button type="submit"
+            style="
+                background:#1976d2;
+                color:white;
+                border:none;
+                padding:10px 20px;
+                border-radius:8px;
+                cursor:pointer;
+            ">
+            Kirim Komentar
+        </button>
+    </form>
+
+    <br>
+
+    <!-- ========================= -->
+    <!-- LIST KOMENTAR -->
+    <!-- ========================= -->
+
+    {% for c in content.comments.all %}
+    <div style="
+        background:#f5f5f5;
+        padding:10px;
+        border-radius:8px;
+        margin-bottom:10px;
+    ">
+        <b>{{ c.member_id.user_id.username }}</b><br>
+
+        {{ c.comment }}
+
+        <div style="font-size:12px; color:gray;">
+            {{ c.created_at }}
+        </div>
+    </div>
+    {% empty %}
+        <p>Belum ada komentar</p>
+    {% endfor %}
+
+</div>
+{% endfor %}
+
+</body>
+</html>

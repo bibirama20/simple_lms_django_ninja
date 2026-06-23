@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Import CSV</title>
+
+<style>
+body {
+    font-family: 'Segoe UI';
+    background: linear-gradient(to bottom, #e3f2fd, #f8fbff);
+    margin: 0;
+}
+
+.header {
+    background: #fff;
+    padding: 18px 40px;
+    box-shadow: 0 2px 10px rgba(0,123,255,0.1);
+}
+
+.container {
+    width: 40%;
+    margin: 60px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0,123,255,0.1);
+}
+
+h2 { text-align:center; color:#1565c0; }
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 15px 0;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #42a5f5;
+    color: white;
+    border-radius: 10px;
+}
+
+.nav a {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #1976d2;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="nav">
+        <a href="/users/">Users</a>
+        <a href="/courses/create/">Create Course</a>
+    </div>
+</div>
+
+<div class="container">
+<h2>📥 Import CSV</h2>
+
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+
+<input type="file" name="file" required>
+
+<button type="submit">Upload CSV</button>
+
+</form>
+</div>
+
+</body>
+</html>

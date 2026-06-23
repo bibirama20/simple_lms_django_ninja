@@ -1,0 +1,21 @@
+<h2>Tambah Video / File</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <select name="course">
+        {% for c in courses %}
+        <option value="{{ c.id }}">{{ c.name }}</option>
+        {% endfor %}
+    </select>
+
+    <input type="text" name="name" placeholder="Judul" required>
+
+    <textarea name="description" placeholder="Deskripsi"></textarea>
+
+    <input type="text" name="video_url" placeholder="Link YouTube (bebas format)">
+
+    <input type="file" name="file_attachment">
+
+    <button type="submit">Simpan</button>
+</form>

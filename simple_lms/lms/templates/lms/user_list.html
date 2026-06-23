@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LMS - User Management</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom, #e3f2fd, #f8fbff);
+            margin: 0;
+        }
+
+        /* HEADER */
+        .header {
+            background: #ffffff;
+            padding: 18px 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1976d2;
+        }
+
+        .nav a {
+            margin-left: 15px;
+            text-decoration: none;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .nav a:hover {
+            color: #1565c0;
+        }
+
+        .search-box input {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #cfe3ff;
+            outline: none;
+            background: #f4f9ff;
+        }
+
+        /* BUTTON ADD COURSE */
+        .add-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #42a5f5;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(66, 165, 245, 0.3);
+            transition: 0.3s;
+        }
+
+        .add-btn:hover {
+            background: #1e88e5;
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.1);
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            font-size: 14px;
+            color: #1976d2;
+            padding-bottom: 12px;
+        }
+
+        td {
+            padding: 14px 0;
+            border-top: 1px solid #eef4ff;
+        }
+
+        tr:hover {
+            background: #f1f7ff;
+        }
+
+        /* BADGE */
+        .badge {
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* BUTTON */
+        .btn {
+            text-decoration: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            background: #42a5f5;
+            color: white;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            background: #1e88e5;
+        }
+
+        /* EMPTY */
+        .empty {
+            text-align: center;
+            padding: 20px;
+            color: #90a4ae;
+        }
+
+        .card-title {
+    margin-bottom: 20px;
+    color: #1565c0;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+}
+
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <div class="title">🌊 Sagara Course</div>
+
+    <div class="nav">
+        <a href="/">Dashboard</a>
+        <a href="/users/">User</a>
+        <a href="/courses/create/">Course</a>
+        <a href="/import/">Import CSV</a>
+    </div>
+
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search user...">
+    </div>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+    <div class="card">
+        <h2 class="card-title">👨‍💻 Daftar User</h2>
+        <table id="userTable">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        {% if user.is_superuser %}
+                            <span class="badge">Admin</span>
+                        {% else %}
+                            <span class="badge">User</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="/users/{{ user.id }}/" class="btn">Detail</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="empty">Tidak ada data user</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<!-- SEARCH SCRIPT -->
+<script>
+document.getElementById("searchInput").addEventListener("keyup", function() {
+    let filter = this.value.toLowerCase();
+    let rows = document.querySelectorAll("#userTable tbody tr");
+
+    rows.forEach(function(row) {
+        let username = row.cells[0].innerText.toLowerCase();
+        let email = row.cells[1].innerText.toLowerCase();
+
+        if (username.includes(filter) || email.includes(filter)) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+    });
+});
+</script>
+
+</body>
+</html>

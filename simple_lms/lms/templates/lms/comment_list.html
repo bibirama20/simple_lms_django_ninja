@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Diskusi Komentar</title>
+
+<style>
+body{
+    font-family:'Segoe UI';
+    background:#f4f9ff;
+}
+
+.container{
+    width:80%;
+    margin:auto;
+    margin-top:40px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.05);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>💬 Diskusi Komentar</h2>
+
+{% for c in comments %}
+
+<div class="card">
+
+    <h3>{{ c.content_id.name }}</h3>
+
+    <b>{{ c.member_id.user_id.username }}</b>
+
+    <p>{{ c.comment }}</p>
+
+    <small>{{ c.created_at }}</small>
+
+</div>
+
+{% empty %}
+<p>Belum ada komentar</p>
+{% endfor %}
+
+</div>
+
+</body>
+</html>

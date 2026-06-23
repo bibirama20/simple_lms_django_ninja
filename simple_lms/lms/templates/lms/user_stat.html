@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Statistik User</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f4f9ff;
+    margin: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 50px auto;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0,123,255,0.08);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1565c0;
+    margin-bottom: 20px;
+}
+
+.stat {
+    font-size: 40px;
+    font-weight: bold;
+    color: #1e88e5;
+}
+
+.label {
+    font-size: 14px;
+    color: #777;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+        <div class="title">📊 Statistik Platform</div>
+
+        <div class="stat">{{ total_courses }}</div>
+        <div class="label">Total Course</div>
+    </div>
+
+    <div class="card">
+        <div class="stat">{{ total_users }}</div>
+        <div class="label">Total User</div>
+    </div>
+
+    <div class="card">
+        <div class="stat">{{ total_comments }}</div>
+        <div class="label">Total Komentar</div>
+    </div>
+
+</div>
+
+</body>
+</html>

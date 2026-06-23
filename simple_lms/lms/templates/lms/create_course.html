@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Course - Sagara Course</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; }
+
+:root {
+    --header-h: 64px;
+    --hero-h: 190px;
+}
+
+body {
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+    background: #eef4ff;
+    margin: 0;
+    color: #2c3e50;
+}
+
+/* FROZEN TOP (header + hero stay pinned while scrolling) */
+.top-frozen {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+/* HEADER */
+.header {
+    height: var(--header-h);
+    background: #fff;
+    padding: 0 40px;
+    box-shadow: 0 2px 12px rgba(25,118,210,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #1565c0, #42a5f5);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.nav a {
+    text-decoration: none;
+    color: #1976d2;
+    font-weight: 500;
+    margin-left: 20px;
+}
+
+.nav a:hover { color: #0d47a1; }
+
+/* HERO */
+.hero {
+    height: var(--hero-h);
+    background: linear-gradient(120deg, #1565c0 0%, #42a5f5 50%, #7e57c2 100%);
+    color: #fff;
+    padding: 0 40px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(21,101,192,0.25);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero h1 {
+    margin: 0 0 6px;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.hero p {
+    margin: 0;
+    opacity: 0.9;
+    font-weight: 300;
+    font-size: 14px;
+}
+
+.hero-badge {
+    display: inline-block;
+    margin-top: 14px;
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(6px);
+    padding: 7px 20px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+/* LAYOUT */
+.layout {
+    max-width: 1200px;
+    margin: 36px auto 50px;
+    padding: 0 30px;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 28px;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+}
+
+/* FORM CARD */
+.form-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 26px;
+    box-shadow: 0 12px 30px rgba(21,101,192,0.12);
+    position: sticky;
+    top: calc(var(--header-h) + var(--hero-h) + 24px);
+}
+
+.form-card h2 {
+    margin: 0 0 4px;
+    font-size: 18px;
+    color: #0d47a1;
+}
+
+.form-card .sub {
+    margin: 0 0 18px;
+    font-size: 13px;
+    color: #8aa0c2;
+}
+
+.field { margin-bottom: 14px; }
+
+.field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1565c0;
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 11px 14px;
+    border-radius: 10px;
+    border: 1.5px solid #dce8fb;
+    font-family: inherit;
+    font-size: 14px;
+    background: #f8fbff;
+    transition: 0.2s;
+}
+
+input[type="file"] {
+    padding: 9px 12px;
+    cursor: pointer;
+}
+
+input[type="file"]::file-selector-button {
+    border: none;
+    border-radius: 8px;
+    padding: 7px 14px;
+    margin-right: 12px;
+    background: linear-gradient(90deg, #1e88e5, #7e57c2);
+    color: #fff;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+input[type="file"]::file-selector-button:hover {
+    opacity: 0.88;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: #42a5f5;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(66,165,245,0.12);
+}
+
+textarea { min-height: 80px; resize: vertical; }
+
+button.submit-btn {
+    width: 100%;
+    padding: 13px;
+    background: linear-gradient(90deg, #1e88e5, #7e57c2);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    transition: 0.25s;
+    box-shadow: 0 8px 18px rgba(30,136,229,0.3);
+}
+
+button.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(30,136,229,0.4);
+}
+
+/* SEARCH */
+.toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.toolbar h2 {
+    margin: 0;
+    color: #0d47a1;
+    font-size: 22px;
+}
+
+.toolbar .count {
+    font-size: 13px;
+    color: #8aa0c2;
+    font-weight: 400;
+}
+
+.search-box {
+    position: relative;
+    width: 100%;
+    flex: 1 1 240px;
+    max-width: 360px;
+}
+
+.search-box::before {
+    content: "🔍";
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    opacity: 0.5;
+}
+
+.search-box input {
+    padding-left: 40px;
+    border-radius: 999px;
+    background: #fff;
+}
+
+/* COURSE GRID */
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 22px;
+}
+
+.course-card {
+    background: #fff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 22px rgba(21,101,192,0.10);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: rise 0.5s ease forwards;
+}
+
+@keyframes rise {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.course-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 36px rgba(21,101,192,0.22);
+}
+
+.course-cover {
+    position: relative;
+    height: 140px;
+    overflow: hidden;
+}
+
+.course-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.course-card:hover .course-cover img {
+    transform: scale(1.08);
+}
+
+.cover-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.85);
+}
+
+.price-badge {
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+    background: rgba(255,255,255,0.92);
+    color: #0d47a1;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+.course-body {
+    padding: 18px 20px 20px;
+    border-top: 4px solid transparent;
+}
+
+.course-body h3 {
+    margin: 0 0 8px;
+    font-size: 16px;
+    color: #1a2b4a;
+}
+
+.course-body p {
+    margin: 0 0 16px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #6b7d99;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.material-tags {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 5px 11px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.tag-video {
+    background: #fde8ef;
+    color: #ad1457;
+}
+
+.tag-video:hover { background: #f9c9d8; }
+
+.tag-pdf {
+    background: #e3f2ef;
+    color: #00695c;
+}
+
+.tag-pdf:hover { background: #c4e6df; }
+
+.course-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.teacher-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    color: #4a5b78;
+    font-weight: 500;
+}
+
+.avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* ACCENT THEMES — cycled per card for visual variety */
+.accent-1 .course-cover, .accent-1 .avatar { background: linear-gradient(135deg, #42a5f5, #1565c0); }
+.accent-1 .course-body { border-top-color: #42a5f5; }
+
+.accent-2 .course-cover, .accent-2 .avatar { background: linear-gradient(135deg, #ab47bc, #6a1b9a); }
+.accent-2 .course-body { border-top-color: #ab47bc; }
+
+.accent-3 .course-cover, .accent-3 .avatar { background: linear-gradient(135deg, #26a69a, #00695c); }
+.accent-3 .course-body { border-top-color: #26a69a; }
+
+.accent-4 .course-cover, .accent-4 .avatar { background: linear-gradient(135deg, #ffa726, #ef6c00); }
+.accent-4 .course-body { border-top-color: #ffa726; }
+
+.accent-5 .course-cover, .accent-5 .avatar { background: linear-gradient(135deg, #ec407a, #ad1457); }
+.accent-5 .course-body { border-top-color: #ec407a; }
+
+/* EMPTY STATE */
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: #9aacc9;
+}
+
+.empty-state .icon { font-size: 48px; display: block; margin-bottom: 12px; }
+.empty-state p { margin: 0; font-size: 14px; }
+</style>
+</head>
+
+<body>
+
+<!-- FROZEN TOP: header + hero stay pinned while scrolling -->
+<div class="top-frozen">
+
+    <div class="header">
+        <div class="logo">🌊 Sagara Course</div>
+
+        <div class="nav">
+            <a href="/">Dashboard</a>
+            <a href="/courses-api/">📊 API v2</a>
+        </div>
+    </div>
+
+    <div class="hero">
+        <h1>📘 Manajemen & Katalog Course</h1>
+        <p>Tambahkan course baru dan jelajahi semua materi yang tersedia di Sagara Course</p>
+        <span class="hero-badge">✨ {{ courses|length }} course tersedia</span>
+    </div>
+
+</div>
+
+<div class="layout">
+
+    <!-- FORM -->
+    <div class="form-card">
+        <h2>➕ Tambah Course Baru</h2>
+        <p class="sub">Lengkapi detail di bawah untuk menerbitkan course</p>
+
+        <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+            <div class="field">
+                <label>Nama Course</label>
+                <input type="text" name="name" placeholder="cth. Belajar Django Ninja" required>
+            </div>
+
+            <div class="field">
+                <label>Deskripsi</label>
+                <textarea name="description" placeholder="Ceritakan isi course ini secara singkat..."></textarea>
+            </div>
+
+            <div class="field">
+                <label>Harga (Rp)</label>
+                <input type="number" name="price" placeholder="cth. 150000">
+            </div>
+
+            <div class="field">
+                <label>Pengajar</label>
+                <select name="teacher">
+                {% for user in users %}
+                <option value="{{ user.id }}">{{ user.username }}</option>
+                {% endfor %}
+                </select>
+            </div>
+
+            <div class="field">
+                <label>🎬 Link Video YouTube (opsional)</label>
+                <input type="url" name="youtube_url" placeholder="https://youtube.com/watch?v=...">
+            </div>
+
+            <div class="field">
+                <label>📄 Materi PDF (opsional)</label>
+                <input type="file" name="materi_pdf" accept="application/pdf">
+            </div>
+
+            <button type="submit" class="submit-btn">🚀 Terbitkan Course</button>
+        </form>
+    </div>
+
+    <!-- COURSE CATALOG -->
+    <div>
+        <div class="toolbar">
+            <h2>📚 Daftar Course <span class="count">({{ courses|length }} course)</span></h2>
+
+            <div class="search-box">
+                <input type="text" id="searchCourse" placeholder="Cari course...">
+            </div>
+        </div>
+
+        <div class="course-grid" id="courseContainer">
+            {% for course in courses %}
+            <div class="course-card {% cycle 'accent-1' 'accent-2' 'accent-3' 'accent-4' 'accent-5' %}" style="animation-delay: {{ forloop.counter0 }}00ms;">
+
+                <div class="course-cover">
+                    {% if course.image %}
+                        <img src="{{ course.image.url }}" alt="{{ course.name }}">
+                    {% else %}
+                        <div class="cover-placeholder">{{ course.name|slice:":1"|upper }}</div>
+                    {% endif %}
+                    <span class="price-badge">💰 Rp {{ course.price }}</span>
+                </div>
+
+                <div class="course-body">
+                    <h3>{{ course.name }}</h3>
+                    <p>{{ course.description }}</p>
+
+                    {% with first_content=course.contents.first %}
+                    {% if first_content.video_url or first_content.file_attachment %}
+                    <div class="material-tags">
+                        {% if first_content.video_url %}
+                        <a href="{{ first_content.video_url }}" target="_blank" class="tag tag-video">🎬 Video</a>
+                        {% endif %}
+                        {% if first_content.file_attachment %}
+                        <a href="{{ first_content.file_attachment.url }}" target="_blank" class="tag tag-pdf">📄 PDF</a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+
+                    <div class="course-footer">
+                        <div class="teacher-chip">
+                            <span class="avatar">{{ course.teacher.username|slice:":2"|upper }}</span>
+                            {{ course.teacher.username }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state">
+                <span class="icon">📭</span>
+                <p>Belum ada course. Yuk terbitkan course pertamamu lewat form di samping!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+<!-- 🔍 SEARCH REALTIME -->
+<script>
+document.getElementById("searchCourse").addEventListener("keyup", function() {
+    let keyword = this.value.toLowerCase();
+    let courses = document.querySelectorAll(".course-card");
+
+    courses.forEach(function(course) {
+        let text = course.innerText.toLowerCase();
+
+        if (text.includes(keyword)) {
+            course.style.display = "";
+        } else {
+            course.style.display = "none";
+        }
+    });
+});
+</script>
+
+</body>
+</html>
