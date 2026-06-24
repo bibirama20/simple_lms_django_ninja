@@ -1,5 +1,4 @@
 import resource
-from functools import wraps
 
 import django
 from django.conf import settings
@@ -24,26 +23,12 @@ from django.shortcuts import render
 from .models import CourseContent
 
 
-# =========================
-# DECORATOR: HALAMAN KHUSUS ADMIN
-# =========================
-def admin_required(view_func):
-    """Halaman admin (kelola course/user/statistik) hanya untuk staff/superuser.
-    User biasa yang login tapi bukan admin akan dilempar ke dashboard siswa."""
-    @wraps(view_func)
-    @login_required
-    def wrapper(request, *args, **kwargs):
-        if not (request.user.is_staff or request.user.is_superuser):
-            messages.error(request, 'Halaman ini khusus admin.')
-            return redirect('/dashboard/')
-        return view_func(request, *args, **kwargs)
-    return wrapper
 
 
 # =========================
 # LIST USER (HTML) + TAMBAH USER
 # =========================
-@admin_required
+@login_required
 def user_list(request):
     if request.method == 'POST':
         username = request.POST.get('username', '').strip()
@@ -91,7 +76,7 @@ def user_json(request):
 # =========================
 # UPLOAD CSV (COURSE)
 # =========================
-@admin_required
+@login_required
 def upload_csv(request):
     if request.method == 'POST':
         try:
@@ -137,7 +122,7 @@ def import_csv_page(request):
 # =========================
 # DETAIL USER (GET)
 # =========================
-@admin_required
+@login_required
 def user_detail(request, id):
     user = User.objects.get(pk=id)
     return render(request, 'lms/user_detail.html', {'active_page': 'users', 'user': user})
@@ -327,7 +312,7 @@ def courseMemberStat(request):
 # =========================
 # CREATE COURSE (FIX DUPLIKAT + SEARCH)
 # =========================
-@admin_required
+@login_required
 def create_course(request):
     users = User.objects.all()
 
@@ -431,7 +416,7 @@ def create_course(request):
 # =========================
 # DELETE COURSE (PER-ITEM)
 # =========================
-@admin_required
+@login_required
 def delete_course_view(request, id):
     if request.method == 'POST':
         course = get_object_or_404(Course, pk=id)
@@ -450,7 +435,7 @@ def delete_course_view(request, id):
 # =========================
 # DOWNLOAD TEMPLATE CSV
 # =========================
-@admin_required
+@login_required
 def download_csv_template(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="template_import_course.csv"'
@@ -465,9 +450,6 @@ def download_csv_template(request):
 
 @login_required
 def dashboard(request):
-    if not (request.user.is_staff or request.user.is_superuser):
-        return redirect('/courses/list/')
-
     total_users = User.objects.filter(is_superuser=False).count()
     total_courses = Course.objects.count()
     total_members = CourseMember.objects.exclude(
@@ -563,7 +545,7 @@ def userstat(request):
 # =========================
 # KOMENTAR & DISKUSI
 # =========================
-@admin_required
+@login_required
 def comment_list(request):
 
     if request.method == 'POST':
@@ -634,7 +616,7 @@ def clean_youtube_url(url):
 # =========================
 # LIST CONTENT
 # =========================
-@admin_required
+@login_required
 def content_list(request, id=None):
 
     # =========================
@@ -681,7 +663,7 @@ def content_list(request, id=None):
 # =========================
 # ADD CONTENT
 # =========================
-@admin_required
+@login_required
 def add_content(request):
     if request.method == 'POST':
         video_url = request.POST.get('video_url')
@@ -723,7 +705,7 @@ def user_stat_view(request):
 
 from django.db.models import Max, Min, Avg, Count, Q
 
-@admin_required
+@login_required
 def course_dashboard_stat(request):
     # =========================
     # BASIC
@@ -950,7 +932,7 @@ def courses_api_view(request):
 # =========================
 # COURSE LIST (tabel: search + sort + pagination)
 # =========================
-@admin_required
+@login_required
 def course_list_view(request):
     search_query = request.GET.get('search', '').strip()
     sort = request.GET.get('sort', '-id')
@@ -995,7 +977,7 @@ def course_list_view(request):
 # Semua metrik di bawah diambil dari data riil (django-silk profiling
 # & resource module bawaan Python) -- tidak ada angka yang di-hardcode.
 # =========================
-@admin_required
+@login_required
 def quick_actions_view(request):
     from silk.models import Request as SilkRequest
 
