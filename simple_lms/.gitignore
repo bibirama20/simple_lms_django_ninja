@@ -28,3 +28,9 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+
+# Internal docs / tooling (not for public repo)
+README.md
+Simple_LMS_API.postman_collection.json
+TUTORIAL_DEPLOY_RAILWAY.md
+TUTORIAL_TEST_API.md

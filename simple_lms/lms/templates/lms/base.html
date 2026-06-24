@@ -1,0 +1,480 @@
+{% load icons %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Sagara Course{% endblock %}</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; }
+
+:root {
+    --navy: #1E3A8A;
+    --navy-light: #2F4FB3;
+    --navy-soft: #e8edfb;
+    --ink: #111827;
+    --muted: #6b7280;
+    --border: #e6e8f0;
+    --bg: #F8FAFC;
+    --teal: #14B8A6;
+    --teal-bg: #ccfbf1;
+    --brown: #6E2C00;
+    --brown-bg: #f3e6da;
+    --green: #16a34a;
+    --green-bg: #ecfdf5;
+    --red: #dc2626;
+    --red-bg: #fef2f2;
+    --amber: #b45309;
+    --amber-bg: #fffbeb;
+    --pink: #db2777;
+    --pink-bg: #fdf2f8;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+}
+
+a { color: inherit; }
+
+/* ===== LAYOUT ===== */
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    background: #fff;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.sidebar-brand {
+    padding: 22px 22px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.sidebar-brand .mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--navy), var(--navy-light));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+}
+
+.sidebar-brand .text strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.2;
+}
+
+.sidebar-brand .text span {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 8px 14px;
+    overflow-y: auto;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    margin-bottom: 2px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+.nav-item:hover { background: var(--navy-soft); color: var(--navy); }
+
+.nav-item.active {
+    background: var(--navy-soft);
+    color: var(--navy);
+}
+
+.nav-item .icon, .sidebar-bottom-links .icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-footer {
+    padding: 14px;
+    border-top: 1px solid var(--border);
+}
+
+.sidebar-bottom-links {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.sidebar-bottom-links a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+.sidebar-bottom-links a:hover { background: var(--navy-soft); color: var(--navy); }
+.sidebar-bottom-links a.active { background: var(--navy-soft); color: var(--navy); }
+
+.sidebar-bottom-links a.logout-link:hover { background: var(--red-bg); color: var(--red); }
+
+/* ===== MAIN ===== */
+.main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== TOPBAR ===== */
+.topbar {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.topbar-search {
+    flex: 1;
+    max-width: 420px;
+}
+
+.topbar-search form {
+    position: relative;
+}
+
+.topbar-search input {
+    width: 100%;
+    padding: 9px 14px 9px 36px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    font-size: 13px;
+    font-family: inherit;
+}
+
+.topbar-search input:focus {
+    outline: none;
+    border-color: var(--navy);
+    background: #fff;
+}
+
+.topbar-search .search-ico {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.45;
+    display: flex;
+}
+
+.topbar-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.btn-outline:hover { border-color: var(--navy); }
+
+.btn-navy {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    border-radius: 9px;
+    border: none;
+    background: var(--navy);
+    color: #fff;
+    font-weight: 600;
+    font-size: 13px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-navy:hover { background: var(--navy-light); }
+
+.topbar-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bg);
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+}
+
+.topbar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-left: 10px;
+    border-left: 1px solid var(--border);
+}
+
+.topbar-user .avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy), var(--navy-light));
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.topbar-user .info strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.topbar-user .info span {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+}
+
+/* ===== CONTENT ===== */
+.content {
+    flex: 1;
+    padding: 26px 28px 50px;
+}
+
+.page-heading {
+    margin-bottom: 22px;
+}
+
+.page-heading h1 {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0 0 4px;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.3px;
+}
+
+.page-heading h1 svg { color: var(--navy); flex-shrink: 0; }
+
+.page-heading p {
+    margin: 0;
+    font-size: 13.5px;
+    color: var(--muted);
+}
+
+/* ===== SHARED COMPONENTS ===== */
+.card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+}
+
+.badge.green { background: var(--green-bg); color: var(--green); }
+.badge.red { background: var(--red-bg); color: var(--red); }
+.badge.amber { background: var(--amber-bg); color: var(--amber); }
+.badge.navy { background: var(--navy-soft); color: var(--navy); }
+.badge.teal { background: var(--teal-bg); color: var(--teal); }
+
+.msg-stack {
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.msg-banner {
+    padding: 11px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.msg-success { background: var(--green-bg); color: var(--green); }
+.msg-error { background: var(--red-bg); color: var(--red); }
+.msg-warning { background: var(--amber-bg); color: var(--amber); }
+.msg-info, .msg-debug { background: var(--navy-soft); color: var(--navy); }
+
+@media (max-width: 980px) {
+    .sidebar { display: none; }
+    .topbar-search { display: none; }
+}
+
+{% block extra_style %}{% endblock %}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <a href="/dashboard/" class="sidebar-brand">
+            <span class="mark">{% icon 'book' size=18 css_class='mark-svg' %}</span>
+            <span class="text">
+                <strong>Sagara Course</strong>
+                <span>Learning Management</span>
+            </span>
+        </a>
+
+        <div class="sidebar-nav">
+            <a href="/dashboard/" class="nav-item {% if active_page == 'dashboard' %}active{% endif %}">
+                <span class="icon">{% icon 'grid' %}</span> Dashboard
+            </a>
+            <a href="/courses/create/" class="nav-item {% if active_page == 'course_management' %}active{% endif %}">
+                <span class="icon">{% icon 'edit' %}</span> Course Management
+            </a>
+            <a href="/courses/list/" class="nav-item {% if active_page == 'course_list' %}active{% endif %}">
+                <span class="icon">{% icon 'book' %}</span> Course List
+            </a>
+            <a href="/dashboard/stat/" class="nav-item {% if active_page == 'statistics' %}active{% endif %}">
+                <span class="icon">{% icon 'chart-bar' %}</span> Statistics
+            </a>
+            <a href="/comments/" class="nav-item {% if active_page == 'discussions' %}active{% endif %}">
+                <span class="icon">{% icon 'chat' %}</span> Discussions
+            </a>
+            <a href="/users/" class="nav-item {% if active_page == 'users' %}active{% endif %}">
+                <span class="icon">{% icon 'users' %}</span> Users
+            </a>
+            <a href="/quick-actions/" class="nav-item {% if active_page == 'quick_actions' %}active{% endif %}">
+                <span class="icon">{% icon 'bolt' %}</span> Quick Actions
+            </a>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-bottom-links">
+                <a href="/admin/"><span class="icon">{% icon 'cog' %}</span> Settings</a>
+                <a href="/content/" class="{% if active_page == 'video_file' %}active{% endif %}"><span class="icon">{% icon 'film' %}</span> Video &amp; File</a>
+                <a href="/logout/" class="logout-link"><span class="icon">{% icon 'logout' %}</span> Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <div class="topbar">
+            {% if active_page != 'dashboard' and active_page != 'statistics' and active_page != 'discussions' and active_page != 'course_list' %}
+            <div class="topbar-search">
+                <form method="get">
+                    <span class="search-ico">{% icon 'search' size=14 %}</span>
+                    <input type="text" name="search" placeholder="{% if active_page == 'course_management' %}Search course...{% elif active_page == 'users' %}Search user...{% else %}Search courses, users, analytics...{% endif %}" value="{{ search_query|default:'' }}">
+                </form>
+            </div>
+            {% endif %}
+
+            <div class="topbar-actions">
+                <a href="/courses/create/" class="btn-navy">{% icon 'plus' size=14 %} Add New</a>
+                <a href="/import/" class="btn-outline">{% icon 'upload' size=14 %} CSV Import</a>
+                <div class="topbar-icon">{% icon 'bell' size=17 %}</div>
+
+                <div class="topbar-user">
+                    <div class="avatar">
+                        {% if request.user.is_authenticated %}{{ request.user.username|slice:":2"|upper }}{% else %}AS{% endif %}
+                    </div>
+                    <div class="info">
+                        <strong>{% if request.user.is_authenticated %}{{ request.user.username }}{% else %}Alex Sagara{% endif %}</strong>
+                        <span>{% if request.user.is_superuser %}Administrator{% else %}LMS Coordinator{% endif %}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            {% if messages %}
+            <div class="msg-stack">
+                {% for m in messages %}
+                <div class="msg-banner msg-{{ m.tags }}">{{ m }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% block page_heading %}{% endblock %}
+            {% block content %}{% endblock %}
+        </div>
+
+    </div>
+
+</div>
+
+{% block extra_script %}{% endblock %}
+
+</body>
+</html>

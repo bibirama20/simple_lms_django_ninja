@@ -1,158 +1,386 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>LMS - Upload CSV</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "lms/base.html" %}
+{% load icons %}
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+{% block title %}Import CSV — Sagara Course{% endblock %}
 
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(to bottom, #e3f2fd, #f8fbff);
-            margin: 0;
-        }
+{% block extra_style %}
+.breadcrumb {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
 
-        /* HEADER */
-        .header {
-            background: #ffffff;
-            padding: 18px 40px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+/* STEPS */
+.steps-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+}
 
-        .title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #1976d2;
-        }
+.step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    white-space: nowrap;
+}
 
-         .nav a {
-            margin-left: 15px;
-            text-decoration: none;
-            color: #555;
-            font-size: 14px;
-        }
+.step-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    background: var(--border);
+    color: var(--muted);
+    flex-shrink: 0;
+}
 
-        .nav a:hover {
-            color: #1565c0;
-        }
+.step-active { color: var(--navy); }
+.step-active .step-num { background: var(--navy); color: #fff; }
 
-        /* CONTAINER */
-        .container {
-            max-width: 420px;
-            margin: 60px auto;
-        }
+.step-done { color: var(--teal); }
+.step-done .step-num { background: var(--teal); color: #fff; }
 
-        .card {
-            background: #ffffff;
-            padding: 35px;
-            border-radius: 16px;
-            text-align: center;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-        }
+.step-error { color: var(--red); }
+.step-error .step-num { background: var(--red); color: #fff; }
 
-        h2 {
-            margin-bottom: 10px;
-            color: #1976d2;
-        }
+.step-line { flex: 1; height: 2px; background: var(--border); }
+.step-line.filled { background: var(--teal); }
 
-        .subtitle {
-            font-size: 13px;
-            color: #777;
-            margin-bottom: 25px;
-        }
+/* GRID */
+.import-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
 
-        input[type="file"] {
-            width: 100%;
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid #ddd;
-            background: #f9fbfd;
-            cursor: pointer;
-        }
+@media (max-width: 980px) {
+    .import-grid { grid-template-columns: 1fr; }
+}
 
-        button {
-            width: 100%;
-            margin-top: 20px;
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            background: #42a5f5;
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+.import-main, .import-side {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
 
-        button:hover {
-            background: #1e88e5;
-        }
+.card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+}
 
-        .message {
-            margin-top: 15px;
-            color: #2e7d32;
-            font-size: 14px;
-        }
+/* DROPZONE */
+.dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 42px 20px;
+    border: 1.5px dashed #c7cbe0;
+    border-radius: 14px;
+    cursor: pointer;
+    text-align: center;
+    background: var(--bg);
+    transition: 0.2s ease;
+}
 
-        .error {
-            color: #c62828;
-        }
+.dropzone:hover { border-color: var(--navy); background: var(--navy-soft); }
+.dropzone input[type="file"] { display: none; }
 
-        .footer {
-            margin-top: 20px;
-            font-size: 12px;
-            color: #999;
-        }
+.dropzone-icon { display: flex; color: var(--navy); margin-bottom: 4px; }
+.inline-ico { vertical-align: middle; position: relative; top: -1px; }
+.dropzone strong { font-size: 14.5px; color: var(--ink); }
+.dropzone .sub { font-size: 12.5px; color: var(--muted); }
 
-        .footer span {
-            color: #1976d2;
-            font-weight: 500;
-        }
-    </style>
-</head>
-<body>
+.browse-btn {
+    margin-top: 10px;
+    padding: 10px 22px;
+    background: var(--navy);
+    color: #fff;
+    border-radius: 9px;
+    font-weight: 700;
+    font-size: 13px;
+}
 
-<!-- HEADER -->
-<div class="header">
-    <div class="title">🌊 Sagara Course</div>
+.filesize-note { text-align: center; font-size: 11.5px; color: var(--muted); margin: 10px 0 0; }
 
-    <div class="nav">
-        <a href="/">Dashboard</a>
+/* TEMPLATE CARD */
+.template-card { display: flex; align-items: center; gap: 14px; }
+
+.template-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
+    background: var(--teal-bg);
+    color: var(--teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+    flex-shrink: 0;
+}
+
+.template-text { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.template-text strong { font-size: 13.5px; color: var(--ink); }
+.template-text span { font-size: 12px; color: var(--muted); }
+
+.btn-outline-block {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: #fff;
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 13px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.btn-outline-block:hover { border-color: var(--navy); color: var(--navy); }
+
+/* MAPPING */
+.mapping-head { font-size: 13.5px; font-weight: 700; margin-bottom: 12px; color: var(--ink); }
+
+.mapping-card table { width: 100%; border-collapse: collapse; }
+
+.mapping-card thead th {
+    text-align: left;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+}
+
+.mapping-card tbody td {
+    padding: 10px 10px;
+    font-size: 12.5px;
+    border-bottom: 1px solid var(--border);
+}
+
+.mapping-card tbody tr:last-child td { border-bottom: none; }
+
+.mapping-card code {
+    background: var(--bg);
+    padding: 2px 7px;
+    border-radius: 6px;
+    color: var(--navy);
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.map-chip {
+    background: var(--navy-soft);
+    color: var(--navy);
+    padding: 3px 9px;
+    border-radius: 7px;
+    font-size: 11.5px;
+    font-weight: 700;
+}
+
+.mapping-note { margin: 12px 0 0; font-size: 11.5px; color: var(--muted); }
+
+/* GUIDELINES */
+.guideline-title { display: flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 700; margin-bottom: 12px; color: var(--ink); }
+
+.guideline-card ul {
+    margin: 0 0 14px;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    font-size: 12.5px;
+    color: #334155;
+}
+
+.note-box {
+    background: var(--amber-bg);
+    border: 1px solid #fde68a;
+    border-radius: 10px;
+    padding: 11px 13px;
+    font-size: 11.5px;
+    color: var(--amber);
+}
+
+.guideline-card ul li { display: flex; align-items: flex-start; gap: 6px; }
+.guideline-card ul li svg { flex-shrink: 0; margin-top: 1px; color: var(--green); }
+
+/* ACTION */
+.action-card { display: flex; flex-direction: column; gap: 10px; }
+
+.btn-start {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 13px;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 13.5px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-start:hover { background: var(--navy-light); }
+
+.btn-cancel {
+    text-align: center;
+    padding: 9px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+}
+
+.btn-cancel:hover { color: var(--red); }
+
+.progress-note { margin: 0; font-size: 11px; color: var(--muted); text-align: center; }
+
+/* PROMO */
+.promo-banner {
+    background: linear-gradient(135deg, var(--navy), #0f1b4d);
+    border-radius: 16px;
+    padding: 22px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.promo-icon { display: flex; }
+.promo-banner strong { font-size: 14px; line-height: 1.4; font-weight: 700; }
+
+/* RESULT */
+.result-message {
+    margin-top: 18px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.result-message.success { background: var(--green-bg); color: var(--green); }
+.result-message.error { background: var(--red-bg); color: var(--red); }
+{% endblock %}
+
+{% block page_heading %}
+<div class="page-heading">
+    <div class="breadcrumb">Courses / Import CSV</div>
+    <h1>{% icon 'folder' size=20 %} Import Course via CSV</h1>
+    <p>Bulk upload katalog course kamu lewat file CSV. Kelola banyak course sekaligus dalam satu langkah.</p>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="steps-row">
+    <div class="step {% if error %}step-error{% else %}step-done{% endif %}">
+        <span class="step-num">{% if error %}{% icon 'x-circle' size=13 %}{% else %}{% icon 'check' size=13 %}{% endif %}</span> Upload
+    </div>
+    <div class="step-line {% if not error %}filled{% endif %}"></div>
+    <div class="step {% if message and not error %}step-done{% else %}step-active{% endif %}">
+        <span class="step-num">{% if message and not error %}{% icon 'check' size=13 %}{% else %}2{% endif %}</span> Map Columns
+    </div>
+    <div class="step-line {% if message and not error %}filled{% endif %}"></div>
+    <div class="step {% if message and not error %}step-done{% else %}{% endif %}">
+        <span class="step-num">{% if message and not error %}{% icon 'check' size=13 %}{% else %}3{% endif %}</span> Review
     </div>
 </div>
 
-<!-- CONTENT -->
-<div class="container">
+<form method="POST" enctype="multipart/form-data" class="import-grid">
+{% csrf_token %}
+
+<div class="import-main">
+
     <div class="card">
-
-        <h2>📁 Upload CSV</h2>
-        <div class="subtitle">Import data course dengan cepat</div>
-
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="file" name="file" required>
-            <button type="submit">Upload CSV</button>
-        </form>
-
-        {% if message %}
-            <div class="message">{{ message }}</div>
-        {% endif %}
-
-        {% if error %}
-            <div class="message error">{{ error }}</div>
-        {% endif %}
-
-        <div class="footer">
-            Format: <span>name, description, price</span>
-        </div>
-
+        <label for="csv-file" class="dropzone">
+            <span class="dropzone-icon">{% icon 'cloud-upload' size=30 %}</span>
+            <strong>Drag and drop your CSV file</strong>
+            <span class="sub">or click to browse your computer</span>
+            <span class="browse-btn">Browse Files</span>
+            <input type="file" id="csv-file" name="file" accept=".csv" required
+                   onchange="document.getElementById('csv-filename').textContent = this.files[0] ? this.files[0].name : '';">
+        </label>
+        <p class="filesize-note" id="csv-filename"></p>
+        <p class="filesize-note">Maksimal ukuran file: 10MB</p>
     </div>
+
+    <div class="card template-card">
+        <div class="template-icon">{% icon 'document' size=19 %}</div>
+        <div class="template-text">
+            <strong>Standard Template</strong>
+            <span>Download contoh format CSV supaya hasil import optimal.</span>
+        </div>
+        <a href="/import/template/" class="btn-outline-block">{% icon 'download' size=14 css_class='inline-ico' %} Download CSV</a>
+    </div>
+
+    <div class="card mapping-card">
+        <div class="mapping-head">Mapping Preview</div>
+        <table>
+            <thead>
+                <tr><th>CSV Column</th><th>Maps To Field</th><th>Sample Data</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>name</code></td><td><span class="map-chip">Nama Course</span></td><td>Belajar Django Ninja</td></tr>
+                <tr><td><code>description</code></td><td><span class="map-chip">Deskripsi</span></td><td>Membangun REST API modern...</td></tr>
+                <tr><td><code>price</code></td><td><span class="map-chip">Harga</span></td><td>150000</td></tr>
+            </tbody>
+        </table>
+        <p class="mapping-note">Header CSV harus sama persis dengan kolom di atas (huruf kecil semua).</p>
+    </div>
+
 </div>
 
-</body>
-</html>
+<div class="import-side">
+
+    <div class="card guideline-card">
+        <div class="guideline-title">{% icon 'info' size=15 %} Import Guidelines</div>
+        <ul>
+            <li>{% icon 'check' size=14 %} File harus berformat <b>.csv</b>.</li>
+            <li>{% icon 'check' size=14 %} Gunakan encoding <b>UTF-8</b> agar karakter khusus terbaca benar.</li>
+            <li>{% icon 'check' size=14 %} Kolom <b>name</b>, <b>description</b>, dan <b>price</b> wajib ada.</li>
+            <li>{% icon 'check' size=14 %} Kolom <b>price</b> harus berupa angka tanpa simbol/titik.</li>
+        </ul>
+        <div class="note-box">
+            <b>Catatan:</b> Course dengan <b>name</b> yang sudah ada di database akan otomatis dilewati (tidak diduplikasi).
+        </div>
+    </div>
+
+    <div class="card action-card">
+        <button type="submit" class="btn-start">{% icon 'upload' size=14 css_class='inline-ico' %} Start Import</button>
+        <a href="/import/" class="btn-cancel">Cancel</a>
+        <p class="progress-note">Hasil import akan langsung ditampilkan di halaman ini.</p>
+    </div>
+
+    <div class="promo-banner">
+        <span class="promo-icon">{% icon 'book' size=24 %}</span>
+        <strong>Organize your entire course library in seconds.</strong>
+    </div>
+
+</div>
+</form>
+
+{% if message %}<div class="result-message success">{{ message }}</div>{% endif %}
+{% if error %}<div class="result-message error">{{ error }}</div>{% endif %}
+
+{% endblock %}

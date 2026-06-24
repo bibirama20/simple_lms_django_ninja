@@ -1,3 +1,5 @@
+import re
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -103,6 +105,40 @@ class CourseContent(models.Model):
     def __str__(self):
         return f"[{self.course.name}] {self.name}"  # ✅ lebih clean
 
+    @property
+    def embed_url(self):
+        # YouTube hanya bisa di-embed lewat format /embed/<id>, bukan link watch/share biasa
+        if not self.video_url:
+            return None
+
+        match = re.search(
+            r'(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/)([\w-]+)',
+            self.video_url
+        )
+
+        if match:
+            return f"https://www.youtube.com/embed/{match.group(1)}"
+
+        return self.video_url
+
+    @property
+    def watch_url(self):
+        # Link biasa untuk dibuka langsung di tab baru (bukan di dalam iframe).
+        # video_url tersimpan dalam format /embed/<id>, yang akan error 153
+        # kalau dibuka langsung sebagai halaman, bukan di dalam iframe.
+        if not self.video_url:
+            return None
+
+        match = re.search(
+            r'(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/)([\w-]+)',
+            self.video_url
+        )
+
+        if match:
+            return f"https://www.youtube.com/watch?v={match.group(1)}"
+
+        return self.video_url
+
 
 # =========================
 # COMMENT
@@ -112,7 +148,16 @@ class Comment(models.Model):
         CourseContent,
         verbose_name="konten",
         on_delete=models.CASCADE,
-        related_name='comments'
+        related_name='comments',
+        null=True,
+        blank=True,
+    )
+
+    title = models.CharField(
+        "judul topik",
+        max_length=200,
+        blank=True,
+        default=''
     )
 
     member_id = models.ForeignKey(

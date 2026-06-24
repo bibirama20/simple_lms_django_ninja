@@ -1,0 +1,258 @@
+{% extends "lms/base.html" %}
+{% load icons %}
+
+{% block title %}Quick Actions — Sagara Course{% endblock %}
+
+{% block extra_style %}
+.admin-columns {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.admin-card { display: flex; align-items: center; gap: 18px; }
+
+.admin-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: var(--navy-soft);
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+}
+
+.admin-card h3 { margin: 0 0 4px; font-size: 15px; }
+.admin-card p { margin: 0 0 12px; font-size: 12.5px; color: var(--muted); }
+
+.btn-launch {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--navy);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.btn-launch:hover { background: var(--navy-light); }
+
+.status-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+}
+
+.status-row { display: flex; align-items: center; justify-content: space-between; font-size: 13px; }
+
+.cmd-list { font-size: 12.5px; color: var(--muted); }
+.cmd-list code {
+    background: var(--bg);
+    padding: 2px 7px;
+    border-radius: 6px;
+    color: var(--navy);
+    font-weight: 600;
+}
+.cmd-list li { margin-bottom: 8px; }
+
+.stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 18px;
+}
+
+.stat-card .label { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+.stat-card .value { font-size: 21px; font-weight: 800; }
+
+.section-title { display: flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 700; margin-bottom: 14px; }
+.inline-ico { vertical-align: middle; position: relative; top: -1px; }
+
+table { width: 100%; border-collapse: collapse; }
+
+thead th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+tbody td {
+    padding: 11px 14px;
+    font-size: 12.5px;
+    border-bottom: 1px solid var(--border);
+}
+
+tbody tr:last-child td { border-bottom: none; }
+
+.method-tag {
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+}
+
+.method-GET { background: var(--navy-soft); color: var(--navy); }
+.method-POST { background: var(--green-bg); color: var(--green); }
+.method-PUT { background: var(--amber-bg); color: var(--amber); }
+.method-DELETE { background: var(--red-bg); color: var(--red); }
+
+.note-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    background: var(--amber-bg);
+    border: 1px solid #fde68a;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: var(--amber);
+    margin-bottom: 18px;
+}
+{% endblock %}
+
+{% block page_heading %}
+<div class="page-heading">
+    <h1>{% icon 'bolt' size=20 %} Django System Dashboard</h1>
+    <p>Manage backend infrastructure dan monitor performa real-time aplikasi Django</p>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="note-box">
+    {% icon 'info' size=14 css_class='inline-ico' %} Semua angka di halaman ini diambil langsung dari <strong>django-silk</strong> (profiling request) dan modul <code>resource</code> bawaan Python — bukan data simulasi.
+</div>
+
+<div class="admin-columns">
+    <div class="card admin-card">
+        <div class="admin-icon">{% icon 'cpu-chip' size=26 %}</div>
+        <div>
+            <h3>Django Profiling</h3>
+            <p>Pantau detail request, query SQL, dan waktu eksekusi tiap halaman secara real-time lewat Django Silk.</p>
+            {% if debug_mode %}
+            <a href="/silk/" class="btn-launch">{% icon 'rocket' size=15 %} Buka Django Profiling</a>
+            {% else %}
+            <span class="btn-launch" style="opacity:.5; cursor:not-allowed;">{% icon 'rocket' size=15 %} Hanya aktif saat DEBUG=True</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card status-box">
+        <div class="status-row">
+            <span>Status Server</span>
+            <span class="badge green">● System Live</span>
+        </div>
+        <div class="status-row">
+            <span>Django Version</span>
+            <span class="badge navy">v{{ django_version }}</span>
+        </div>
+        <div class="status-row">
+            <span>Mode</span>
+            {% if debug_mode %}
+            <span class="badge amber">DEBUG</span>
+            {% else %}
+            <span class="badge green">PRODUCTION</span>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="card" style="margin-bottom:20px;">
+    <div class="section-title">{% icon 'document-text' size=16 %} API Documentation (Swagger)</div>
+    <p style="font-size:12.5px; color:var(--muted); margin:0 0 14px;">Dokumentasi interaktif untuk menguji endpoint REST API langsung dari browser.</p>
+    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <a href="/api/v1/docs" target="_blank" class="btn-launch">{% icon 'book' size=15 %} API v1 Docs</a>
+        <a href="/api/v2/docs" target="_blank" class="btn-launch">{% icon 'book' size=15 %} API v2 Docs</a>
+    </div>
+</div>
+
+<div class="card" style="margin-bottom:20px;">
+    <div class="section-title">{% icon 'clipboard-list' size=16 %} Management Commands (referensi)</div>
+    <ul class="cmd-list">
+        <li><code>python manage.py migrate</code> — terapkan perubahan model ke database</li>
+        <li><code>python manage.py collectstatic</code> — kumpulkan static files untuk production</li>
+        <li><code>python manage.py createsuperuser</code> — buat akun admin baru</li>
+    </ul>
+    <p style="font-size:11.5px; color:var(--muted); margin:8px 0 0;">
+        Command di atas dijalankan lewat terminal/CLI, bukan tombol di web — supaya operasi database/server tidak bisa dipicu sembarang orang dari browser.
+    </p>
+</div>
+
+<div class="section-title">Django Backend Profiling</div>
+<div class="stat-row">
+    <div class="stat-card">
+        <div class="label">Response Time (avg)</div>
+        <div class="value">{{ avg_response_time }}ms</div>
+    </div>
+    <div class="stat-card">
+        <div class="label">SQL Queries/Request</div>
+        <div class="value">{{ avg_sql_queries }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="label">Total Requests Profiled</div>
+        <div class="value">{{ total_requests }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="label">Memory Usage</div>
+        <div class="value">{{ memory_mb }} MB</div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="section-title">{% icon 'signal' size=16 %} Recent API Performance</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Endpoint</th>
+                <th>Method</th>
+                <th>SQL</th>
+                <th>Waktu</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in recent_requests %}
+            <tr>
+                <td>{{ r.path }}</td>
+                <td><span class="method-tag method-{{ r.method }}">{{ r.method }}</span></td>
+                <td>{{ r.num_sql_queries }}</td>
+                <td>{{ r.time_taken|floatformat:0 }}ms</td>
+                <td>
+                    {% if r.status_code == 200 %}
+                    <span class="badge green">{{ r.status_code }}</span>
+                    {% elif r.status_code >= 500 %}
+                    <span class="badge red">{{ r.status_code }}</span>
+                    {% elif r.status_code >= 400 %}
+                    <span class="badge amber">{{ r.status_code }}</span>
+                    {% else %}
+                    <span class="badge navy">{{ r.status_code|default:"-" }}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" style="text-align:center; color:var(--muted); padding:30px;">Belum ada data request yang terprofilkan</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

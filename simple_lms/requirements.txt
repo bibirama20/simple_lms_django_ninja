@@ -8,3 +8,6 @@ sqlparse==0.5.5
 typing_extensions==4.15.0
 django-ninja-simple-jwt
 cryptography
+gunicorn==23.0.0
+dj-database-url==2.3.0
+whitenoise==6.8.2

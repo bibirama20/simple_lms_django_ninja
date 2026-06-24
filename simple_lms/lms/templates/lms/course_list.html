@@ -1,0 +1,288 @@
+{% extends "lms/base.html" %}
+{% load icons %}
+
+{% block title %}Course List — Sagara Course{% endblock %}
+
+{% block extra_style %}
+.filter-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    flex: 1;
+    min-width: 240px;
+    max-width: 380px;
+}
+
+.search-box form { position: relative; }
+
+.search-box input {
+    width: 100%;
+    padding: 10px 14px 10px 36px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: #fff;
+    font-size: 13px;
+}
+
+.search-box .search-ico {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.45;
+    display: flex;
+}
+
+.filter-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-controls select {
+    width: auto;
+    padding: 9px 14px;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    background: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.table-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+table { width: 100%; border-collapse: collapse; }
+
+thead th {
+    text-align: left;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+}
+
+tbody td {
+    padding: 14px 18px;
+    font-size: 13.5px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+}
+
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--navy-soft); }
+
+.course-name-cell { display: flex; align-items: center; gap: 10px; }
+
+.course-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.course-name-cell strong { display: block; font-size: 13.5px; }
+.course-name-cell .id-tag { font-size: 11px; color: var(--muted); }
+
+.desc-cell {
+    color: var(--muted);
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.price-cell { font-weight: 700; color: var(--navy); white-space: nowrap; }
+
+.table-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-top: 1px solid var(--border);
+    font-size: 12.5px;
+    color: var(--muted);
+}
+
+.pagination { display: flex; gap: 6px; }
+
+.pagination a, .pagination span {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink);
+    border: 1px solid var(--border);
+}
+
+.pagination a:hover { border-color: var(--navy); }
+
+.pagination .current {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+}
+
+.sort-link { text-decoration: none; color: inherit; }
+.sort-link:hover { color: var(--navy); }
+
+.empty-row td {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--muted);
+}
+
+.fab {
+    position: fixed;
+    bottom: 26px;
+    right: 28px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+    text-decoration: none;
+    box-shadow: 0 8px 20px rgba(27,37,89,0.35);
+}
+
+.fab:hover { background: var(--navy-light); }
+
+.inline-ico { vertical-align: middle; position: relative; top: -2px; margin-right: 4px; }
+{% endblock %}
+
+{% block page_heading %}
+<div class="page-heading">
+    <h1>{% icon 'clipboard-list' size=20 %} Course List</h1>
+    <p>Manage and organize your institution's educational catalog.</p>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="filter-bar">
+    <div class="search-box">
+        <form method="get">
+            <span class="search-ico">{% icon 'search' size=14 %}</span>
+            <input type="text" name="search" placeholder="Search by course name, instructor, or keywords..." value="{{ search_query }}">
+            <input type="hidden" name="sort" value="{{ sort }}">
+            <input type="hidden" name="per_page" value="{{ per_page }}">
+        </form>
+    </div>
+
+    <div class="filter-controls">
+        <form method="get" id="sortForm">
+            <input type="hidden" name="search" value="{{ search_query }}">
+            <input type="hidden" name="per_page" value="{{ per_page }}">
+            <select name="sort" onchange="document.getElementById('sortForm').submit()">
+                <option value="-id" {% if sort == '-id' %}selected{% endif %}>Terbaru</option>
+                <option value="id" {% if sort == 'id' %}selected{% endif %}>Terlama</option>
+                <option value="name" {% if sort == 'name' %}selected{% endif %}>Nama A-Z</option>
+                <option value="-name" {% if sort == '-name' %}selected{% endif %}>Nama Z-A</option>
+                <option value="price" {% if sort == 'price' %}selected{% endif %}>Harga Terendah</option>
+                <option value="-price" {% if sort == '-price' %}selected{% endif %}>Harga Tertinggi</option>
+            </select>
+        </form>
+
+        <form method="get" id="perPageForm">
+            <input type="hidden" name="search" value="{{ search_query }}">
+            <input type="hidden" name="sort" value="{{ sort }}">
+            <select name="per_page" onchange="document.getElementById('perPageForm').submit()">
+                <option value="10" {% if per_page == 10 %}selected{% endif %}>10 per page</option>
+                <option value="25" {% if per_page == 25 %}selected{% endif %}>25 per page</option>
+                <option value="50" {% if per_page == 50 %}selected{% endif %}>50 per page</option>
+            </select>
+        </form>
+    </div>
+</div>
+
+<div class="table-card">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nama Course</th>
+                <th>Deskripsi</th>
+                <th>Harga</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in page_obj %}
+            <tr>
+                <td>#{{ course.id }}</td>
+                <td>
+                    <div class="course-name-cell">
+                        <div class="course-icon {% cycle 'theme-1' 'theme-2' 'theme-3' 'theme-4' %}" style="background: linear-gradient(135deg, var(--navy-light), var(--navy));">
+                            {{ course.name|slice:":1"|upper }}
+                        </div>
+                        <div>
+                            <strong>{{ course.name }}</strong>
+                            <div class="id-tag">{{ course.teacher.username }}</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="desc-cell">{{ course.description }}</td>
+                <td class="price-cell">Rp {{ course.price }}</td>
+            </tr>
+            {% empty %}
+            <tr class="empty-row">
+                <td colspan="4">{% icon 'inbox' size=16 css_class='inline-ico' %} Tidak ada course yang ditemukan</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="table-footer">
+        <span>Showing {{ page_obj.start_index }}-{{ page_obj.end_index }} of {{ total_count }} courses</span>
+
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+            <a href="?search={{ search_query }}&sort={{ sort }}&per_page={{ per_page }}&page={{ page_obj.previous_page_number }}">‹</a>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if num == page_obj.number %}
+                <span class="current">{{ num }}</span>
+                {% elif num > page_obj.number|add:"-3" and num < page_obj.number|add:"3" %}
+                <a href="?search={{ search_query }}&sort={{ sort }}&per_page={{ per_page }}&page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <a href="?search={{ search_query }}&sort={{ sort }}&per_page={{ per_page }}&page={{ page_obj.next_page_number }}">›</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<a href="/comments/" class="fab" title="Diskusi & Bantuan">{% icon 'chat' size=20 %}</a>
+
+{% endblock %}

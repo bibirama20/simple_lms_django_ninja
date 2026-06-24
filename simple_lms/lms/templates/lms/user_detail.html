@@ -1,131 +1,119 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>User Detail</title>
+{% extends "lms/base.html" %}
+{% load icons %}
 
-<style>
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(to bottom, #e3f2fd, #f8fbff);
-    margin: 0;
-}
+{% block title %}Detail User — Sagara Course{% endblock %}
 
-/* HEADER */
-.header {
-    background: #fff;
-    padding: 18px 40px;
-    box-shadow: 0 2px 10px rgba(0,123,255,0.1);
-    display: flex;
-    justify-content: space-between;
+{% block extra_style %}
+.back-link {
+    display: inline-flex;
     align-items: center;
-}
-
-.nav a {
-    margin-left: 15px;
+    gap: 5px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--navy);
     text-decoration: none;
-    color: #1976d2;
-    font-weight: 500;
-}
-
-/* CONTENT */
-.container {
-    max-width: 700px;
-    margin: 50px auto;
-}
-
-.card {
-    background: #fff;
-    padding: 25px;
-    border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0,123,255,0.1);
-    margin-bottom: 20px;
-}
-
-.title {
-    text-align: center;
-    font-size: 22px;
-    font-weight: bold;
-    color: #1565c0;
-    margin-bottom: 20px;
-}
-
-.label { font-size: 13px; color: #888; }
-.value {
-    background: #f1f7ff;
-    padding: 10px;
-    border-radius: 8px;
     margin-bottom: 10px;
 }
 
-.course-card {
-    background: #f4f9ff;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    border-left: 5px solid #42a5f5;
+.back-link:hover { color: var(--navy-light); }
+
+.detail-columns {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 18px;
 }
 
-.course-price { color: #2e7d32; }
+@media (max-width: 900px) {
+    .detail-columns { grid-template-columns: 1fr; }
+}
 
-.btn-back {
-    display: block;
+.profile-card { text-align: center; }
+
+.avatar-lg {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy-light), var(--navy));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 24px;
+    margin: 0 auto 14px;
+}
+
+.profile-card h2 { margin: 0 0 4px; font-size: 17px; }
+.profile-card .email { font-size: 12.5px; color: var(--muted); margin-bottom: 12px; }
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.course-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.course-row:last-child { border-bottom: none; }
+
+.course-row .name { font-size: 13.5px; font-weight: 700; }
+.course-row .desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.course-row .price { font-weight: 700; color: var(--navy); font-size: 13px; white-space: nowrap; }
+
+.empty-state {
     text-align: center;
-    margin-top: 20px;
-    padding: 10px;
-    background: #42a5f5;
-    color: white;
-    border-radius: 8px;
-    text-decoration: none;
+    padding: 30px 10px;
+    color: var(--muted);
+    font-size: 13px;
 }
+{% endblock %}
 
-.logo {
-    font-size: 20px;
-    font-weight: bold;
-    color: #1565c0;
-}
+{% block page_heading %}
+<div class="page-heading">
+    <a href="/users/" class="back-link">{% icon 'users' size=13 %} Kembali ke Daftar User</a>
+    <h1>{% icon 'user' size=20 %} Detail User</h1>
+    <p>Informasi akun dan course yang diikuti oleh pengguna ini</p>
+</div>
+{% endblock %}
 
-</style>
-</head>
+{% block content %}
 
-<body>
+<div class="detail-columns">
+    <div class="card profile-card">
+        <div class="avatar-lg">{{ user.username|slice:":2"|upper }}</div>
+        <h2>{{ user.username }}</h2>
+        <div class="email">{{ user.email|default:"-" }}</div>
+        {% if user.is_superuser %}
+        <span class="badge navy">Admin</span>
+        {% else %}
+        <span class="badge green">User</span>
+        {% endif %}
+    </div>
 
-<div class="header">
-    <div class="logo">🌊 Sagara Course</div>
-    <div class="nav">
-        <a href="/">Dashboard</a>
-        <a href="/users/">Users</a>
-        <a href="/courses/create/">Create Course</a>
-        <a href="/import/">Import CSV</a>
+    <div class="card">
+        <div class="section-title">{% icon 'book' size=16 %} Course yang Diikuti</div>
+        {% for member in user.coursemember_set.all %}
+        <div class="course-row">
+            <div>
+                <div class="name">{{ member.course_id.name }}</div>
+                <div class="desc">{{ member.course_id.description|truncatechars:70 }}</div>
+            </div>
+            <div class="price">Rp {{ member.course_id.price }}</div>
+        </div>
+        {% empty %}
+        <div class="empty-state">{% icon 'inbox' size=28 %} Belum mengikuti course apapun</div>
+        {% endfor %}
     </div>
 </div>
 
-<div class="container">
-
-<div class="card">
-    <div class="title">👤 Detail User</div>
-    <div class="label">Username</div>
-    <div class="value">{{ user.username }}</div>
-
-    <div class="label">Email</div>
-    <div class="value">{{ user.email }}</div>
-</div>
-
-<div class="card">
-    <div class="title">📚 Course</div>
-
-    {% for member in user.coursemember_set.all %}
-    <div class="course-card">
-        <div><b>{{ member.course_id.name }}</b></div>
-        <div>{{ member.course_id.description }}</div>
-        <div class="course-price">Rp {{ member.course_id.price }}</div>
-    </div>
-    {% empty %}
-    <div>Belum ada course</div>
-    {% endfor %}
-</div>
-<a href="/users/" class="btn-back">← Kembali</a>
-
-</div>
-</body>
-</html>
+{% endblock %}

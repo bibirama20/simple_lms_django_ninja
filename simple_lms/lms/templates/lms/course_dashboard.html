@@ -1,189 +1,290 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Dashboard Statistik Course</title>
+{% extends "lms/base.html" %}
+{% load icons %}
 
-<style>
-body {
-    font-family: 'Segoe UI';
-    background: #f4f9ff;
-    margin: 0;
-}
+{% block title %}Statistics — Sagara Course{% endblock %}
 
-/* HEADER */
-.header {
-    background: #1565c0;
-    color: white;
-    padding: 20px 40px;
-    font-size: 20px;
-}
-
-/* CONTAINER */
-.container {
-    width: 85%;
-    margin: 30px auto;
-}
-
-/* GRID */
-.grid {
+{% block extra_style %}
+.stat-row {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
-/* CARD */
-.card {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+.stat-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 20px;
 }
 
-.card h3 {
-    margin: 0;
-    font-size: 14px;
-    color: #777;
+.stat-card .label {
+    font-size: 12.5px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 6px;
 }
 
-.card p {
-    font-size: 22px;
-    font-weight: bold;
-    color: #1565c0;
+.stat-card .value {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--ink);
 }
 
-/* SECTION */
-.section {
-    margin-top: 40px;
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 14px;
 }
 
-/* LIST */
-.list {
-    margin-top: 10px;
+.inline-ico { vertical-align: middle; position: relative; top: -1px; }
+
+.dash-columns {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 18px;
+    margin-bottom: 20px;
 }
 
-.list-item {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
+.featured-card {
+    border: 1.5px solid var(--navy);
 }
 
-.list-item:last-child {
-    border-bottom: none;
-}
-
-/* BADGE */
-.badge {
+.featured-card .badge-top {
     float: right;
-    background: #1976d2;
-    color: white;
-    padding: 4px 8px;
-    border-radius: 8px;
-    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--navy-soft);
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
 }
-</style>
-</head>
 
-<body>
+.featured-card h3 {
+    margin: 0 0 16px;
+    font-size: 16px;
+    color: var(--navy);
+    max-width: 80%;
+}
 
-<div class="header">
-    📊 Dashboard Statistik Course
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.metric-grid .metric-label {
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-bottom: 4px;
+}
+
+.metric-grid .metric-value {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.price-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+}
+
+.price-row .tag-cheap { color: var(--green); font-weight: 700; }
+.price-row .tag-expensive { color: var(--red); font-weight: 700; }
+
+.alert-card {
+    background: linear-gradient(135deg, var(--navy), var(--navy-light));
+    color: #fff;
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-top: 14px;
+}
+
+.alert-card .title { display: flex; align-items: center; gap: 5px; font-size: 12.5px; font-weight: 700; margin-bottom: 6px; opacity: 0.85; }
+.alert-card p { margin: 0; font-size: 13px; line-height: 1.6; }
+
+.bottom-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.bar-item { margin-bottom: 14px; }
+.bar-item:last-child { margin-bottom: 0; }
+
+.bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.bar-track {
+    height: 8px;
+    background: var(--bg);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--navy-light), var(--navy));
+    border-radius: 999px;
+}
+
+.engagement-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.engagement-box {
+    background: var(--bg);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+}
+
+.engagement-box .num { font-size: 20px; font-weight: 800; color: var(--navy); }
+.engagement-box .lbl { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+{% endblock %}
+
+{% block page_heading %}
+<div class="page-heading">
+    <h1>{% icon 'chart-bar' size=20 %} Statistik Komprehensif</h1>
+    <p>Pantau performa konten dan pertumbuhan ekosistem Sagara Course</p>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="stat-row">
+    <div class="stat-card">
+        <div class="label">Total Course</div>
+        <div class="value">{{ total_course }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="label">Total User</div>
+        <div class="value">{{ total_user }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="label">Total Komentar</div>
+        <div class="value">{{ total_comment }}</div>
+    </div>
 </div>
 
-<div class="container">
+<div class="dash-columns">
+    <div class="card featured-card">
+        {% if top_course %}
+        <span class="badge-top">{% icon 'star' size=12 css_class='inline-ico' %} Course Terpopuler</span>
+        <h3>{{ top_course.name }}</h3>
 
-    <!-- 🔥 CARD SUMMARY -->
-    <div class="grid">
-        <div class="card">
-            <h3>Total Course</h3>
-            <p>{{ total_course }}</p>
+        <div class="metric-grid">
+            <div>
+                <div class="metric-label">Total Member</div>
+                <div class="metric-value">{{ top_course.member_count }}</div>
+            </div>
+            <div>
+                <div class="metric-label">Harga</div>
+                <div class="metric-value">Rp {{ top_course.price }}</div>
+            </div>
+            <div>
+                <div class="metric-label">Jumlah Konten</div>
+                <div class="metric-value">{{ top_course.contents.count }}</div>
+            </div>
         </div>
-
-        <div class="card">
-            <h3>Total Member</h3>
-            <p>{{ total_member }}</p>
-        </div>
-
-        <div class="card">
-            <h3>Rata-rata Harga</h3>
-            <p>Rp {{ avg_price }}</p>
-        </div>
-
-        <div class="card">
-            <h3>Harga Tertinggi</h3>
-            <p>Rp {{ max_price }}</p>
-        </div>
+        {% else %}
+        <p style="color:var(--muted); font-size:13px;">Belum ada course untuk ditampilkan</p>
+        {% endif %}
     </div>
 
-    <!-- 🔥 POPULAR COURSE -->
-    <div class="section">
-        <h2>🔥 Course Paling Populer</h2>
-        <div class="card">
-            {% for c in popular_courses %}
-            <div class="list-item">
-                {{ c.name }}
-                <span class="badge">{{ c.member_count }} member</span>
+    <div class="card">
+        <div class="section-title">{% icon 'currency' size=16 %} Rentang Harga</div>
+        <div class="price-summary">
+            <div class="price-row">
+                <span>Rata-rata Harga</span>
+                <strong>Rp {{ avg_price }}</strong>
             </div>
-            {% empty %}
-            <p>Tidak ada data</p>
-            {% endfor %}
+            <div class="price-row">
+                <span>Termurah</span>
+                <span class="tag-cheap">Rp {{ min_price }}</span>
+            </div>
+            <div class="price-row">
+                <span>Termahal</span>
+                <span class="tag-expensive">Rp {{ max_price }}</span>
+            </div>
+        </div>
+
+        <div class="alert-card">
+            <div class="title">{% icon 'trending-up' size=14 css_class='inline-ico' %} Growth Alert</div>
+            {% if top_course %}
+            <p>Course "<strong>{{ top_course.name }}</strong>" memimpin dengan {{ top_course.member_count }} member terdaftar — yang terbanyak di seluruh katalog saat ini.</p>
+            {% else %}
+            <p>Belum ada data growth untuk ditampilkan.</p>
+            {% endif %}
         </div>
     </div>
-
-    <!-- 💰 HARGA -->
-    <div class="section">
-        <h2>💰 Harga Course</h2>
-
-        <div class="grid">
-
-            <div class="card">
-                <h3>Termurah</h3>
-                {% for c in cheapest_courses %}
-                <div class="list-item">
-                    {{ c.name }} 
-                    <span class="badge">Rp {{ c.price }}</span>
-                </div>
-                {% endfor %}
-            </div>
-
-            <div class="card">
-                <h3>Termahal</h3>
-                {% for c in expensive_courses %}
-                <div class="list-item">
-                    {{ c.name }} 
-                    <span class="badge">Rp {{ c.price }}</span>
-                </div>
-                {% endfor %}
-            </div>
-
-        </div>
-    </div>
-
-    <!-- 📚 CONTENT -->
-    <div class="section">
-        <h2>📚 Jumlah Konten per Course</h2>
-        <div class="card">
-            {% for c in content_stats %}
-            <div class="list-item">
-                {{ c.name }}
-                <span class="badge">{{ c.content_count }} konten</span>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-
-    <!-- 💬 COMMENT -->
-    <div class="section">
-        <h2>💬 Jumlah Komentar</h2>
-        <div class="card">
-            {% for c in comment_stats %}
-            <div class="list-item">
-                {{ c.name }}
-                <span class="badge">{{ c.comment_count }} komentar</span>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-
 </div>
 
-</body>
-</html>
+<div class="bottom-columns">
+    <div class="card">
+        <div class="section-title">{% icon 'book' size=16 %} Distribusi Konten per Course</div>
+        {% for c in content_stats %}
+        <div class="bar-item">
+            <div class="bar-label">
+                <span>{{ c.name }}</span>
+                <span>{{ c.content_count }} konten</span>
+            </div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width: {% widthratio c.content_count max_content_count 100 %}%;"></div>
+            </div>
+        </div>
+        {% empty %}
+        <p style="color:var(--muted); font-size:13px;">Tidak ada data</p>
+        {% endfor %}
+    </div>
+
+    <div class="card">
+        <div class="section-title">{% icon 'chat' size=16 %} Engagement Discussion</div>
+        <div class="engagement-grid">
+            <div class="engagement-box">
+                <div class="num">{{ today_comment_count }}</div>
+                <div class="lbl">Komentar Hari Ini</div>
+            </div>
+            <div class="engagement-box">
+                <div class="num">{{ total_comment }}</div>
+                <div class="lbl">Total Komentar</div>
+            </div>
+        </div>
+
+        <div class="section-title" style="font-size:13px;">Komentar per Course</div>
+        {% for c in comment_stats %}
+        <div class="bar-item" style="margin-bottom:8px;">
+            <div class="bar-label" style="font-weight:500;">
+                <span>{{ c.name }}</span>
+                <span>{{ c.comment_count }}</span>
+            </div>
+        </div>
+        {% empty %}
+        <p style="color:var(--muted); font-size:13px;">Tidak ada data</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

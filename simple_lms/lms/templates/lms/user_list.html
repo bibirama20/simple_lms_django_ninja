@@ -1,222 +1,290 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>LMS - User Management</title>
+{% extends "lms/base.html" %}
+{% load icons %}
 
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(to bottom, #e3f2fd, #f8fbff);
-            margin: 0;
-        }
+{% block title %}Users — Sagara Course{% endblock %}
 
-        /* HEADER */
-        .header {
-            background: #ffffff;
-            padding: 18px 40px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #1976d2;
-        }
-
-        .nav a {
-            margin-left: 15px;
-            text-decoration: none;
-            color: #555;
-            font-size: 14px;
-        }
-
-        .nav a:hover {
-            color: #1565c0;
-        }
-
-        .search-box input {
-            padding: 8px 12px;
-            border-radius: 8px;
-            border: 1px solid #cfe3ff;
-            outline: none;
-            background: #f4f9ff;
-        }
-
-        /* BUTTON ADD COURSE */
-        .add-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #42a5f5;
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: 500;
-            box-shadow: 0 4px 10px rgba(66, 165, 245, 0.3);
-            transition: 0.3s;
-        }
-
-        .add-btn:hover {
-            background: #1e88e5;
-        }
-
-        /* CONTAINER */
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-        }
-
-        .card {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.1);
-        }
-
-        /* TABLE */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            text-align: left;
-            font-size: 14px;
-            color: #1976d2;
-            padding-bottom: 12px;
-        }
-
-        td {
-            padding: 14px 0;
-            border-top: 1px solid #eef4ff;
-        }
-
-        tr:hover {
-            background: #f1f7ff;
-        }
-
-        /* BADGE */
-        .badge {
-            background: #e3f2fd;
-            color: #1565c0;
-            padding: 5px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        /* BUTTON */
-        .btn {
-            text-decoration: none;
-            padding: 6px 14px;
-            border-radius: 8px;
-            background: #42a5f5;
-            color: white;
-            font-size: 12px;
-            transition: 0.2s;
-        }
-
-        .btn:hover {
-            background: #1e88e5;
-        }
-
-        /* EMPTY */
-        .empty {
-            text-align: center;
-            padding: 20px;
-            color: #90a4ae;
-        }
-
-        .card-title {
-    margin-bottom: 20px;
-    color: #1565c0;
-    font-size: 18px;
-    font-weight: 600;
-    text-align: center;
+{% block extra_style %}
+.form-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 26px;
 }
 
-    </style>
-</head>
-<body>
+.form-card h2 {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 0 0 4px;
+    font-size: 16px;
+    color: var(--ink);
+}
 
-<!-- HEADER -->
-<div class="header">
-    <div class="title">🌊 Sagara Course</div>
+.form-card .sub {
+    margin: 0 0 18px;
+    font-size: 12.5px;
+    color: var(--muted);
+}
 
-    <div class="nav">
-        <a href="/">Dashboard</a>
-        <a href="/users/">User</a>
-        <a href="/courses/create/">Course</a>
-        <a href="/import/">Import CSV</a>
-    </div>
+.field { margin-bottom: 14px; }
 
-    <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search user...">
-    </div>
+.form-row-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 900px) {
+    .form-row-3 { grid-template-columns: 1fr; }
+}
+
+.field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 5px;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px 13px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border);
+    font-family: inherit;
+    font-size: 13.5px;
+    background: var(--bg);
+    transition: 0.2s;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--navy);
+    background: #fff;
+}
+
+.checkbox-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.checkbox-field input { width: auto; }
+.checkbox-field label { font-size: 13px; font-weight: 600; color: var(--ink); margin: 0; }
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
+button.submit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 24px;
+    background: var(--navy);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 13.5px;
+    transition: 0.2s;
+}
+
+button.submit-btn:hover { background: var(--navy-light); }
+
+/* TOOLBAR */
+.toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.toolbar h2 {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 0;
+    color: var(--ink);
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.toolbar .count {
+    font-size: 12.5px;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+/* TABLE */
+.table-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+table { width: 100%; border-collapse: collapse; }
+
+thead th {
+    text-align: left;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+}
+
+tbody td {
+    padding: 13px 18px;
+    font-size: 13.5px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--navy-soft); }
+
+.user-name-cell { display: flex; align-items: center; gap: 10px; }
+
+.avatar-sm {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy-light), var(--navy));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.user-name-cell strong { display: block; font-size: 13.5px; }
+.user-name-cell .email-muted { font-size: 11.5px; color: var(--muted); }
+
+.empty-row td {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--muted);
+}
+
+.btn-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1.5px solid var(--border);
+    background: #fff;
+    color: var(--muted);
+    font-weight: 700;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.btn-chip:hover { border-color: var(--navy); color: var(--navy); }
+
+.inline-ico { vertical-align: middle; position: relative; top: -1px; }
+{% endblock %}
+
+{% block page_heading %}
+<div class="page-heading">
+    <h1>{% icon 'users' size=20 %} User Management</h1>
+    <p>Kelola akun pengguna Sagara Course — tambahkan user baru atau cari user yang sudah terdaftar</p>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<!-- FORM TAMBAH USER -->
+<div class="form-card">
+    <h2>{% icon 'plus' size=16 %} Tambah User Baru</h2>
+    <p class="sub">Buat akun baru secara langsung tanpa lewat halaman registrasi publik.</p>
+
+    <form method="POST">
+    {% csrf_token %}
+        <div class="form-row-3">
+            <div class="field">
+                <label>Username</label>
+                <input type="text" name="username" placeholder="cth. budi123" required>
+            </div>
+            <div class="field">
+                <label>Email</label>
+                <input type="email" name="email" placeholder="cth. budi@email.com">
+            </div>
+            <div class="field">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Minimal 8 karakter" required>
+            </div>
+        </div>
+
+        <div class="checkbox-field">
+            <input type="checkbox" name="is_admin" id="is_admin">
+            <label for="is_admin">Jadikan Administrator (akses penuh ke Django Admin)</label>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="submit-btn">{% icon 'plus' size=14 css_class='inline-ico' %} Tambah User</button>
+        </div>
+    </form>
 </div>
 
-<!-- CONTENT -->
-<div class="container">
-    <div class="card">
-        <h2 class="card-title">👨‍💻 Daftar User</h2>
-        <table id="userTable">
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                {% for user in users %}
-                <tr>
-                    <td>{{ user.username }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>
-                        {% if user.is_superuser %}
-                            <span class="badge">Admin</span>
-                        {% else %}
-                            <span class="badge">User</span>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a href="/users/{{ user.id }}/" class="btn">Detail</a>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="4" class="empty">Tidak ada data user</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-    </div>
+<!-- DAFTAR USER -->
+<div class="toolbar">
+    <h2>{% icon 'users' size=17 %} Daftar User <span class="count">({{ users|length }} user)</span></h2>
 </div>
 
-<!-- SEARCH SCRIPT -->
-<script>
-document.getElementById("searchInput").addEventListener("keyup", function() {
-    let filter = this.value.toLowerCase();
-    let rows = document.querySelectorAll("#userTable tbody tr");
+<div class="table-card">
+    <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Role</th>
+                <th>Tanggal Daftar</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>
+                    <div class="user-name-cell">
+                        <div class="avatar-sm">{{ user.username|slice:":2"|upper }}</div>
+                        <div>
+                            <strong>{{ user.username }}</strong>
+                            <div class="email-muted">{{ user.email|default:"-" }}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    {% if user.is_superuser %}
+                    <span class="badge navy">Admin</span>
+                    {% else %}
+                    <span class="badge green">User</span>
+                    {% endif %}
+                </td>
+                <td>{{ user.date_joined|date:"d M Y" }}</td>
+                <td>
+                    <a href="/users/{{ user.id }}/" class="btn-chip">{% icon 'search' size=12 %} Detail</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr class="empty-row">
+                <td colspan="4">{% icon 'inbox' size=16 css_class='inline-ico' %} Tidak ada user yang ditemukan</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
-    rows.forEach(function(row) {
-        let username = row.cells[0].innerText.toLowerCase();
-        let email = row.cells[1].innerText.toLowerCase();
-
-        if (username.includes(filter) || email.includes(filter)) {
-            row.style.display = "";
-        } else {
-            row.style.display = "none";
-        }
-    });
-});
-</script>
-
-</body>
-</html>
+{% endblock %}

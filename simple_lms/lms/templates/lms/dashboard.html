@@ -1,195 +1,311 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Sagara Course Dashboard</title>
+{% extends "lms/base.html" %}
+{% load icons %}
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+{% block title %}Dashboard — Sagara Course{% endblock %}
 
-<style>
-body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: #f4f9ff;
-}
-
-/* HEADER */
-.header {
-    background: #fff;
-    padding: 18px 40px;
+{% block extra_style %}
+.welcome-banner {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    border-radius: 18px;
+    padding: 28px 30px;
+    color: #fff;
+    margin-bottom: 22px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 10px rgba(0,123,255,0.1);
+    justify-content: space-between;
+    gap: 24px;
+    position: relative;
+    overflow: hidden;
 }
 
-.logo {
-    font-weight: 600;
-    color: #1565c0;
+.welcome-banner::after {
+    content: '';
+    position: absolute;
+    right: -40px;
+    top: -40px;
+    width: 180px;
+    height: 180px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 50%;
 }
 
-.nav a {
-    margin-left: 20px;
-    text-decoration: none;
-    color: #1976d2;
-}
-
-/* LAYOUT */
-.wrapper {
+.welcome-banner h1 {
     display: flex;
-    max-width: 1200px;
-    margin: 40px auto;
-    gap: 25px;
+    align-items: center;
+    gap: 8px;
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0 0 8px;
 }
 
-/* MAIN */
-.main {
-    flex: 2;
+.welcome-banner p {
+    margin: 0;
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.82);
+    max-width: 440px;
+    line-height: 1.6;
 }
 
-/* SIDEBAR */
-.sidebar {
-    flex: 1;
-}
-
-/* CARD */
-.card {
-    background: white;
-    padding: 25px;
-    border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0,123,255,0.08);
+.stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
     margin-bottom: 20px;
 }
 
-/* TITLE */
-.title {
-    font-size: 20px;
-    font-weight: 600;
-    color: #1565c0;
-    margin-bottom: 15px;
+.stat-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 20px;
 }
 
-/* MENU GRID */
-.menu-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-}
-
-.menu-item {
-    background: #f1f7ff;
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    transition: 0.3s;
-}
-
-.menu-item:hover {
-    background: #e3f2fd;
-}
-
-/* BUTTON */
-.btn {
-    display: block;
-    padding: 10px;
-    margin-top: 10px;
-    background: #42a5f5;
-    color: white;
-    text-align: center;
-    border-radius: 8px;
-    text-decoration: none;
-}
-
-.btn:hover {
-    background: #1e88e5;
-}
-
-/* STAT */
-.stat-box {
-    background: #f4f9ff;
-    padding: 15px;
-    border-radius: 10px;
+.stat-card .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     margin-bottom: 10px;
 }
 
-.stat-number {
-    font-size: 22px;
-    font-weight: bold;
-    color: #1565c0;
+.stat-card .icon-box {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
 }
-</style>
-</head>
 
-<body>
+.stat-card .label {
+    font-size: 12.5px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 4px;
+}
 
-<!-- HEADER -->
-<div class="header">
-    <div class="logo">🌊 Sagara Course</div>
+.stat-card .value {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--ink);
+}
+
+.dash-columns {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.inline-ico { vertical-align: middle; position: relative; top: -1px; }
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.activity-item:last-child { border-bottom: none; }
+
+.activity-item .avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--navy-soft);
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.activity-item .text {
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.activity-item .text strong { font-weight: 700; }
+
+.activity-item .time {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+}
+
+.popular-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.course-mini-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.course-mini-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.course-mini-cover {
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.85);
+    font-size: 28px;
+    font-weight: 800;
+    position: relative;
+}
+
+.course-mini-cover .badge-pop {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: rgba(255,255,255,0.9);
+    color: var(--navy);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 999px;
+}
+
+.course-mini-body { padding: 12px 14px; }
+
+.course-mini-body h4 {
+    margin: 0 0 4px;
+    font-size: 13.5px;
+    font-weight: 700;
+}
+
+.course-mini-body .meta {
+    font-size: 11.5px;
+    color: var(--muted);
+}
+
+.theme-1 .course-mini-cover { background: linear-gradient(135deg, var(--navy), var(--navy-light)); }
+.theme-2 .course-mini-cover { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
+.theme-3 .course-mini-cover { background: linear-gradient(135deg, #059669, #047857); }
+
+.empty-mini {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 30px;
+    color: var(--muted);
+    font-size: 13px;
+}
+{% endblock %}
+
+{% block page_heading %}{% endblock %}
+
+{% block content %}
+
+<div class="welcome-banner">
+    <div>
+        <h1>{% icon 'sparkles' size=20 %} Selamat Datang di Sagara Course</h1>
+        <p>Optimalkan perjalanan belajar hari ini. Kelola kursus, pantau keterlibatan pengguna, dan tingkatkan performa akademik dengan pusat kendali terintegrasi.</p>
+    </div>
 </div>
 
-<!-- CONTENT -->
-<div class="wrapper">
-
-    <!-- LEFT -->
-    <div class="main">
-
-        <!-- WELCOME -->
-        <div class="card">
-            <div class="title">👋 Selamat Datang</div>
-            <p>Selamat datang di <b>Sagara Course</b>, platform pembelajaran modern berbasis web. Kelola course, user, dan aktivitas belajar dengan mudah.</p>
+<div class="stat-row">
+    <div class="stat-card">
+        <div class="top">
+            <div class="icon-box" style="background: var(--navy-soft); color: var(--navy);">{% icon 'book' size=18 %}</div>
         </div>
-
-<!-- MENU -->
-        <div class="card">
-            <div class="title">📚 Fitur LMS</div>
-
-<div class="menu-grid">
-    <a href="/courses/create/" class="menu-item">📘 Manajemen Course</a>
-    <a href="/comments/" class="menu-item">💬 Komentar & Diskusi</a>
-    <a href="/import/" class="menu-item">Import CSV</a>
-    <a href="/content/" class="menu-item">🎥 Video & File</a>
-    <a href="/courses-api/" class="menu-item">📊 Daftar Courses (API v2)</a>
-
-</div>
-        </div>
-
-        <!-- ACTION -->
-        <div class="card">
-            <div class="title">⚙️ Aksi Cepat</div>
-
-            <a href="/admin/" class="btn">🔐 Buka Django Admin</a>
-            <a href="/dashboard/stat/" class="btn">📊 Statistik Course</a>
-            <a href="/users/stat/" class="btn">👤 Statistik User</a>
-            <a href="/silk/" class="btn">⚡ Profiling (Django Silk)</a>
-        </div>
-
+        <div class="label">Total Course</div>
+        <div class="value">{{ course_count }}</div>
     </div>
 
-    <!-- RIGHT -->
-    <div class="sidebar">
-
-        <div class="card">
-            <div class="title">📈 Statistik</div>
-
-            <div class="stat-box">
-                Total Course
-                <div class="stat-number">{{ course_count }}</div>
-            </div>
-
-            <div class="stat-box">
-                Total User
-                <div class="stat-number">{{ user_count }}</div>
-            </div>
-
-            <div class="stat-box">
-                Total Member
-                <div class="stat-number">{{ member_count }}</div>
-            </div>
+    <div class="stat-card">
+        <div class="top">
+            <div class="icon-box" style="background: var(--green-bg); color: var(--green);">{% icon 'user' size=18 %}</div>
         </div>
-
+        <div class="label">Total User</div>
+        <div class="value">{{ user_count }}</div>
     </div>
 
+    <div class="stat-card">
+        <div class="top">
+            <div class="icon-box" style="background: var(--pink-bg); color: var(--pink);">{% icon 'academic-cap' size=18 %}</div>
+        </div>
+        <div class="label">Total Member</div>
+        <div class="value">{{ member_count }}</div>
+    </div>
 </div>
 
-</body>
-</html>
+<div class="dash-columns">
+    <div class="card">
+        <div class="section-title">{% icon 'trending-up' size=16 %} Ringkasan</div>
+        <p style="font-size:13px; color:var(--muted); line-height:1.7; margin:0;">
+            Rata-rata harga course saat ini <strong style="color:var(--ink);">Rp {{ avg_price }}</strong>.
+            Persentase pertumbuhan di atas dihitung dari perbandingan jumlah data baru 30 hari terakhir
+            terhadap 30 hari sebelumnya.
+        </p>
+    </div>
+
+    <div class="card">
+        <div class="section-title">{% icon 'clock' size=16 %} Aktivitas Terbaru</div>
+        {% for a in activities %}
+        <div class="activity-item">
+            <div class="avatar">{{ a.username|slice:":2"|upper }}</div>
+            <div>
+                <div class="text"><strong>{{ a.username }}</strong> {{ a.text }}</div>
+                <div class="time">{{ a.time }}</div>
+            </div>
+        </div>
+        {% empty %}
+        <p style="font-size:13px; color:var(--muted);">Belum ada aktivitas</p>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="card">
+    <div class="popular-section">
+        <div class="section-title" style="margin-bottom:0;">{% icon 'fire' size=16 %} Kursus Populer Saat Ini</div>
+        <a href="/courses/list/" style="font-size:12.5px; font-weight:700; color:var(--navy); text-decoration:none;">Jelajahi Katalog →</a>
+    </div>
+
+    <div class="course-mini-grid">
+        {% for course in popular_courses %}
+        <div class="course-mini-card {% cycle 'theme-1' 'theme-2' 'theme-3' %}">
+            <div class="course-mini-cover">
+                {% if course.image %}
+                    <img src="{{ course.image.url }}" alt="{{ course.name }}" style="width:100%; height:100%; object-fit:cover;">
+                {% else %}
+                    {% if forloop.first %}<span class="badge-pop">{% icon 'fire' size=11 %} Populer</span>{% endif %}
+                    {{ course.name|slice:":1"|upper }}
+                {% endif %}
+            </div>
+            <div class="course-mini-body">
+                <h4>{{ course.name }}</h4>
+                <div class="meta">{% icon 'users' size=12 css_class='inline-ico' %} {{ course.member_count }} member &middot; Rp {{ course.price }}</div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-mini">Belum ada course</div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

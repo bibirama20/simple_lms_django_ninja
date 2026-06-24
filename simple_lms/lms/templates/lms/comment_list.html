@@ -1,55 +1,286 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Diskusi Komentar</title>
+{% extends "lms/base.html" %}
+{% load icons %}
 
-<style>
-body{
-    font-family:'Segoe UI';
-    background:#f4f9ff;
+{% block title %}Discussions — Sagara Course{% endblock %}
+
+{% block extra_style %}
+.discuss-columns {
+    display: grid;
+    grid-template-columns: 1.7fr 1fr;
+    gap: 18px;
 }
 
-.container{
-    width:80%;
-    margin:auto;
-    margin-top:40px;
+@media (max-width: 980px) {
+    .discuss-columns { grid-template-columns: 1fr; }
 }
 
-.card{
-    background:white;
-    padding:20px;
-    margin-bottom:20px;
-    border-radius:10px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.05);
+.search-card { padding: 14px 16px; }
+
+.search-form {
+    position: relative;
+    display: flex;
+    align-items: center;
 }
-</style>
-</head>
 
-<body>
+.search-form .search-ico {
+    position: absolute;
+    left: 13px;
+    opacity: 0.45;
+    display: flex;
+}
 
-<div class="container">
+.search-form input {
+    width: 100%;
+    padding: 10px 40px 10px 36px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    font-size: 13px;
+    font-family: inherit;
+}
 
-<h2>💬 Diskusi Komentar</h2>
+.search-form input:focus {
+    outline: none;
+    border-color: var(--navy);
+    background: #fff;
+}
 
-{% for c in comments %}
+.search-btn {
+    position: absolute;
+    right: 6px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: var(--navy);
+    color: #fff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
 
-<div class="card">
+.search-btn:hover { background: var(--navy-light); }
 
-    <h3>{{ c.content_id.name }}</h3>
+.search-result-note {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--muted);
+}
 
-    <b>{{ c.member_id.user_id.username }}</b>
+.search-result-note a { color: var(--navy); font-weight: 700; text-decoration: none; }
 
-    <p>{{ c.comment }}</p>
+.post-form textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    resize: vertical;
+    min-height: 60px;
+    background: var(--bg);
+    margin-bottom: 10px;
+}
 
-    <small>{{ c.created_at }}</small>
+.post-form input[type="text"] {
+    width: 100%;
+    padding: 11px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-size: 13.5px;
+    background: var(--bg);
+    margin-bottom: 10px;
+}
+
+.post-form textarea:focus, .post-form input:focus {
+    outline: none;
+    border-color: var(--navy);
+    background: #fff;
+}
+
+.post-form .row {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.post-form button {
+    background: var(--navy);
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.post-form button:hover { background: var(--navy-light); }
+
+.topic-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+}
+
+.topic-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy-light), var(--navy));
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.topic-meta strong { font-size: 13.5px; }
+.topic-meta .time { font-size: 11.5px; color: var(--muted); display: block; }
+
+.topic-title { font-size: 14.5px; font-weight: 700; margin: 0 0 6px; }
+.topic-text { font-size: 13.5px; color: #334155; line-height: 1.6; margin: 0; }
+
+/* SIDEBAR WIDGETS */
+.widget-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+}
+
+.widget-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13.5px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.inline-ico { vertical-align: middle; position: relative; top: -1px; }
+.topic-meta .time { display: flex; align-items: center; gap: 4px; }
+
+.video-mini {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--ink);
+    margin-bottom: 10px;
+}
+
+.video-mini:last-child { margin-bottom: 0; }
+
+.video-mini .thumb {
+    width: 56px;
+    height: 38px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--navy-light), var(--navy));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.video-mini .name { font-size: 12.5px; font-weight: 600; }
+
+.empty-state {
+    background: #fff;
+    border: 1px dashed var(--border);
+    border-radius: 16px;
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+}
+{% endblock %}
+
+{% block page_heading %}
+<div class="page-heading">
+    <h1>{% icon 'chat' size=20 %} Discussions &amp; Resources</h1>
+    <p>Manage student interactions and course materials</p>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="discuss-columns">
+
+    <div>
+        <div class="card post-form" style="margin-bottom:18px;">
+            <form method="POST">
+                {% csrf_token %}
+                <input type="text" name="title" placeholder="Judul topik diskusi...">
+                <textarea name="comment" placeholder="Mulai diskusi baru atau ajukan pertanyaan..." required></textarea>
+                <div class="row">
+                    <button type="submit">Post Discussion</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="card search-card" style="margin-bottom:18px;">
+            <form method="get" class="search-form">
+                <span class="search-ico">{% icon 'search' size=14 %}</span>
+                <input type="text" name="search" placeholder="Cari diskusi berdasarkan user atau kata kunci..." value="{{ search_query|default:'' }}">
+                <button type="submit" class="search-btn">{% icon 'search' size=14 %}</button>
+            </form>
+            {% if search_query %}
+            <div class="search-result-note">
+                Hasil pencarian untuk "<strong>{{ search_query }}</strong>" &middot;
+                <a href="/comments/">Hapus pencarian</a>
+            </div>
+            {% endif %}
+        </div>
+
+        {% for c in comments %}
+        <div class="topic-card">
+            <div class="topic-top">
+                <div class="avatar">{{ c.member_id.user_id.username|slice:":2"|upper }}</div>
+                <div class="topic-meta">
+                    <strong>{{ c.member_id.user_id.username }}</strong>
+                    <span class="time">{% icon 'clock' size=11 css_class='inline-ico' %} {{ c.created_at }}</span>
+                </div>
+            </div>
+            {% if c.title %}<div class="topic-title">{{ c.title }}</div>{% endif %}
+            <p class="topic-text">{{ c.comment }}</p>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+            {% icon 'chat' size=18 css_class='inline-ico' %}
+            {% if search_query %}Tidak ada diskusi yang cocok dengan "{{ search_query }}".{% else %}Belum ada topik diskusi. Mulai diskusi pertama lewat form di atas!{% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <div>
+        <div class="widget-card">
+            <div class="widget-title">{% icon 'film' size=16 %} Recent Videos</div>
+            {% for v in recent_videos %}
+            <a href="/content/{{ v.id }}/" class="video-mini">
+                <div class="thumb">{% icon 'play' size=14 %}</div>
+                <div class="name">{{ v.name }}</div>
+            </a>
+            {% empty %}
+            <p style="font-size:12.5px; color:var(--muted); margin:0;">Belum ada video</p>
+            {% endfor %}
+        </div>
+    </div>
 
 </div>
 
-{% empty %}
-<p>Belum ada komentar</p>
-{% endfor %}
-
-</div>
-
-</body>
-</html>
+{% endblock %}

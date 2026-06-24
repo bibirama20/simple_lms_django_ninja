@@ -1,50 +1,210 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Import CSV</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sagara Course — Import CSV</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-body {
-    font-family: 'Segoe UI';
-    background: linear-gradient(to bottom, #e3f2fd, #f8fbff);
-    margin: 0;
+* { box-sizing: border-box; }
+
+:root {
+    --primary: #4f46e5;
+    --primary-dark: #4338ca;
+    --primary-light: #eef2ff;
+    --ink: #1e1b4b;
+    --muted: #64748b;
+    --border: #e7e9f3;
+    --bg: #f7f8fc;
 }
 
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+}
+
+/* HEADER */
 .header {
     background: #fff;
-    padding: 18px 40px;
-    box-shadow: 0 2px 10px rgba(0,123,255,0.1);
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
 }
 
+.logo {
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.logo .mark {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary), #818cf8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+}
+
+.nav a {
+    margin-left: 18px;
+    text-decoration: none;
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.nav a:hover { color: var(--primary); }
+
+/* HERO */
+.hero {
+    background: linear-gradient(135deg, var(--primary) 0%, #6366f1 60%, #818cf8 100%);
+    color: #fff;
+    padding: 46px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    right: -50px;
+    top: -50px;
+    width: 200px;
+    height: 200px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+}
+
+.hero h1 {
+    margin: 0 0 6px;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+}
+
+.hero p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 14px;
+}
+
+.hero-badge {
+    display: inline-block;
+    margin-top: 14px;
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(6px);
+    padding: 7px 20px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* FORM CARD */
 .container {
-    width: 40%;
-    margin: 60px auto;
-    background: #fff;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0,123,255,0.1);
+    max-width: 460px;
+    margin: -36px auto 60px;
+    padding: 0 24px;
+    position: relative;
 }
 
-h2 { text-align:center; color:#1565c0; }
+.form-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    padding: 32px;
+    border-radius: 20px;
+    box-shadow: 0 16px 36px rgba(79,70,229,0.12);
+}
 
-input {
-    width: 100%;
-    padding: 10px;
-    margin: 15px 0;
+.form-card .label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.dropzone {
+    border: 1.5px dashed #c7d2fe;
+    border-radius: 14px;
+    padding: 28px 16px;
+    background: var(--primary-light);
+    margin-bottom: 18px;
+    text-align: center;
+    transition: 0.2s ease;
+}
+
+.dropzone:hover {
+    border-color: var(--primary);
+    background: #e0e7ff;
+}
+
+.dropzone .icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.dropzone input[type="file"] {
+    display: inline-block;
+    width: auto;
+    max-width: 100%;
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 8px;
 }
 
 button {
     width: 100%;
-    padding: 12px;
-    background: #42a5f5;
+    padding: 13px;
+    background: linear-gradient(90deg, var(--primary), #818cf8);
     color: white;
-    border-radius: 10px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.25s ease;
+    box-shadow: 0 8px 18px rgba(79,70,229,0.25);
 }
 
-.nav a {
-    margin-right: 15px;
-    text-decoration: none;
-    color: #1976d2;
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(79,70,229,0.35);
+}
+
+.hint {
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+}
+
+.supported {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 14px;
+}
+
+.supported span {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary);
+    background: var(--primary-light);
+    padding: 5px 12px;
+    border-radius: 999px;
 }
 </style>
 </head>
@@ -52,23 +212,45 @@ button {
 <body>
 
 <div class="header">
+    <a href="/" class="logo">
+        <span class="mark">🌊</span>
+        Sagara Course
+    </a>
     <div class="nav">
         <a href="/users/">Users</a>
         <a href="/courses/create/">Create Course</a>
     </div>
 </div>
 
+<div class="hero">
+    <h1>📥 Import Data CSV</h1>
+    <p>Tambahkan data User, Course, atau Member secara massal lewat file CSV</p>
+    <span class="hero-badge">✨ Proses cepat &amp; otomatis</span>
+</div>
+
 <div class="container">
-<h2>📥 Import CSV</h2>
+    <div class="form-card">
+        <div class="label">Pilih File CSV</div>
 
-<form method="POST" enctype="multipart/form-data">
-{% csrf_token %}
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
 
-<input type="file" name="file" required>
+            <div class="dropzone">
+                <div class="icon">📄</div>
+                <input type="file" name="file" required>
+            </div>
 
-<button type="submit">Upload CSV</button>
+            <button type="submit">⬆️ Upload CSV</button>
+        </form>
 
-</form>
+        <div class="hint">Pastikan kolom file sesuai template yang didukung sistem</div>
+
+        <div class="supported">
+            <span>👤 User</span>
+            <span>📚 Course</span>
+            <span>🎓 Member</span>
+        </div>
+    </div>
 </div>
 
 </body>

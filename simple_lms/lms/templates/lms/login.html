@@ -1,130 +1,393 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-<title>Login - Sagara Course</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — Sagara Course</title>
+{% load icons %}
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+* { box-sizing: border-box; }
+
+:root {
+    --navy: #1E3A8A;
+    --navy-light: #2F4FB3;
+    --navy-soft: #e8edfb;
+    --ink: #111827;
+    --muted: #6b7280;
+    --border: #e6e8f0;
+    --bg: #F8FAFC;
+    --red: #dc2626;
+    --red-bg: #fef2f2;
+}
+
 body {
-    font-family: 'Segoe UI';
-    background: linear-gradient(to bottom, #e3f2fd, #f8fbff);
     margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(120deg, var(--bg) 60%, #e3f4ef 100%);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-/* HEADER */
-.header {
-    background: #fff;
-    padding: 18px 40px;
-    box-shadow: 0 2px 10px rgba(0,123,255,0.1);
+a { color: inherit; }
+
+/* TOPNAV */
+.topnav {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    padding: 22px 40px;
 }
 
-.logo {
-    font-size: 20px;
-    font-weight: bold;
-    color: #1565c0;
-}
-
-.nav {
-    display: flex;
-    gap: 20px;
-}
-
-.nav a {
+.brand {
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--navy);
     text-decoration: none;
-    color: #1976d2;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-size: 14px;
+    color: var(--muted);
     font-weight: 500;
 }
 
-/* AUTH CONTAINER */
-.auth-container {
-    width: 360px;
-    margin: 60px auto;
+.btn-cta {
+    background: var(--navy);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 9px;
+    font-weight: 700;
+    font-size: 13.5px;
+    text-decoration: none;
+}
+
+.btn-cta:hover { background: var(--navy-light); }
+
+/* MAIN */
+.auth-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px 50px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 480px;
     background: #fff;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0,123,255,0.1);
-}
-
-h2 {
+    border-radius: 20px;
+    padding: 36px 40px 30px;
+    box-shadow: 0 10px 40px rgba(17,24,39,0.06);
     text-align: center;
-    color: #1565c0;
 }
 
-input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 8px;
-    border: 1px solid #cfe3ff;
-    box-sizing: border-box;
+.badge-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    background: var(--navy);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
 }
 
-button {
-    width: 100%;
-    padding: 12px;
-    background: #42a5f5;
-    color: white;
-    border: none;
+.auth-card h1 {
+    font-size: 25px;
+    font-weight: 800;
+    color: var(--navy);
+    margin: 0 0 8px;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0 0 26px;
+    line-height: 1.5;
+}
+
+.error-msg {
+    background: var(--red-bg);
+    color: var(--red);
+    padding: 10px 14px;
     border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+form { text-align: left; }
+
+.field { margin-bottom: 16px; }
+
+.field-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 7px;
+}
+
+.field label { font-size: 13px; font-weight: 700; color: var(--ink); }
+
+.forgot-link {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--navy);
+    text-decoration: none;
+}
+
+.input-icon { position: relative; }
+
+.input-icon .ico {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    display: flex;
+}
+
+.input-icon .toggle-eye {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    display: flex;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.input-icon input {
+    width: 100%;
+    padding: 12px 42px 12px 40px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    font-size: 13.5px;
+    font-family: inherit;
+    transition: 0.2s;
+}
+
+.input-icon input:focus {
+    outline: none;
+    border-color: var(--navy);
+    background: #fff;
+}
+
+.checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+    color: var(--ink);
+    margin: 4px 0 22px;
     cursor: pointer;
 }
 
-button:hover {
-    background: #1e88e5;
+.checkbox-row input { width: auto; }
+
+.btn-primary {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 11px;
+    font-weight: 700;
+    font-size: 14.5px;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
-.error {
-    color: #e53935;
+.btn-primary:hover { background: var(--navy-light); }
+
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 24px 0 18px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #9ca3af;
+    letter-spacing: 0.5px;
+}
+
+.divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+.social-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.btn-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px;
+    border: 1.5px solid var(--border);
+    background: #fff;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 13.5px;
+    color: var(--ink);
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+.social-logo {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.logo-google { background: #ea4335; }
+.logo-linkedin { background: #0a66c2; }
+
+.switch-text {
+    font-size: 13.5px;
+    color: var(--muted);
+    margin: 0;
+}
+
+.switch-text a { color: var(--navy); font-weight: 700; text-decoration: none; }
+
+/* TRUST BADGES */
+.trust-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    max-width: 480px;
+    width: 100%;
+    margin-top: 26px;
+}
+
+.trust-badge {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 10px;
     text-align: center;
+    color: #9ca3af;
 }
 
-.switch {
-    text-align: center;
-    margin-top: 15px;
-}
-
-.switch a {
-    color: #1976d2;
-    text-decoration: none;
-    font-weight: 500;
-}
+.trust-badge .ico { display: flex; justify-content: center; margin-bottom: 8px; }
+.trust-badge .lbl { font-size: 10.5px; font-weight: 700; letter-spacing: 0.6px; }
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
-<div class="header">
-    <div class="logo">🌊 Sagara Course</div>
-
-    <div class="nav">
-        <a href="/">Dashboard</a>
-        <a href="/register/">Register</a>
+<nav class="topnav">
+    <a href="/login/" class="brand">Sagara Course</a>
+    <div class="nav-links">
+        <a href="/register/" class="btn-cta">Get Started</a>
     </div>
-</div>
+</nav>
 
-<div class="auth-container">
+<main class="auth-main">
+    <div class="auth-card">
+        <div class="badge-icon">{% icon 'academic-cap' size=28 %}</div>
+        <h1>Welcome Back</h1>
+        <p class="subtitle">Access your learning dashboard and continue your journey.</p>
 
-<h2>🔑 Login</h2>
+        {% if error %}<div class="error-msg">{{ error }}</div>{% endif %}
 
-{% if error %}
-<p class="error">{{ error }}</p>
-{% endif %}
+        <form method="POST">
+        {% csrf_token %}
+        {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
 
-<form method="POST">
-{% csrf_token %}
+            <div class="field">
+                <label>Email or Username</label>
+                <div class="input-icon">
+                    <span class="ico">{% icon 'mail' size=16 %}</span>
+                    <input type="text" name="identifier" placeholder="Enter your email" required autofocus>
+                </div>
+            </div>
 
-<input type="text" name="username" placeholder="Username" required>
-<input type="password" name="password" placeholder="Password" required>
+            <div class="field">
+                <div class="field-head">
+                    <label>Password</label>
+                    <span class="forgot-link">Forgot Password?</span>
+                </div>
+                <div class="input-icon">
+                    <span class="ico">{% icon 'lock' size=16 %}</span>
+                    <input type="password" name="password" id="password-input" placeholder="••••••••" required>
+                    <button type="button" class="toggle-eye" onclick="
+                        const inp = document.getElementById('password-input');
+                        inp.type = inp.type === 'password' ? 'text' : 'password';
+                    ">{% icon 'eye' size=16 %}</button>
+                </div>
+            </div>
 
-<button type="submit">Masuk</button>
-</form>
+            <label class="checkbox-row">
+                <input type="checkbox" name="keep_signed_in">
+                <span>Keep me signed in</span>
+            </label>
 
-<p class="switch">Belum punya akun? <a href="/register/">Daftar di sini</a></p>
+            <button type="submit" class="btn-primary">Login to Dashboard {% icon 'arrow-right' size=16 %}</button>
+        </form>
 
-</div>
+        <div class="divider">OR CONTINUE WITH</div>
+
+        <div class="social-row">
+            <button type="button" class="btn-social" disabled title="Belum tersedia">
+                <span class="social-logo logo-google">G</span> Google
+            </button>
+            <button type="button" class="btn-social" disabled title="Belum tersedia">
+                <span class="social-logo logo-linkedin">in</span> LinkedIn
+            </button>
+        </div>
+
+        <p class="switch-text">New to Sagara Course? <a href="/register/">Create an account</a></p>
+    </div>
+
+    <div class="trust-row">
+        <div class="trust-badge">
+            <div class="ico">{% icon 'shield-check' size=22 %}</div>
+            <div class="lbl">CERTIFIED</div>
+        </div>
+        <div class="trust-badge">
+            <div class="ico">{% icon 'users' size=22 %}</div>
+            <div class="lbl">COMMUNITY</div>
+        </div>
+        <div class="trust-badge">
+            <div class="ico">{% icon 'trending-up' size=22 %}</div>
+            <div class="lbl">GROWTH</div>
+        </div>
+    </div>
+</main>
 
 </body>
 </html>

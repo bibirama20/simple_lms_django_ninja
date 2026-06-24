@@ -1,171 +1,181 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Video & File</title>
+{% extends "lms/base.html" %}
+{% load icons %}
 
-<style>
-body {
-    font-family: 'Segoe UI';
-    background: #f4f9ff;
-    margin: 0;
-}
+{% block title %}Video & File — Sagara Course{% endblock %}
 
-.header {
+{% block extra_style %}
+.content-card {
     background: #fff;
-    padding: 18px 40px;
-    display: flex;
-    justify-content: space-between;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-
-.logo {
-    font-weight: bold;
-    color: #1565c0;
-}
-
-.nav a {
-    margin-left: 15px;
-    text-decoration: none;
-    color: #1976d2;
-}
-
-.container {
-    width: 80%;
-    margin: 40px auto;
-}
-
-.card {
-    background: white;
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--accent);
+    border-radius: 16px;
     padding: 20px;
-    border-radius: 12px;
     margin-bottom: 20px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
 
-.title {
-    font-weight: bold;
-    color: #1565c0;
-    margin-bottom: 10px;
-}
+.theme-1 { --accent: var(--navy); }
+.theme-2 { --accent: #db2777; }
+.theme-3 { --accent: #059669; }
+.theme-4 { --accent: #d97706; }
+
+.content-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.content-desc { font-size: 13.5px; color: var(--muted); margin-bottom: 14px; }
 
 iframe {
     width: 100%;
-    height: 300px;
+    height: 320px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: block;
+}
+
+.file-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+    padding: 8px 14px;
+    background: var(--green-bg);
+    color: var(--green);
     border-radius: 10px;
+    font-weight: 600;
+    font-size: 13px;
+    text-decoration: none;
 }
 
-.file a {
-    display: inline-block;
+.divider { border: none; border-top: 1px solid var(--border); margin: 18px 0 14px; }
+
+.section-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13.5px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.inline-ico { vertical-align: middle; position: relative; top: -1px; }
+
+.comment-form textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    resize: vertical;
+    min-height: 64px;
+    background: var(--bg);
+}
+
+.comment-form textarea:focus {
+    outline: none;
+    border-color: var(--navy);
+    background: #fff;
+}
+
+.comment-form button {
     margin-top: 10px;
-    color: #2e7d32;
+    background: var(--navy);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
 }
-</style>
-</head>
 
-<body>
+.comment-form button:hover { background: var(--navy-light); }
 
-<div class="header">
-    <div class="logo">🌊 Sagara Course</div>
+.comment-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 11px 13px;
+    border-radius: 10px;
+    margin-bottom: 9px;
+}
 
-    <div class="nav">
-        <a href="/">Dashboard</a>
-        <a href="/comments/">Diskusi</a>
-        <a href="/content/add/">➕ Tambah Konten</a>
-    </div>
+.comment-item .username { font-weight: 700; font-size: 12.5px; }
+.comment-item .text { font-size: 12.5px; color: #334155; margin: 3px 0; }
+.comment-item .timestamp { font-size: 11px; color: var(--muted); }
+
+.empty-comment { font-size: 12.5px; color: var(--muted); padding: 4px 0; }
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--navy);
+    text-decoration: none;
+    margin-bottom: 8px;
+}
+
+.back-link:hover { color: var(--navy-light); }
+{% endblock %}
+
+{% block page_heading %}
+<div class="page-heading">
+    {% if single_content %}
+    <a href="/content/" class="back-link">{% icon 'book' size=13 %} Kembali ke semua video</a>
+    {% endif %}
+    <h1>{% icon 'film' size=20 %} Video &amp; File Pembelajaran</h1>
+    <p>Materi video dan dokumen pendukung untuk setiap course</p>
 </div>
+{% endblock %}
 
-<div class="container">
-
-<h2>🎥 Video & File Pembelajaran</h2>
+{% block content %}
 
 {% for content in contents %}
-<div class="card">
+<div class="content-card {% cycle 'theme-1' 'theme-2' 'theme-3' 'theme-4' %}">
 
-    <div class="title">{{ content.name }}</div>
-    <div>{{ content.description }}</div>
+    <div class="content-title">{{ content.name }}</div>
+    <div class="content-desc">{{ content.description }}</div>
 
-{% if content.video_url %}
-<iframe
-    width="100%"
-    height="315"
-    src="{{ content.video_url }}"
-    title="YouTube video player"
-    frameborder="0"
-    referrerpolicy="strict-origin-when-cross-origin"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    allowfullscreen>
-</iframe>
-{% endif %}
-
-    {% if content.file_attachment %}
-    <div class="file">
-        📄 <a href="{{ content.file_attachment.url }}" target="_blank">
-            Download File
-        </a>
-    </div>
+    {% if content.video_url %}
+    <iframe
+        src="{{ content.embed_url }}"
+        title="YouTube video player"
+        frameborder="0"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen>
+    </iframe>
     {% endif %}
 
-    <!-- ========================= -->
-    <!-- FORM KOMENTAR -->
-    <!-- ========================= -->
-    <hr>
+    {% if content.file_attachment %}
+    <a href="{{ content.file_attachment.url }}" target="_blank" class="file-badge">
+        {% icon 'document' size=14 %} Download File
+    </a>
+    {% endif %}
 
-    <h4>💬 Komentar</h4>
+    <hr class="divider">
 
-    <form method="POST">
+    <div class="section-label">{% icon 'chat' size=15 css_class='inline-ico' %} Komentar</div>
+
+    <form method="POST" class="comment-form">
         {% csrf_token %}
-
         <input type="hidden" name="content_id" value="{{ content.id }}">
-
-        <textarea
-            name="comment"
-            placeholder="Tulis komentar..."
-            required
-            style="width:100%; padding:10px; border-radius:8px;">
-        </textarea>
-
-        <br><br>
-
-        <button type="submit"
-            style="
-                background:#1976d2;
-                color:white;
-                border:none;
-                padding:10px 20px;
-                border-radius:8px;
-                cursor:pointer;
-            ">
-            Kirim Komentar
-        </button>
+        <textarea name="comment" placeholder="Tulis komentar..." required></textarea>
+        <br>
+        <button type="submit">Kirim Komentar</button>
     </form>
 
     <br>
 
-    <!-- ========================= -->
-    <!-- LIST KOMENTAR -->
-    <!-- ========================= -->
-
     {% for c in content.comments.all %}
-    <div style="
-        background:#f5f5f5;
-        padding:10px;
-        border-radius:8px;
-        margin-bottom:10px;
-    ">
-        <b>{{ c.member_id.user_id.username }}</b><br>
-
-        {{ c.comment }}
-
-        <div style="font-size:12px; color:gray;">
-            {{ c.created_at }}
-        </div>
+    <div class="comment-item">
+        <div class="username">{{ c.member_id.user_id.username }}</div>
+        <div class="text">{{ c.comment }}</div>
+        <div class="timestamp">{{ c.created_at }}</div>
     </div>
     {% empty %}
-        <p>Belum ada komentar</p>
+    <div class="empty-comment">Belum ada komentar</div>
     {% endfor %}
 
 </div>
 {% endfor %}
 
-</body>
-</html>
+{% endblock %}
