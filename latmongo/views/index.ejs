@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan MongoDB — Todo List</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f1f5f9;
+    margin: 0;
+    padding: 40px 20px;
+    color: #1e293b;
+  }
+  .container { max-width: 640px; margin: 0 auto; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .sub { color: #64748b; font-size: 13px; margin-bottom: 24px; }
+  .sub code { background: #e2e8f0; padding: 2px 6px; border-radius: 5px; }
+  .card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+  }
+  .field { margin-bottom: 12px; }
+  label { display: block; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 5px; }
+  input, textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    font-size: 13.5px;
+    font-family: inherit;
+  }
+  textarea { min-height: 60px; resize: vertical; }
+  button {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13.5px;
+    cursor: pointer;
+  }
+  button:hover { background: #1d4ed8; }
+  .todo-item { padding: 14px 0; border-bottom: 1px solid #eef2f6; }
+  .todo-item:last-child { border-bottom: none; }
+  .todo-item .title { font-weight: 700; font-size: 14px; }
+  .todo-item .desc { font-size: 13px; color: #64748b; margin-top: 3px; }
+  .todo-item .meta { font-size: 11px; color: #94a3b8; margin-top: 6px; }
+  .empty { text-align: center; color: #94a3b8; padding: 30px 0; font-size: 13px; }
+  .card-title { font-size: 14px; font-weight: 700; margin: 0 0 16px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📝 Latihan MongoDB — Todo List</h1>
+  <p class="sub">Aplikasi terpisah, terhubung langsung ke database <code>latihan</code> koleksi <code>todo</code> di MongoDB (port berbeda dari aplikasi Django Sagara Course).</p>
+
+  <div class="card">
+    <div class="card-title">Tambah Todo Baru</div>
+    <form method="POST" action="/todos">
+      <div class="field">
+        <label>Judul Todo</label>
+        <input type="text" name="title" placeholder="cth. Belajar agregasi MongoDB" required>
+      </div>
+      <div class="field">
+        <label>Deskripsi</label>
+        <textarea name="description" placeholder="Detail tugas..."></textarea>
+      </div>
+      <div class="field">
+        <label>User ID (opsional — kosongkan untuk auto-generate UUID)</label>
+        <input type="text" name="user_id" placeholder="UUID milikmu...">
+      </div>
+      <button type="submit">+ Tambah Todo</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Daftar Todo (<%= todos.length %>)</div>
+    <% if (todos.length === 0) { %>
+      <div class="empty">Belum ada todo. Tambahkan lewat form di atas!</div>
+    <% } else { %>
+      <% todos.forEach(function(t) { %>
+        <div class="todo-item">
+          <div class="title"><%= t.title %></div>
+          <% if (t.description) { %><div class="desc"><%= t.description %></div><% } %>
+          <div class="meta">user_id: <%= t.user_id %> &middot; <%= new Date(t.created_at).toLocaleString('id-ID') %></div>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+</div>
+</body>
+</html>
