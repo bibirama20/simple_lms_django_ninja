@@ -1,5 +1,3 @@
-import resource
-
 import django
 from django.conf import settings
 from django.contrib import messages
@@ -979,6 +977,7 @@ def course_list_view(request):
 # =========================
 @login_required
 def quick_actions_view(request):
+    import resource
     from silk.models import Request as SilkRequest
 
     silk_stats = SilkRequest.objects.aggregate(
