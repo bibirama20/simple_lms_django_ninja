@@ -37,6 +37,16 @@ ALLOWED_HOSTS = [
     h.strip() for h in os.environ.get('ALLOWED_HOSTS', '*').split(',') if h.strip()
 ]
 
+# Railway men-terminate HTTPS di reverse proxy-nya, jadi Django perlu tahu
+# origin HTTPS mana yang dipercaya untuk validasi CSRF pada form POST.
+CSRF_TRUSTED_ORIGINS = [
+    f'https://{h}' for h in ALLOWED_HOSTS if h and h != '*'
+]
+
+# Supaya Django tahu request aslinya HTTPS (bukan HTTP) walau diteruskan
+# lewat proxy Railway, sehingga cookie secure & redirect berjalan benar.
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
 # Application definition
 
