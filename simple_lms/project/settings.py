@@ -171,3 +171,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# JWT signing key (django-ninja-simple-jwt).
+# Di Railway, file jwt-signing.pem/.pub tidak ikut deploy (gitignored), jadi key
+# diambil dari env var JWT_PRIVATE_KEY/JWT_PUBLIC_KEY. Kalau env var tidak diset
+# (misal saat development lokal), library fallback baca file jwt-signing.pem/.pub.
+NINJA_SIMPLE_JWT = {
+    "JWT_PRIVATE_KEY": os.environ.get("JWT_PRIVATE_KEY"),
+    "JWT_PUBLIC_KEY": os.environ.get("JWT_PUBLIC_KEY"),
+}
