@@ -895,7 +895,7 @@ def register_view(request):
         username = _generate_unique_username(email, full_name)
         name_parts = full_name.split(' ', 1)
 
-        user = User.objects.create_user(
+        User.objects.create_user(
             username=username,
             email=email,
             password=password,
@@ -903,9 +903,7 @@ def register_view(request):
             last_name=name_parts[1] if len(name_parts) > 1 else ''
         )
 
-        login(request, user)
-
-        return redirect('/dashboard/')
+        return redirect('/login/')
 
     return render(request, 'lms/register.html')
 
