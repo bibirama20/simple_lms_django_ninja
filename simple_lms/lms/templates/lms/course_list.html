@@ -245,7 +245,7 @@ tbody tr:hover { background: var(--navy-soft); }
                         </div>
                         <div>
                             <strong>{{ course.name }}</strong>
-                            <div class="id-tag">{{ course.teacher.username }}</div>
+                            <div class="id-tag">{{ course.teacher|display_name }}</div>
                         </div>
                     </div>
                 </td>

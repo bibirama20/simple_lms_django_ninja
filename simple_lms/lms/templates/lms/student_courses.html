@@ -52,7 +52,7 @@
     {% for item in my_courses %}
     <div class="my-course-card">
         <div class="name">{{ item.course.name }}</div>
-        <div class="teacher">{% icon 'user' size=12 %} {{ item.course.teacher.username }}</div>
+        <div class="teacher">{% icon 'user' size=12 %} {{ item.course.teacher|display_name }}</div>
         <div class="bar-label"><span>{{ item.done }}/{{ item.total }} Modul</span><span>{{ item.percent }}%</span></div>
         <div class="bar-track" style="margin-bottom: 12px;"><div class="bar-fill" style="width: {{ item.percent }}%;"></div></div>
         {% if item.percent == 100 %}

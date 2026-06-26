@@ -220,9 +220,9 @@ footer.site-footer .footer-icons span { width: 30px; height: 30px; border-radius
     <div>
         <div class="mentor-card-box">
             <div class="mentor-top">
-                <div class="mentor-avatar">{{ course.teacher.username|slice:":2"|upper }}</div>
+                <div class="mentor-avatar">{{ course.teacher|initials }}</div>
                 <div>
-                    <div class="name">{{ course.teacher.username }}</div>
+                    <div class="name">{{ course.teacher|display_name }}</div>
                     <div class="role">Pengajar @ Sagara Course</div>
                 </div>
             </div>

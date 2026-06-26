@@ -279,8 +279,8 @@ footer .newsletter-text { font-size: 13px; color: var(--muted); line-height: 1.6
                 </div>
                 <div class="course-foot">
                     <div class="teacher-row">
-                        <span class="teacher-avatar">{{ course.teacher.username|slice:":2"|upper }}</span>
-                        {{ course.teacher.username }}
+                        <span class="teacher-avatar">{{ course.teacher|initials }}</span>
+                        {{ course.teacher|display_name }}
                     </div>
                     <span class="course-price">Rp {{ course.price_fmt }}</span>
                 </div>
@@ -311,8 +311,8 @@ footer .newsletter-text { font-size: 13px; color: var(--muted); line-height: 1.6
     <div class="mentors-grid">
         {% for mentor in mentors %}
         <div class="mentor-card">
-            <div class="avatar">{{ mentor.username|slice:":2"|upper }}</div>
-            <div class="name">{{ mentor.username }}</div>
+            <div class="avatar">{{ mentor|initials }}</div>
+            <div class="name">{{ mentor|display_name }}</div>
             <div class="role">Pengajar</div>
             <div class="courses">{{ mentor.course_count }} kursus diajarkan</div>
         </div>

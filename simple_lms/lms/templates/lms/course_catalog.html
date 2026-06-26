@@ -112,7 +112,7 @@
         <div class="course-body">
             <h3>{{ course.name }}</h3>
             <p>{{ course.description }}</p>
-            <div class="teacher-row">{% icon 'user' size=12 %} {{ course.teacher.username }}</div>
+            <div class="teacher-row">{% icon 'user' size=12 %} {{ course.teacher|display_name }}</div>
         </div>
     </a>
     {% empty %}

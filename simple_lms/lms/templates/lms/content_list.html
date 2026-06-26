@@ -111,7 +111,7 @@ iframe, video.part-video {
         <h2>{% icon 'book' size=15 css_class='inline-ico' %} {{ group.course.name }}</h2>
         <span class="count">{{ group.parts|length }} Part</span>
     </div>
-    <p class="course-group-desc">Pengajar: {{ group.course.teacher.username }}</p>
+    <p class="course-group-desc">Pengajar: {{ group.course.teacher|display_name }}</p>
 
     {% for part in group.parts %}
     <div class="part-card">

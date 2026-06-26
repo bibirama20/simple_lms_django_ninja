@@ -109,7 +109,7 @@ def get_courses(request):
             "name": c.name,
             "description": c.description,
             "price": c.price,
-            "teacher": c.teacher.username
+            "teacher": c.teacher.get_full_name() or c.teacher.username
         })
 
     return data
@@ -128,7 +128,7 @@ def detail_course(request, course_id: int):
         "name": c.name,
         "description": c.description,
         "price": c.price,
-        "teacher": c.teacher.username
+        "teacher": c.teacher.get_full_name() or c.teacher.username
     }
 
 

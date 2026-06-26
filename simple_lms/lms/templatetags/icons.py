@@ -70,3 +70,29 @@ def icon(name, size=18, css_class=''):
         f'stroke-width="1.5" width="{size}" height="{size}"{class_attr}>{path}</svg>'
     )
     return mark_safe(svg)
+
+
+@register.filter
+def display_name(user):
+    """Nama lengkap (First name + Last name) kalau sudah diisi admin,
+    fallback ke username supaya user lama yang belum diisi tetap tampil."""
+    if not user:
+        return ''
+    return user.get_full_name() or user.username
+
+
+@register.filter
+def initials(user):
+    """Inisial 2 huruf untuk avatar bulat — diambil dari First/Last name
+    kalau ada (mis. 'Budi Santoso' -> 'BS'), fallback ke 2 huruf username."""
+    if not user:
+        return ''
+
+    full_name = user.get_full_name()
+    if full_name:
+        parts = full_name.split()
+        if len(parts) >= 2:
+            return (parts[0][0] + parts[1][0]).upper()
+        return full_name[:2].upper()
+
+    return user.username[:2].upper()

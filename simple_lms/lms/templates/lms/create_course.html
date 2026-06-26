@@ -429,7 +429,7 @@ button.submit-btn:hover { background: var(--navy-light); }
                 <label>Pengajar</label>
                 <select name="teacher">
                 {% for user in users %}
-                <option value="{{ user.id }}" {% if edit_course and edit_course.teacher_id == user.id %}selected{% endif %}>{{ user.username }}</option>
+                <option value="{{ user.id }}" {% if edit_course and edit_course.teacher_id == user.id %}selected{% endif %}>{{ user|display_name }}</option>
                 {% endfor %}
                 </select>
             </div>
@@ -565,8 +565,8 @@ button.submit-btn:hover { background: var(--navy-light); }
 
             <div class="course-footer">
                 <div class="teacher-chip">
-                    <span class="avatar-sm">{{ course.teacher.username|slice:":2"|upper }}</span>
-                    <span>{{ course.teacher.username }}</span>
+                    <span class="avatar-sm">{{ course.teacher|initials }}</span>
+                    <span>{{ course.teacher|display_name }}</span>
                 </div>
                 <div class="card-actions">
                     <a href="/courses/create/?edit={{ course.id }}#form-top" class="icon-btn edit" title="Edit course">{% icon 'edit' size=14 %}</a>
