@@ -366,8 +366,48 @@ a { color: inherit; }
 .msg-warning { background: var(--amber-bg); color: var(--amber); }
 .msg-info, .msg-debug { background: var(--navy-soft); color: var(--navy); }
 
+.menu-toggle { display: none; }
+
+.sidebar-backdrop {
+    display: none;
+}
+
 @media (max-width: 980px) {
-    .sidebar { display: none; }
+    .menu-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 9px;
+        border: 1px solid var(--border);
+        background: #fff;
+        color: var(--ink);
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        z-index: 101;
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+        box-shadow: 0 0 30px rgba(17, 24, 39, 0.18);
+    }
+
+    .sidebar.open { transform: translateX(0); }
+
+    .sidebar-backdrop.open {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(17, 24, 39, 0.45);
+        z-index: 100;
+    }
+
     .topbar-search { display: none; }
 }
 
@@ -422,10 +462,13 @@ a { color: inherit; }
         </div>
     </div>
 
+    <div class="sidebar-backdrop" onclick="document.querySelector('.sidebar').classList.remove('open'); this.classList.remove('open');"></div>
+
     <!-- MAIN -->
     <div class="main">
 
         <div class="topbar">
+            <button type="button" class="menu-toggle" onclick="document.querySelector('.sidebar').classList.add('open'); document.querySelector('.sidebar-backdrop').classList.add('open');" aria-label="Buka menu">{% icon 'bars-3' size=18 %}</button>
             {% if active_page != 'dashboard' and active_page != 'statistics' and active_page != 'discussions' and active_page != 'course_list' %}
             <div class="topbar-search">
                 <form method="get">
@@ -442,10 +485,10 @@ a { color: inherit; }
 
                 <div class="topbar-user">
                     <div class="avatar">
-                        {% if request.user.is_authenticated %}{{ request.user.username|slice:":2"|upper }}{% else %}AS{% endif %}
+                        {% if request.user.is_authenticated %}{{ request.user|initials }}{% else %}AS{% endif %}
                     </div>
                     <div class="info">
-                        <strong>{% if request.user.is_authenticated %}{{ request.user.username }}{% else %}Alex Sagara{% endif %}</strong>
+                        <strong>{% if request.user.is_authenticated %}{{ request.user|display_name }}{% else %}Alex Sagara{% endif %}</strong>
                         <span>{% if request.user.is_superuser %}Administrator{% else %}LMS Coordinator{% endif %}</span>
                     </div>
                 </div>
