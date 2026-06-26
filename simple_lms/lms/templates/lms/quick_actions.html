@@ -127,6 +127,18 @@ tbody tr:last-child td { border-bottom: none; }
     color: var(--amber);
     margin-bottom: 18px;
 }
+
+.table-scroll { overflow-x: auto; }
+.table-scroll table { min-width: 560px; }
+
+@media (max-width: 900px) {
+    .admin-columns { grid-template-columns: 1fr; }
+    .stat-row { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 600px) {
+    .stat-row { grid-template-columns: 1fr; }
+}
 {% endblock %}
 
 {% block page_heading %}
@@ -219,6 +231,7 @@ tbody tr:last-child td { border-bottom: none; }
 
 <div class="card">
     <div class="section-title">{% icon 'signal' size=16 %} Recent API Performance</div>
+    <div class="table-scroll">
     <table>
         <thead>
             <tr>
@@ -253,6 +266,7 @@ tbody tr:last-child td { border-bottom: none; }
             {% endfor %}
         </tbody>
     </table>
+    </div>
 </div>
 
 {% endblock %}

@@ -108,6 +108,16 @@
 .course-rating .star { color: var(--amber); }
 
 .empty-state { grid-column: 1 / -1; text-align: center; padding: 30px 20px; color: var(--muted); font-size: 13px; }
+
+@media (max-width: 900px) {
+    .dash-columns { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+    .hero-card { flex-direction: column; align-items: flex-start; }
+    .hero-actions { flex-wrap: wrap; }
+    .course-mini-grid { grid-template-columns: 1fr; }
+}
 {% endblock %}
 
 {% block page_heading %}

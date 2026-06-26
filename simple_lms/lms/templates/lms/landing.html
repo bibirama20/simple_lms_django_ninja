@@ -67,8 +67,73 @@ a { color: inherit; }
     border: none; background: var(--navy-soft); color: var(--navy); font-weight: 700; font-size: 14px; text-decoration: none; cursor: pointer;
 }
 
+.menu-toggle { display: none; }
+.mobile-nav-panel { display: none; }
+
 @media (max-width: 900px) {
-    .nav-links { display: none; }
+    .nav-links, .topbar-actions { display: none; }
+
+    .menu-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 9px;
+        border: 1px solid var(--border);
+        background: #fff;
+        color: var(--ink);
+        cursor: pointer;
+        margin-left: auto;
+        flex-shrink: 0;
+    }
+
+    .mobile-nav-panel.open {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border-bottom: 1px solid var(--border);
+        padding: 10px 24px 18px;
+        box-shadow: 0 16px 28px rgba(17, 24, 39, 0.1);
+        z-index: 20;
+    }
+
+    .mobile-nav-panel a {
+        padding: 11px 4px;
+        font-size: 14.5px;
+        font-weight: 600;
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .mobile-nav-panel a.btn-navy {
+        margin-top: 8px;
+        border-bottom: none;
+        text-align: center;
+        color: #fff;
+    }
+}
+
+@media (max-width: 600px) {
+    .hero { padding: 44px 20px; }
+    .hero h1 { font-size: 28px; }
+    .hero p { font-size: 14px; }
+    .hero-actions { flex-direction: column; align-items: stretch; }
+    .hero-bg-img { width: 100%; opacity: 0.18; }
+
+    .section { padding: 40px 20px; }
+    .features-grid, .courses-grid, .mentors-grid, .stats-grid, .about-stat-row, .footer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pricing-card, .cta-card { padding: 28px 22px; }
+    .cta-actions { flex-direction: column; }
 }
 
 .hero {
@@ -194,6 +259,15 @@ footer .newsletter-text { font-size: 13px; color: var(--muted); line-height: 1.6
     </div>
     <div class="topbar-actions">
         <a href="/login/" class="login-link">Login</a>
+        <a href="/register/" class="btn-navy">Register</a>
+    </div>
+    <button type="button" class="menu-toggle" onclick="document.querySelector('.mobile-nav-panel').classList.toggle('open');" aria-label="Buka menu">{% icon 'bars-3' size=18 %}</button>
+    <div class="mobile-nav-panel">
+        <a href="#featured-courses">Courses</a>
+        <a href="#about-us">About Us</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#mentors">Mentors</a>
+        <a href="/login/">Login</a>
         <a href="/register/" class="btn-navy">Register</a>
     </div>
 </div>
@@ -394,6 +468,12 @@ footer .newsletter-text { font-size: 13px; color: var(--muted); line-height: 1.6
 
     navLinks.forEach(function (a) {
         a.addEventListener('click', function () { setActive(a.getAttribute('href').slice(1)); });
+    });
+
+    document.querySelectorAll('.mobile-nav-panel a').forEach(function (a) {
+        a.addEventListener('click', function () {
+            document.querySelector('.mobile-nav-panel').classList.remove('open');
+        });
     });
 })();
 </script>

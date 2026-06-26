@@ -163,6 +163,16 @@
 
 .engagement-box .num { font-size: 20px; font-weight: 800; color: var(--navy); }
 .engagement-box .lbl { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+
+@media (max-width: 900px) {
+    .stat-row, .metric-grid { grid-template-columns: repeat(2, 1fr); }
+    .dash-columns, .bottom-columns { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+    .stat-row, .metric-grid, .engagement-grid { grid-template-columns: 1fr; }
+    .featured-card h3 { max-width: 100%; }
+}
 {% endblock %}
 
 {% block page_heading %}

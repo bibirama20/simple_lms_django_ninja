@@ -94,9 +94,55 @@ a { color: inherit; }
 }
 .btn-outline:hover { border-color: var(--navy); }
 
+.menu-toggle { display: none; }
+.mobile-nav-panel { display: none; }
+
 @media (max-width: 900px) {
     .topnav-links { display: none; }
     .topnav-search { display: none; }
+
+    .menu-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 9px;
+        border: 1px solid var(--border);
+        background: #fff;
+        color: var(--ink);
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+
+    .mobile-nav-panel.open {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border-bottom: 1px solid var(--border);
+        padding: 10px 24px 16px;
+        box-shadow: 0 16px 28px rgba(17, 24, 39, 0.1);
+        z-index: 20;
+    }
+
+    .mobile-nav-panel a {
+        padding: 11px 4px;
+        font-size: 14.5px;
+        font-weight: 600;
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .mobile-nav-panel a:last-child { border-bottom: none; }
+    .mobile-nav-panel a.active { color: var(--navy); }
+
+    .content { padding: 18px 16px 40px; }
 }
 
 {% block extra_style %}{% endblock %}
@@ -123,7 +169,14 @@ a { color: inherit; }
 
     <div class="topnav-actions">
         <div class="topnav-icon">{% icon 'bell' size=17 %}</div>
-        <div class="topnav-avatar">{{ request.user.username|slice:":2"|upper }}</div>
+        <div class="topnav-avatar">{{ request.user|initials }}</div>
+    </div>
+
+    <button type="button" class="menu-toggle" onclick="document.querySelector('.mobile-nav-panel').classList.toggle('open');" aria-label="Buka menu">{% icon 'bars-3' size=18 %}</button>
+    <div class="mobile-nav-panel">
+        <a href="/learn/catalog/" class="{% if active_page == 'student_catalog' %}active{% endif %}">My Courses</a>
+        <a href="/learn/" class="{% if active_page == 'student_dashboard' %}active{% endif %}">Dashboard</a>
+        <a href="/learn/segera/schedule/" class="{% if active_page == 'student_schedule' %}active{% endif %}">Schedule</a>
     </div>
 </div>
 

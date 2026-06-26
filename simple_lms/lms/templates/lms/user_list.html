@@ -129,7 +129,9 @@ button.submit-btn:hover { background: var(--navy-light); }
     overflow: hidden;
 }
 
-table { width: 100%; border-collapse: collapse; }
+.table-scroll { overflow-x: auto; }
+
+table { width: 100%; min-width: 480px; border-collapse: collapse; }
 
 thead th {
     text-align: left;
@@ -245,6 +247,7 @@ tbody tr:hover { background: var(--navy-soft); }
 </div>
 
 <div class="table-card">
+    <div class="table-scroll">
     <table>
         <thead>
             <tr>
@@ -285,6 +288,7 @@ tbody tr:hover { background: var(--navy-soft); }
             {% endfor %}
         </tbody>
     </table>
+    </div>
 </div>
 
 {% endblock %}

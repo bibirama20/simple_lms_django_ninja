@@ -62,7 +62,9 @@
     overflow: hidden;
 }
 
-table { width: 100%; border-collapse: collapse; }
+.table-scroll { overflow-x: auto; }
+
+table { width: 100%; min-width: 560px; border-collapse: collapse; }
 
 thead th {
     text-align: left;
@@ -225,6 +227,7 @@ tbody tr:hover { background: var(--navy-soft); }
 </div>
 
 <div class="table-card">
+    <div class="table-scroll">
     <table>
         <thead>
             <tr>
@@ -259,6 +262,7 @@ tbody tr:hover { background: var(--navy-soft); }
             {% endfor %}
         </tbody>
     </table>
+    </div>
 
     <div class="table-footer">
         <span>Showing {{ page_obj.start_index }}-{{ page_obj.end_index }} of {{ total_count }} courses</span>

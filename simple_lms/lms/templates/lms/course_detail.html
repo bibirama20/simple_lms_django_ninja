@@ -101,6 +101,17 @@ footer.site-footer .contact-item { display: flex; align-items: center; gap: 7px;
 footer.site-footer .copyright-row { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 10px; }
 footer.site-footer .footer-icons { display: flex; gap: 8px; }
 footer.site-footer .footer-icons span { width: 30px; height: 30px; border-radius: 8px; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--muted); }
+
+@media (max-width: 900px) {
+    .hero-grid, .detail-columns { grid-template-columns: 1fr; }
+    footer.site-footer .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 560px) {
+    .reviews-grid { grid-template-columns: 1fr; }
+    .cta-row, .mentor-actions { flex-direction: column; }
+    footer.site-footer .footer-grid { grid-template-columns: 1fr; }
+}
 {% endblock %}
 
 {% block content %}

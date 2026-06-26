@@ -284,6 +284,7 @@ a { color: inherit; }
 .bar-label { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 600; margin-bottom: 6px; }
 
 .menu-toggle { display: none; }
+.sidebar-close { display: none; }
 
 .sidebar-backdrop {
     display: none;
@@ -308,7 +309,8 @@ a { color: inherit; }
         position: fixed;
         left: 0;
         top: 0;
-        height: 100vh;
+        bottom: 0;
+        height: auto;
         z-index: 101;
         transform: translateX(-100%);
         transition: transform 0.25s ease;
@@ -316,6 +318,21 @@ a { color: inherit; }
     }
 
     .sidebar.open { transform: translateX(0); }
+
+    .sidebar-close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        color: var(--muted);
+        cursor: pointer;
+        flex-shrink: 0;
+        margin-left: auto;
+    }
 
     .sidebar-backdrop.open {
         display: block;
@@ -325,7 +342,11 @@ a { color: inherit; }
         z-index: 100;
     }
 
+    body.sidebar-locked { overflow: hidden; }
+
     .topbar-search { display: none; }
+
+    .content { padding: 18px 16px 40px; }
 }
 
 {% block extra_style %}{% endblock %}
@@ -344,6 +365,7 @@ a { color: inherit; }
                 <strong>Sagara Course</strong>
                 <span>Student Portal</span>
             </span>
+            <button type="button" class="sidebar-close" onclick="event.preventDefault(); closeSidebar();" aria-label="Tutup menu">{% icon 'x-mark' size=16 %}</button>
         </a>
 
         <div class="sidebar-nav">
@@ -373,13 +395,13 @@ a { color: inherit; }
         </div>
     </div>
 
-    <div class="sidebar-backdrop" onclick="document.querySelector('.sidebar').classList.remove('open'); this.classList.remove('open');"></div>
+    <div class="sidebar-backdrop" onclick="closeSidebar();"></div>
 
     <!-- MAIN -->
     <div class="main">
 
         <div class="topbar">
-            <button type="button" class="menu-toggle" onclick="document.querySelector('.sidebar').classList.add('open'); document.querySelector('.sidebar-backdrop').classList.add('open');" aria-label="Buka menu">{% icon 'bars-3' size=18 %}</button>
+            <button type="button" class="menu-toggle" onclick="openSidebar();" aria-label="Buka menu">{% icon 'bars-3' size=18 %}</button>
             <div class="topbar-search">
                 <form method="get" action="/learn/catalog/">
                     <span class="search-ico">{% icon 'search' size=14 %}</span>
@@ -414,6 +436,19 @@ a { color: inherit; }
     </div>
 
 </div>
+
+<script>
+function openSidebar() {
+    document.querySelector('.sidebar').classList.add('open');
+    document.querySelector('.sidebar-backdrop').classList.add('open');
+    document.body.classList.add('sidebar-locked');
+}
+function closeSidebar() {
+    document.querySelector('.sidebar').classList.remove('open');
+    document.querySelector('.sidebar-backdrop').classList.remove('open');
+    document.body.classList.remove('sidebar-locked');
+}
+</script>
 
 {% block extra_script %}{% endblock %}
 

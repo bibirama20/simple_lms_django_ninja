@@ -45,6 +45,14 @@ iframe, video { width: 100%; height: 380px; border-radius: 14px; border: 1px sol
 .lesson-link .check { color: var(--green); flex-shrink: 0; }
 
 .mentor-btn { width: 100%; margin-top: 12px; justify-content: center; }
+
+@media (max-width: 900px) {
+    .lesson-layout { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+    iframe, video { height: 220px; }
+}
 {% endblock %}
 
 {% block page_heading %}
