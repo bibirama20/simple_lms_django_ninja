@@ -21,6 +21,8 @@
     --bg: #F8FAFC;
     --red: #dc2626;
     --red-bg: #fef2f2;
+    --green: #16a34a;
+    --green-bg: #f0fdf4;
 }
 
 body {
@@ -93,14 +95,13 @@ a { color: inherit; }
 .badge-icon {
     width: 60px;
     height: 60px;
-    border-radius: 16px;
-    background: var(--navy);
-    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 18px;
 }
+
+.badge-icon img { width: 100%; height: 100%; object-fit: contain; }
 
 .auth-card h1 {
     font-size: 25px;
@@ -126,6 +127,12 @@ a { color: inherit; }
     margin-bottom: 18px;
     text-align: left;
 }
+
+.msg-stack { margin-bottom: 18px; display: flex; flex-direction: column; gap: 8px; text-align: left; }
+.msg-banner { padding: 10px 14px; border-radius: 10px; font-size: 13px; font-weight: 600; }
+.msg-success { background: var(--green-bg); color: var(--green); }
+.msg-error { background: var(--red-bg); color: var(--red); }
+.msg-warning, .msg-info, .msg-debug { background: var(--navy-soft); color: var(--navy); }
 
 form { text-align: left; }
 
@@ -239,7 +246,7 @@ form { text-align: left; }
 
 .social-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 12px;
     margin-bottom: 22px;
 }
@@ -256,9 +263,12 @@ form { text-align: left; }
     font-weight: 700;
     font-size: 13.5px;
     color: var(--ink);
-    cursor: not-allowed;
-    opacity: 0.55;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.2s;
 }
+
+.btn-social:hover { border-color: var(--navy); background: var(--bg); }
 
 .social-logo {
     width: 18px;
@@ -274,7 +284,6 @@ form { text-align: left; }
 }
 
 .logo-google { background: #ea4335; }
-.logo-linkedin { background: #0a66c2; }
 
 .switch-text {
     font-size: 13.5px;
@@ -318,13 +327,21 @@ form { text-align: left; }
 
 <main class="auth-main">
     <div class="auth-card">
-        <div class="badge-icon">{% icon 'academic-cap' size=28 %}</div>
+        <div class="badge-icon"><img src="/static/img/sagara-mark.png" alt="Sagara Course"></div>
         <h1>Welcome Back</h1>
         <p class="subtitle">Access your learning dashboard and continue your journey.</p>
 
         {% if error %}<div class="error-msg">{{ error }}</div>{% endif %}
 
-        <form method="POST">
+        {% if messages %}
+        <div class="msg-stack">
+            {% for m in messages %}
+            <div class="msg-banner msg-{{ m.tags }}">{{ m }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="POST" autocomplete="off">
         {% csrf_token %}
         {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
 
@@ -332,18 +349,18 @@ form { text-align: left; }
                 <label>Email or Username</label>
                 <div class="input-icon">
                     <span class="ico">{% icon 'mail' size=16 %}</span>
-                    <input type="text" name="identifier" placeholder="Enter your email" required autofocus>
+                    <input type="text" name="identifier" placeholder="Enter your email" autocomplete="off" required autofocus>
                 </div>
             </div>
 
             <div class="field">
                 <div class="field-head">
                     <label>Password</label>
-                    <span class="forgot-link">Forgot Password?</span>
+                    <a href="/forgot-password/" class="forgot-link">Forgot Password?</a>
                 </div>
                 <div class="input-icon">
                     <span class="ico">{% icon 'lock' size=16 %}</span>
-                    <input type="password" name="password" id="password-input" placeholder="••••••••" required>
+                    <input type="password" name="password" id="password-input" placeholder="••••••••" autocomplete="new-password" required>
                     <button type="button" class="toggle-eye" onclick="
                         const inp = document.getElementById('password-input');
                         inp.type = inp.type === 'password' ? 'text' : 'password';
@@ -362,12 +379,9 @@ form { text-align: left; }
         <div class="divider">OR CONTINUE WITH</div>
 
         <div class="social-row">
-            <button type="button" class="btn-social" disabled title="Belum tersedia">
-                <span class="social-logo logo-google">G</span> Google
-            </button>
-            <button type="button" class="btn-social" disabled title="Belum tersedia">
-                <span class="social-logo logo-linkedin">in</span> LinkedIn
-            </button>
+            <a href="/login/google/" class="btn-social">
+                <span class="social-logo logo-google">G</span> Continue with Google
+            </a>
         </div>
 
         <p class="switch-text">New to Sagara Course? <a href="/register/">Create an account</a></p>

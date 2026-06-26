@@ -66,10 +66,11 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'lms.middleware.DualCookieSessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'lms.middleware.NoCacheForAuthenticatedMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -158,6 +159,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -171,6 +173,28 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Email (untuk fitur lupa password). Default: console backend (email hanya
+# dicetak ke log container, cukup untuk development). Untuk production di
+# Railway, set EMAIL_BACKEND ke 'django.core.mail.backends.smtp.EmailBackend'
+# lewat Environment Variables beserta EMAIL_HOST/EMAIL_HOST_USER/dst supaya
+# email reset password benar-benar terkirim.
+EMAIL_BACKEND = os.environ.get(
+    'EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend'
+)
+EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'no-reply@sagaracourse.com')
+
+# Google OAuth2 (tombol "Login/Register dengan Google"). Buat kredensial di
+# Google Cloud Console > APIs & Services > Credentials > OAuth client ID,
+# lalu isi env var GOOGLE_CLIENT_ID & GOOGLE_CLIENT_SECRET. Kalau kosong,
+# tombol Google akan menampilkan pesan error alih-alih redirect ke Google.
+GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID', '')
+GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET', '')
 
 # JWT signing key (django-ninja-simple-jwt).
 # Di Railway, file jwt-signing.pem/.pub tidak ikut deploy (gitignored), jadi key

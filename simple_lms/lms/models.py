@@ -7,12 +7,27 @@ from django.core.exceptions import ValidationError
 # =========================
 # COURSE
 # =========================
+COURSE_CATEGORIES = [
+    ('design', 'Design'),
+    ('development', 'Development'),
+    ('business', 'Business'),
+    ('marketing', 'Marketing'),
+    ('data_science', 'Data Science'),
+    ('photography', 'Photography'),
+]
+
 class Course(models.Model):
     name = models.CharField("nama matkul", max_length=100)
     description = models.TextField("deskripsi", default='-')
     price = models.IntegerField("harga", default=10000)
     image = models.ImageField("gambar", null=True, blank=True)
     max_students = models.PositiveIntegerField("kuota maksimal", null=True, blank=True)
+    category = models.CharField(
+        "kategori",
+        max_length=20,
+        choices=COURSE_CATEGORIES,
+        default='development'
+    )
 
     teacher = models.ForeignKey(
         User,
@@ -64,6 +79,7 @@ class CourseMember(models.Model):
     class Meta:
         verbose_name = "Subscriber Matkul"
         verbose_name_plural = "Subscriber Matkul"
+        unique_together = ('course_id', 'user_id')
 
     def __str__(self):
         return f"{self.course_id} : {self.user_id}"
@@ -77,6 +93,7 @@ class CourseContent(models.Model):
     description = models.TextField("deskripsi", default='-')
 
     video_url = models.URLField("URL Video", null=True, blank=True)  # ✅ lebih tepat
+    video_file = models.FileField("Video Lokal", upload_to='videos/', null=True, blank=True)
     file_attachment = models.FileField("File", upload_to='materi/', null=True, blank=True)  # ✅ tambah upload path
 
     course = models.ForeignKey(   # ✅ GANTI course_id → course
@@ -104,6 +121,10 @@ class CourseContent(models.Model):
 
     def __str__(self):
         return f"[{self.course.name}] {self.name}"  # ✅ lebih clean
+
+    @property
+    def has_video(self):
+        return bool(self.video_file) or bool(self.video_url)
 
     @property
     def embed_url(self):
@@ -153,6 +174,22 @@ class Comment(models.Model):
         blank=True,
     )
 
+    # Diisi hanya untuk ulasan course (beda dari diskusi per-konten di atas)
+    course = models.ForeignKey(
+        Course,
+        verbose_name="matkul (ulasan)",
+        on_delete=models.CASCADE,
+        related_name='reviews',
+        null=True,
+        blank=True,
+    )
+
+    rating = models.PositiveSmallIntegerField(
+        "rating",
+        null=True,
+        blank=True,
+    )
+
     title = models.CharField(
         "judul topik",
         max_length=200,
@@ -173,6 +210,114 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.comment
+
+
+# =========================
+# COMMENT REPLY (balasan admin/pengajar atas pertanyaan diskusi siswa)
+# =========================
+class CommentReply(models.Model):
+    comment = models.ForeignKey(
+        Comment,
+        verbose_name="komentar",
+        on_delete=models.CASCADE,
+        related_name='replies'
+    )
+    admin = models.ForeignKey(
+        User,
+        verbose_name="dibalas oleh",
+        on_delete=models.CASCADE,
+        related_name='comment_replies'
+    )
+    text = models.TextField("balasan")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Balasan Diskusi"
+        verbose_name_plural = "Balasan Diskusi"
+        ordering = ['created_at']
+
+    def __str__(self):
+        return f"Balasan {self.admin.username} untuk komentar #{self.comment_id}"
+
+
+# =========================
+# CONTENT PROGRESS
+# =========================
+class ContentProgress(models.Model):
+    member = models.ForeignKey(
+        CourseMember,
+        verbose_name="siswa",
+        on_delete=models.CASCADE,
+        related_name='progress'
+    )
+    content = models.ForeignKey(
+        CourseContent,
+        verbose_name="konten",
+        on_delete=models.CASCADE,
+        related_name='progress_entries'
+    )
+    completed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Progress Materi"
+        verbose_name_plural = "Progress Materi"
+        unique_together = ('member', 'content')
+
+    def __str__(self):
+        return f"{self.member} selesai {self.content}"
+
+
+# =========================
+# NOTE (catatan pribadi siswa per materi)
+# =========================
+class Note(models.Model):
+    member = models.ForeignKey(
+        CourseMember,
+        verbose_name="siswa",
+        on_delete=models.CASCADE,
+        related_name='notes'
+    )
+    content = models.ForeignKey(
+        CourseContent,
+        verbose_name="konten",
+        on_delete=models.CASCADE,
+        related_name='notes'
+    )
+    text = models.TextField("catatan")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Catatan Pribadi"
+        verbose_name_plural = "Catatan Pribadi"
+        unique_together = ('member', 'content')
+
+    def __str__(self):
+        return f"Catatan {self.member} di {self.content}"
+
+
+# =========================
+# CERTIFICATE (sertifikat penyelesaian course)
+# =========================
+class Certificate(models.Model):
+    member = models.OneToOneField(
+        CourseMember,
+        verbose_name="keanggotaan",
+        on_delete=models.CASCADE,
+        related_name='certificate'
+    )
+    code = models.CharField("kode sertifikat", max_length=24, unique=True)
+    issued_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Sertifikat"
+        verbose_name_plural = "Sertifikat"
+
+    def __str__(self):
+        return f"Sertifikat {self.code} — {self.member}"
 
 
 # =========================

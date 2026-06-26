@@ -88,14 +88,13 @@ a { color: inherit; }
 .badge-icon {
     width: 56px;
     height: 56px;
-    border-radius: 50%;
-    background: var(--navy-soft);
-    color: var(--navy);
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 18px;
 }
+
+.badge-icon img { width: 100%; height: 100%; object-fit: contain; }
 
 .auth-card h1 {
     font-size: 27px;
@@ -224,7 +223,7 @@ form { text-align: left; }
 
 .social-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 12px;
     margin-bottom: 22px;
 }
@@ -241,9 +240,12 @@ form { text-align: left; }
     font-weight: 700;
     font-size: 13.5px;
     color: var(--ink);
-    cursor: not-allowed;
-    opacity: 0.55;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.2s;
 }
+
+.btn-social:hover { border-color: var(--navy); background: var(--bg); }
 
 .social-logo {
     width: 18px;
@@ -259,7 +261,6 @@ form { text-align: left; }
 }
 
 .logo-google { background: #ea4335; }
-.logo-linkedin { background: #0a66c2; }
 
 .switch-text {
     font-size: 13.5px;
@@ -290,7 +291,7 @@ form { text-align: left; }
 
 <main class="auth-main">
     <div class="auth-card">
-        <div class="badge-icon">{% icon 'academic-cap' size=26 %}</div>
+        <div class="badge-icon"><img src="/static/img/sagara-mark.png" alt="Sagara Course"></div>
         <h1>Create Account</h1>
         <p class="subtitle">Join the Sagara Course community today.</p>
 
@@ -343,12 +344,9 @@ form { text-align: left; }
         <div class="divider">OR CONTINUE WITH</div>
 
         <div class="social-row">
-            <button type="button" class="btn-social" disabled title="Belum tersedia">
-                <span class="social-logo logo-google">G</span> Google
-            </button>
-            <button type="button" class="btn-social" disabled title="Belum tersedia">
-                <span class="social-logo logo-linkedin">in</span> LinkedIn
-            </button>
+            <a href="/login/google/" class="btn-social">
+                <span class="social-logo logo-google">G</span> Continue with Google
+            </a>
         </div>
 
         <p class="switch-text">Already have an account? <a href="/login/">Log in</a></p>

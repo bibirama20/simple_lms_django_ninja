@@ -140,6 +140,13 @@ textarea { min-height: 70px; resize: vertical; }
 
 .btn-outline-block:hover { border-color: var(--navy); color: var(--navy); }
 
+.parts-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.part-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg); }
+.part-badge { width: 28px; height: 28px; border-radius: 50%; background: var(--navy); color: #fff; font-size: 11.5px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.part-row .part-name { flex: 1; font-weight: 700; font-size: 13.5px; color: var(--ink); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.part-row .part-tags { display: flex; gap: 6px; flex-shrink: 0; }
+.empty-parts { color: var(--muted); font-size: 13px; padding: 4px 0 12px; }
+
 button.submit-btn {
     display: inline-flex;
     align-items: center;
@@ -430,15 +437,42 @@ button.submit-btn:hover { background: var(--navy-light); }
 
         <div class="form-row-2">
             <div class="field">
-                <label>Link Video YouTube (opsional)</label>
+                <label>Kategori</label>
+                <select name="category">
+                {% for value, label in categories %}
+                <option value="{{ value }}" {% if edit_course and edit_course.category == value or not edit_course and value == 'development' %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Link Video YouTube — Part 1 (opsional)</label>
                 <div class="input-icon">
                     <span class="ico">{% icon 'film' size=14 %}</span>
                     <input type="url" name="youtube_url" value="{% if edit_course %}{{ edit_course.contents.first.video_url|default:'' }}{% endif %}" placeholder="https://youtube.com/watch?v=...">
                 </div>
             </div>
+        </div>
+
+        <div class="form-row-2">
+            <div class="field">
+                <label>Upload Video dari Device — Part 1 (opsional)</label>
+                <div class="upload-box">
+                    <input type="file" id="video_file" name="video_file" accept="video/*"
+                           onchange="document.getElementById('video-filename').textContent = this.files[0] ? this.files[0].name : 'Klik untuk upload video (.mp4, .webm, dll)';">
+                    <div class="upload-box-content">
+                        <span class="icon">{% icon 'film' size=15 %}</span>
+                        <span id="video-filename">{% if edit_course and edit_course.contents.first.video_file %}Sudah ada video (klik untuk ganti){% else %}Klik untuk upload video (.mp4, .webm, dll){% endif %}</span>
+                    </div>
+                </div>
+                <p style="font-size: 11.5px; color: var(--muted); margin: 6px 0 0;">
+                    Isi salah satu: Link YouTube di atas, atau upload video lokal di sini — ini jadi <strong>Part 1</strong>.
+                    {% if edit_course %}Part video tambahan (Part 2, 3, dst) bisa dikelola di bagian "Part Video" di bawah.{% else %}Setelah course dibuat, kamu bisa menambahkan Part 2, 3, dst lewat halaman edit course.{% endif %}
+                </p>
+            </div>
 
             <div class="field">
-                <label>Upload Materi PDF (opsional)</label>
+                <label>Upload Materi PDF — Part 1 (opsional)</label>
                 <div class="upload-box">
                     <input type="file" id="materi_pdf" name="materi_pdf" accept="application/pdf"
                            onchange="document.getElementById('pdf-filename').textContent = this.files[0] ? this.files[0].name : 'Klik untuk upload (.pdf)';">
@@ -461,6 +495,34 @@ button.submit-btn:hover { background: var(--navy-light); }
         </div>
     </form>
 </div>
+
+{% if edit_course %}
+<div class="form-card" id="parts">
+    <h2>{% icon 'film' size=16 %} Part Video — {{ edit_course.name }}</h2>
+    <p class="sub">Course bisa punya lebih dari satu video/part. Setiap part akan tampil terpisah dan harus diselesaikan satu per satu oleh siswa (ditandai centang setelah selesai).</p>
+
+    <div class="parts-list">
+        {% for part in edit_course.contents.all %}
+        <div class="part-row">
+            <span class="part-badge">{{ forloop.counter|stringformat:"02d" }}</span>
+            <span class="part-name">{{ part.name }}</span>
+            <div class="part-tags">
+                {% if part.has_video %}<span class="tag tag-video">{% icon 'film' size=11 %} Video</span>{% endif %}
+                {% if part.file_attachment %}<span class="tag tag-pdf">{% icon 'document' size=11 %} PDF</span>{% endif %}
+            </div>
+            <form method="POST" action="/content/{{ part.id }}/delete/" class="inline-form" onsubmit="return confirm('Hapus part {{ part.name|escapejs }}?');">
+                {% csrf_token %}
+                <button type="submit" class="icon-btn delete" title="Hapus part">{% icon 'trash' size=14 %}</button>
+            </form>
+        </div>
+        {% empty %}
+        <p class="empty-parts">Belum ada part video untuk course ini.</p>
+        {% endfor %}
+    </div>
+
+    <a href="/content/add/?course={{ edit_course.id }}" class="btn-outline-block">{% icon 'plus' size=14 css_class='inline-ico' %} Tambah Part Video Baru</a>
+</div>
+{% endif %}
 
 <!-- COURSE CATALOG -->
 <div class="toolbar">

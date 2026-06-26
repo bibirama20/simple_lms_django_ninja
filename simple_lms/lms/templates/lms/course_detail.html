@@ -1,0 +1,287 @@
+{% extends "lms/base_student_focus.html" %}
+{% load icons %}
+
+{% block title %}{{ course.name }} — Sagara Course{% endblock %}
+
+{% block extra_style %}
+.breadcrumb { font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 18px; }
+.breadcrumb a { color: var(--muted); text-decoration: none; }
+.breadcrumb a:hover { color: var(--navy); }
+.breadcrumb .sep { margin: 0 6px; opacity: 0.6; }
+.breadcrumb .current { color: var(--ink); font-weight: 700; }
+
+.hero-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 28px; align-items: start; margin-bottom: 32px; }
+
+.accent-block { border-left: 3px solid var(--ink); padding-left: 16px; margin-bottom: 18px; }
+.headline { font-size: 21px; font-weight: 800; color: var(--navy); margin: 0 0 10px; line-height: 1.4; }
+.hero-desc { font-size: 13.5px; color: #334155; line-height: 1.7; margin: 0; }
+
+.stats-row { display: flex; align-items: center; gap: 18px; font-size: 13px; color: var(--muted); margin-bottom: 22px; flex-wrap: wrap; }
+.stats-row .stat { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+.stats-row .stat-ico.amber { color: var(--amber); }
+
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.trailer-card { border-radius: 16px; overflow: hidden; position: relative; background: linear-gradient(135deg, #1e293b, #0f172a); aspect-ratio: 16 / 10; }
+.trailer-card iframe, .trailer-card video { width: 100%; height: 100%; border: none; display: block; background: #000; }
+.no-trailer { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; color: #fff; position: relative; }
+.play-circle { width: 64px; height: 64px; border-radius: 50%; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; }
+.trailer-label { position: absolute; left: 16px; bottom: 14px; font-weight: 700; font-size: 13px; }
+
+.detail-columns { display: grid; grid-template-columns: 1.6fr 1fr; gap: 24px; align-items: start; margin-bottom: 32px; }
+
+.curriculum-header-row { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
+.curriculum-header-row h2 { margin: 0; font-size: 17px; font-weight: 800; color: var(--navy); }
+.curriculum-header-row .curriculum-count { font-size: 12.5px; color: var(--muted); font-weight: 600; }
+
+.curriculum-item { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+.curriculum-item summary { list-style: none; padding: 14px 16px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 12px; background: var(--bg); }
+.curriculum-item summary::-webkit-details-marker { display: none; }
+.curriculum-item summary .chevron { margin-left: auto; transition: transform 0.2s; color: var(--muted); flex-shrink: 0; }
+.curriculum-item[open] summary .chevron { transform: rotate(180deg); }
+.module-badge { width: 26px; height: 26px; border-radius: 50%; background: var(--navy); color: #fff; font-size: 11.5px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.curriculum-children { padding: 4px 16px 10px; }
+.curriculum-child { display: flex; align-items: center; gap: 10px; padding: 11px 6px; font-size: 13.5px; border-top: 1px solid var(--border); text-decoration: none; color: var(--ink); }
+.curriculum-child:first-child { border-top: none; }
+.curriculum-child.done { color: var(--green); }
+.curriculum-child.locked { color: var(--muted); }
+.curriculum-child .child-name { flex: 1; }
+
+.more-toggle-checkbox { display: none; }
+.more-modules { display: none; }
+.more-toggle-checkbox:checked ~ .more-modules { display: block; }
+.more-toggle-checkbox:checked ~ .more-modules-link { display: none; }
+.more-modules-link { display: block; text-align: center; color: var(--navy); font-weight: 700; font-size: 13.5px; padding: 10px 0; cursor: pointer; text-decoration: none; }
+
+.mentor-card-box { background: linear-gradient(135deg, var(--navy), var(--navy-light)); color: #fff; border-radius: 16px; padding: 20px; margin-bottom: 16px; }
+.mentor-top { display: flex; gap: 12px; align-items: center; margin-bottom: 14px; }
+.mentor-avatar { width: 52px; height: 52px; border-radius: 50%; background: rgba(255,255,255,0.18); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px; flex-shrink: 0; }
+.mentor-top .name { font-weight: 800; font-size: 15px; }
+.mentor-top .role { font-size: 12.5px; opacity: 0.85; }
+.mentor-bio-text { font-size: 12.5px; opacity: 0.92; line-height: 1.6; margin: 0 0 14px; }
+.mentor-actions { display: flex; gap: 8px; }
+.btn-white { flex: 1; justify-content: center; display: inline-flex; align-items: center; gap: 6px; padding: 10px 14px; border-radius: 9px; border: none; background: #fff; color: var(--navy); font-weight: 700; font-size: 13px; text-decoration: none; cursor: pointer; }
+
+.faq-item { border-bottom: 1px solid var(--border); padding: 12px 0; }
+.faq-item:last-child { border-bottom: none; }
+.faq-item summary { list-style: none; font-weight: 700; font-size: 13.5px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary .chevron { color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
+.faq-item[open] summary .chevron { transform: rotate(180deg); }
+.faq-item p { margin: 8px 0 0; font-size: 12.5px; color: var(--muted); }
+
+.section-title-blue { color: var(--navy); font-weight: 800; font-size: 16px; margin: 0 0 14px; }
+
+.reviews-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 18px; }
+.review-card { border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
+.review-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.review-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; color: #fff; flex-shrink: 0; }
+.review-avatar.c1 { background: #14b8a6; }
+.review-avatar.c2 { background: #7c3aed; }
+.review-avatar.c3 { background: #2563eb; }
+.review-avatar.c4 { background: #db2777; }
+.review-card .username { font-weight: 700; font-size: 13.5px; }
+.review-card .stars { color: var(--amber); font-size: 12.5px; margin-top: 2px; }
+.review-card .text { font-size: 13px; color: #334155; font-style: italic; margin: 0; }
+
+.star-pick { display: flex; flex-direction: row-reverse; gap: 4px; margin-bottom: 10px; }
+.star-pick label { cursor: pointer; color: #d1d5db; font-size: 18px; }
+.star-pick label:hover, .star-pick label:hover ~ label { color: var(--amber); }
+.star-pick input:checked ~ label { color: var(--amber); }
+.star-pick input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+
+footer.site-footer { margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--border); color: var(--muted); font-size: 12.5px; }
+footer.site-footer .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 24px; margin-bottom: 20px; }
+footer.site-footer .brand { font-weight: 800; color: var(--ink); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+footer.site-footer h4 { font-size: 13px; font-weight: 700; color: var(--ink); margin: 0 0 10px; }
+footer.site-footer ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+footer.site-footer ul a { color: var(--muted); text-decoration: none; }
+footer.site-footer ul a:hover { color: var(--navy); }
+footer.site-footer .contact-item { display: flex; align-items: center; gap: 7px; margin-bottom: 8px; }
+footer.site-footer .copyright-row { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 10px; }
+footer.site-footer .footer-icons { display: flex; gap: 8px; }
+footer.site-footer .footer-icons span { width: 30px; height: 30px; border-radius: 8px; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--muted); }
+{% endblock %}
+
+{% block content %}
+
+<div class="breadcrumb">
+    <a href="/learn/">Beranda</a><span class="sep">&rsaquo;</span>
+    <a href="/learn/catalog/">Kursus</a><span class="sep">&rsaquo;</span>
+    <span class="current">{{ course.name }}</span>
+</div>
+
+<div class="hero-grid">
+    <div>
+        <div class="accent-block">
+            <h1 class="headline">{{ course.name }}</h1>
+            <p class="hero-desc">{{ course.description }}</p>
+        </div>
+
+        <div class="stats-row">
+            <span class="stat"><span class="stat-ico amber">{% icon 'star' size=15 %}</span> {{ avg_rating|floatformat:"1" }} ({{ course.student_count }} Siswa)</span>
+            <span class="stat">{% icon 'clock' size=15 %} {{ total_content }} Materi</span>
+            <span class="stat">{% icon 'document-text' size=15 %} {{ modules|length }} Modul Pembelajaran</span>
+        </div>
+
+        <div class="cta-row">
+            {% if membership %}
+                {% if percent == 100 %}
+                <a href="/learn/courses/{{ course.id }}/certificate/" class="btn-navy">{% icon 'badge-check' size=14 %} Unduh Sertifikat</a>
+                <a href="/learn/courses/{{ course.id }}/learn/{{ next_content.id }}/" class="btn-outline">{% icon 'play' size=14 %} Tonton Ulang</a>
+                {% else %}
+                <a href="/learn/courses/{{ course.id }}/learn/{{ next_content.id }}/" class="btn-navy">{% icon 'play' size=14 %} Lanjutkan Belajar ({{ percent }}%)</a>
+                <a href="#kurikulum" class="btn-outline">{% icon 'book' size=14 %} Lihat Kurikulum</a>
+                {% endif %}
+            {% else %}
+            <form method="POST" style="margin: 0;">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="enroll">
+                <button type="submit" class="btn-navy">{% icon 'arrow-right' size=14 %} Daftar Sekarang</button>
+            </form>
+            <a href="#kurikulum" class="btn-outline">{% icon 'book' size=14 %} Lihat Kurikulum</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="trailer-card">
+        {% if trailer_content.video_file %}
+        <video src="{{ trailer_content.video_file.url }}" controls preload="metadata"></video>
+        {% elif trailer_content %}
+        <iframe src="{{ trailer_content.embed_url }}" title="Video Trailer" frameborder="0" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        {% else %}
+        <div class="no-trailer">
+            <span class="play-circle">{% icon 'play' size=22 %}</span>
+            <span class="trailer-label">Tonton Video Trailer</span>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="detail-columns">
+    <div>
+        <div class="curriculum-header-row" id="kurikulum">
+            <h2>Kurikulum Kursus</h2>
+            <span class="curriculum-count">{{ modules|length }} Modul &bull; {{ total_content }} Video</span>
+        </div>
+
+        {% if modules %}
+        {% for module in modules|slice:":3" %}
+            {% include "lms/_curriculum_module.html" with badge_number=forloop.counter open_default=forloop.first is_first_module=forloop.first %}
+        {% endfor %}
+
+        {% if modules|length > 3 %}
+        <input type="checkbox" id="toggle-more-modules" class="more-toggle-checkbox">
+        <div class="more-modules">
+            {% for module in modules|slice:"3:" %}
+                {% include "lms/_curriculum_module.html" with badge_number=forloop.counter|add:3 open_default=False is_first_module=False %}
+            {% endfor %}
+        </div>
+        <label for="toggle-more-modules" class="more-modules-link">{% icon 'chevron-down' size=14 %} Lihat {{ modules|length|add:"-3" }} Modul Lainnya</label>
+        {% endif %}
+        {% else %}
+        <p style="color: var(--muted); font-size: 13px;">Belum ada materi untuk kursus ini.</p>
+        {% endif %}
+
+        <h2 class="section-title-blue" style="margin-top: 28px;">Ulasan Siswa</h2>
+        <div class="reviews-grid">
+            {% for r in reviews %}
+            <div class="review-card">
+                <div class="review-top">
+                    <div class="review-avatar {% cycle 'c1' 'c2' 'c3' 'c4' %}">{{ r.member_id.user_id.username|slice:":2"|upper }}</div>
+                    <div>
+                        <div class="username">{{ r.member_id.user_id.username }}</div>
+                        <div class="stars">{% for i in "12345" %}{% if forloop.counter <= r.rating %}★{% else %}☆{% endif %}{% endfor %}</div>
+                    </div>
+                </div>
+                <p class="text">"{{ r.comment }}"</p>
+            </div>
+            {% empty %}
+            <p style="color: var(--muted); font-size: 13px;">Belum ada ulasan untuk kursus ini.</p>
+            {% endfor %}
+        </div>
+
+        {% if membership %}
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="review">
+            <div class="star-pick">
+                {% for i in "54321" %}
+                <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}">
+                <label for="star{{ i }}">★</label>
+                {% endfor %}
+            </div>
+            <textarea name="comment" placeholder="Bagikan pengalamanmu di kursus ini..." required style="width:100%; min-height: 64px; padding: 10px 12px; border-radius: 9px; border: 1px solid var(--border); font-family: inherit; font-size: 13px;"></textarea>
+            <button type="submit" class="btn-navy" style="margin-top: 8px;">{% icon 'check' size=13 %} Kirim Ulasan</button>
+        </form>
+        {% endif %}
+    </div>
+
+    <div>
+        <div class="mentor-card-box">
+            <div class="mentor-top">
+                <div class="mentor-avatar">{{ course.teacher.username|slice:":2"|upper }}</div>
+                <div>
+                    <div class="name">{{ course.teacher.username }}</div>
+                    <div class="role">Pengajar @ Sagara Course</div>
+                </div>
+            </div>
+            <p class="mentor-bio-text">Mentor berpengalaman di bidang {{ course.get_category_display }}, telah membimbing banyak siswa Sagara Course menyelesaikan kursus ini.</p>
+            <div class="mentor-actions">
+                <button type="button" class="btn-white" style="flex: 1;" title="Bagikan" onclick="
+                    if (navigator.share) { navigator.share({title: document.title, url: window.location.href}); }
+                    else { navigator.clipboard.writeText(window.location.href); alert('Link kursus disalin!'); }
+                ">{% icon 'share' size=14 %} Bagikan Kursus</button>
+            </div>
+        </div>
+
+        <div class="card" id="faq">
+            <h3 style="font-size: 14px; margin: 0 0 6px;">Pertanyaan Umum (FAQ)</h3>
+            <details class="faq-item">
+                <summary>Apakah dapat Sertifikat? <span class="chevron">{% icon 'chevron-down' size=16 %}</span></summary>
+                <p>Ya, setelah menyelesaikan semua materi kamu akan mendapat sertifikat penyelesaian.</p>
+            </details>
+            <details class="faq-item">
+                <summary>Akses materi selamanya? <span class="chevron">{% icon 'chevron-down' size=16 %}</span></summary>
+                <p>Ya, sekali mendaftar kamu bisa mengakses materi kapan saja tanpa batas waktu.</p>
+            </details>
+            <details class="faq-item">
+                <summary>Ada komunitas belajar? <span class="chevron">{% icon 'chevron-down' size=16 %}</span></summary>
+                <p>Gunakan tab Diskusi di setiap materi untuk bertanya dan berdiskusi dengan siswa lain.</p>
+            </details>
+        </div>
+    </div>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-grid">
+        <div>
+            <div class="brand">{% icon 'academic-cap' size=15 %} Sagara Course</div>
+            <p>Memberdayakan talenta digital Indonesia melalui pendidikan berkualitas dan mentor industri berpengalaman.</p>
+        </div>
+        <div>
+            <h4>Navigasi</h4>
+            <ul>
+                <li><a href="/learn/catalog/">Katalog Kursus</a></li>
+                <li><a href="/learn/segera/program-bootcamp/">Program Bootcamp</a></li>
+                <li><a href="/learn/segera/testimonial/">Testimonial</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Hubungi Kami</h4>
+            <div class="contact-item">{% icon 'mail' size=14 %} hello@sagaracourse.com</div>
+            <div class="contact-item">{% icon 'chat' size=14 %} +62 812 3456 7890</div>
+        </div>
+    </div>
+    <div class="copyright-row">
+        <span>&copy; {% now "Y" %} Sagara Course. Seluruh Hak Cipta Dilindungi.</span>
+        <div class="footer-icons">
+            <span title="Aksesibilitas">{% icon 'document-text' size=14 %}</span>
+            <span title="Riwayat">{% icon 'clock' size=14 %}</span>
+            <span title="Bahasa">{% icon 'link' size=14 %}</span>
+        </div>
+    </div>
+</footer>
+
+{% endblock %}

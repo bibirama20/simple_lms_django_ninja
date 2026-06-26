@@ -1,21 +1,150 @@
-<h2>Tambah Video / File</h2>
+{% extends "lms/base.html" %}
+{% load icons %}
 
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
+{% block title %}Tambah Part Video — Sagara Course{% endblock %}
 
-    <select name="course">
-        {% for c in courses %}
-        <option value="{{ c.id }}">{{ c.name }}</option>
-        {% endfor %}
-    </select>
+{% block extra_style %}
+.breadcrumb { font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
 
-    <input type="text" name="name" placeholder="Judul" required>
+.form-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 640px;
+}
 
-    <textarea name="description" placeholder="Deskripsi"></textarea>
+.field { margin-bottom: 14px; }
 
-    <input type="text" name="video_url" placeholder="Link YouTube (bebas format)">
+.field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 5px;
+}
 
-    <input type="file" name="file_attachment">
+input, textarea, select {
+    width: 100%;
+    padding: 10px 13px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border);
+    font-family: inherit;
+    font-size: 13.5px;
+    background: var(--bg);
+    transition: 0.2s;
+}
 
-    <button type="submit">Simpan</button>
-</form>
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--navy);
+    background: #fff;
+}
+
+textarea { min-height: 70px; resize: vertical; }
+
+.locked-course {
+    padding: 10px 13px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border);
+    background: var(--navy-soft);
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 13.5px;
+}
+
+.form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
+
+.btn-outline-block {
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: #fff;
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 13.5px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+.btn-outline-block:hover { border-color: var(--navy); color: var(--navy); }
+
+button.submit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 24px;
+    background: var(--navy);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 13.5px;
+}
+button.submit-btn:hover { background: var(--navy-light); }
+{% endblock %}
+
+{% block page_heading %}
+<div class="page-heading">
+    <div class="breadcrumb">Courses / {% if preselected_course %}{{ preselected_course.name }} / {% endif %}Tambah Part Video</div>
+    <h1>{% icon 'plus' size=20 %} Tambah Part Video</h1>
+    <p>Setiap part akan tampil sebagai materi terpisah yang harus diselesaikan satu per satu oleh siswa.</p>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="field">
+            <label>Course</label>
+            {% if preselected_course %}
+            <div class="locked-course">{{ preselected_course.name }}</div>
+            <input type="hidden" name="course" value="{{ preselected_course.id }}">
+            {% else %}
+            <select name="course" required>
+                {% for c in courses %}
+                <option value="{{ c.id }}">{{ c.name }}</option>
+                {% endfor %}
+            </select>
+            {% endif %}
+        </div>
+
+        <div class="field">
+            <label>Nama Part</label>
+            <input type="text" name="name" placeholder="cth. Part 2 - Instalasi &amp; Konfigurasi" required>
+        </div>
+
+        <div class="field">
+            <label>Deskripsi</label>
+            <textarea name="description" placeholder="Jelaskan secara singkat isi part ini..."></textarea>
+        </div>
+
+        <div class="field">
+            <label>Link Video YouTube (opsional)</label>
+            <input type="text" name="video_url" placeholder="https://youtube.com/watch?v=...">
+        </div>
+
+        <div class="field">
+            <label>Atau Upload Video dari Device (opsional)</label>
+            <input type="file" name="video_file" accept="video/*">
+        </div>
+
+        <div class="field">
+            <label>Upload File Materi (opsional)</label>
+            <input type="file" name="file_attachment">
+        </div>
+
+        <div class="form-actions">
+            {% if preselected_course %}
+            <a href="/courses/create/?edit={{ preselected_course.id }}#parts" class="btn-outline-block">Batal</a>
+            {% else %}
+            <a href="/content/" class="btn-outline-block">Batal</a>
+            {% endif %}
+            <button type="submit" class="submit-btn">{% icon 'check' size=14 %} Simpan Part</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "lms/base_public.html" %}
+{% load icons %}
+
+{% block title %}Verifikasi Sertifikat — Sagara Course{% endblock %}
+
+{% block extra_style %}
+.verify-card { border: 1.5px solid var(--border); border-radius: 16px; padding: 28px; max-width: 520px; margin: 0 auto; text-align: center; }
+.verify-icon { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+.verify-icon.valid { background: #f0fdf4; color: #16a34a; }
+.verify-icon.invalid { background: #fef2f2; color: #dc2626; }
+.verify-card h1 { font-size: 19px; margin: 0 0 6px; }
+.verify-card .sub { font-size: 13px; color: var(--muted); margin: 0 0 22px; }
+.verify-detail { text-align: left; border-top: 1px solid var(--border); padding-top: 16px; }
+.verify-detail .row { display: flex; justify-content: space-between; gap: 10px; padding: 7px 0; font-size: 13.5px; }
+.verify-detail .row .lbl { color: var(--muted); font-weight: 600; }
+.verify-detail .row .val { font-weight: 700; color: var(--ink); text-align: right; }
+{% endblock %}
+
+{% block content %}
+<div class="verify-card">
+    {% if certificate %}
+    <div class="verify-icon valid">{% icon 'badge-check' size=28 %}</div>
+    <h1>Sertifikat Valid</h1>
+    <p class="sub">Sertifikat dengan kode <strong>{{ code }}</strong> terdaftar di sistem Sagara Course.</p>
+    <div class="verify-detail">
+        <div class="row"><span class="lbl">Nama Penerima</span><span class="val">{{ certificate.member.user_id.get_full_name|default:certificate.member.user_id.username }}</span></div>
+        <div class="row"><span class="lbl">Course</span><span class="val">{{ certificate.member.course_id.name }}</span></div>
+        <div class="row"><span class="lbl">Pengajar</span><span class="val">{{ certificate.member.course_id.teacher.get_full_name|default:certificate.member.course_id.teacher.username }}</span></div>
+        <div class="row"><span class="lbl">Tanggal Terbit</span><span class="val">{{ certificate.issued_at|date:"d F Y" }}</span></div>
+        <div class="row"><span class="lbl">Kode Sertifikat</span><span class="val">{{ certificate.code }}</span></div>
+    </div>
+    {% else %}
+    <div class="verify-icon invalid">{% icon 'x-circle' size=28 %}</div>
+    <h1>Sertifikat Tidak Ditemukan</h1>
+    <p class="sub">Kode <strong>{{ code }}</strong> tidak terdaftar di sistem kami. Pastikan kode yang dimasukkan benar.</p>
+    {% endif %}
+</div>
+{% endblock %}

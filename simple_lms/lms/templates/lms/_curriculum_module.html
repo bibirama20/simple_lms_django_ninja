@@ -1,0 +1,43 @@
+{% load icons %}
+<details class="curriculum-item" {% if open_default %}open{% endif %}>
+    <summary>
+        <span class="module-badge">{{ badge_number|stringformat:"02d" }}</span>
+        <span class="module-name">{{ module.name }}</span>
+        <span class="chevron">{% icon 'chevron-down' size=18 %}</span>
+    </summary>
+    <div class="curriculum-children">
+        {% with children=module.children.all %}
+        {% if children %}
+            {% for child in children %}
+                {% if membership %}
+                <a href="/learn/courses/{{ course.id }}/learn/{{ child.id }}/" class="curriculum-child {% if child.id in completed_ids %}done{% endif %}">
+                    {% if child.id in completed_ids %}{% icon 'check-circle' size=14 %}{% else %}{% icon 'play' size=14 %}{% endif %}
+                    <span class="child-name">{{ child.name }}</span>
+                </a>
+                {% else %}
+                    {% if is_first_module and forloop.first %}
+                    <a href="/learn/courses/{{ course.id }}/learn/{{ child.id }}/" class="curriculum-child">
+                        {% icon 'play' size=14 %} <span class="child-name">{{ child.name }}</span>
+                    </a>
+                    {% else %}
+                    <div class="curriculum-child locked">{% icon 'lock' size=14 %} <span class="child-name">{{ child.name }}</span></div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            {% if membership %}
+            <a href="/learn/courses/{{ course.id }}/learn/{{ module.id }}/" class="curriculum-child {% if module.id in completed_ids %}done{% endif %}">
+                {% if module.id in completed_ids %}{% icon 'check-circle' size=14 %}{% else %}{% icon 'play' size=14 %}{% endif %}
+                <span class="child-name">{{ module.name }}</span>
+            </a>
+            {% else %}
+                {% if is_first_module %}
+                <a href="/learn/courses/{{ course.id }}/learn/{{ module.id }}/" class="curriculum-child">{% icon 'play' size=14 %} <span class="child-name">{{ module.name }}</span></a>
+                {% else %}
+                <div class="curriculum-child locked">{% icon 'lock' size=14 %} <span class="child-name">{{ module.name }}</span></div>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        {% endwith %}
+    </div>
+</details>

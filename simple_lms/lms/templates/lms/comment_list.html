@@ -14,6 +14,10 @@
     .discuss-columns { grid-template-columns: 1fr; }
 }
 
+.tab-bar { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+.tab-bar a { padding: 10px 14px; font-size: 13px; font-weight: 700; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; }
+.tab-bar a.active { color: var(--navy); border-bottom-color: var(--navy); }
+
 .search-card { padding: 14px 16px; }
 
 .search-form {
@@ -151,6 +155,23 @@
 
 .topic-title { font-size: 14.5px; font-weight: 700; margin: 0 0 6px; }
 .topic-text { font-size: 13.5px; color: #334155; line-height: 1.6; margin: 0; }
+.topic-context { font-size: 11.5px; color: var(--navy); font-weight: 700; margin-bottom: 4px; }
+
+.review-stars { color: var(--amber); font-size: 13px; margin-bottom: 4px; }
+
+.reply-list { margin-top: 12px; padding-left: 16px; border-left: 2px solid var(--navy-soft); }
+.reply-item { margin-bottom: 8px; }
+.reply-item .reply-head { font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
+.reply-item .reply-text { font-size: 13px; color: #334155; margin: 0; }
+.reply-item .reply-time { font-size: 10.5px; color: var(--muted); }
+
+.reply-form { margin-top: 12px; display: flex; gap: 8px; }
+.reply-form input { flex: 1; padding: 9px 12px; border-radius: 9px; border: 1px solid var(--border); font-size: 12.5px; font-family: inherit; background: var(--bg); }
+.reply-form input:focus { outline: none; border-color: var(--navy); background: #fff; }
+.reply-form button { background: var(--navy); color: #fff; border: none; padding: 9px 16px; border-radius: 9px; font-weight: 700; font-size: 12px; cursor: pointer; flex-shrink: 0; }
+.reply-form button:hover { background: var(--navy-light); }
+
+.unanswered-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; font-weight: 700; color: var(--red); background: var(--red-bg); padding: 3px 9px; border-radius: 999px; margin-left: 6px; }
 
 /* SIDEBAR WIDGETS */
 .widget-card {
@@ -219,9 +240,91 @@
 
 {% block content %}
 
+<div class="tab-bar">
+    <a href="/comments/?tab=qa" class="{% if tab == 'qa' %}active{% endif %}">Tanya Jawab Materi</a>
+    <a href="/comments/?tab=reviews" class="{% if tab == 'reviews' %}active{% endif %}">Ulasan Kursus</a>
+    <a href="/comments/?tab=general" class="{% if tab == 'general' %}active{% endif %}">Diskusi Umum</a>
+</div>
+
 <div class="discuss-columns">
 
     <div>
+        {% if tab == 'qa' %}
+        <div class="card search-card" style="margin-bottom:18px;">
+            <form method="get" class="search-form">
+                <input type="hidden" name="tab" value="qa">
+                <span class="search-ico">{% icon 'search' size=14 %}</span>
+                <input type="text" name="search" placeholder="Cari pertanyaan berdasarkan user atau materi..." value="{{ search_query|default:'' }}">
+                <button type="submit" class="search-btn">{% icon 'search' size=14 %}</button>
+            </form>
+            {% if search_query %}
+            <div class="search-result-note">
+                Hasil pencarian untuk "<strong>{{ search_query }}</strong>" &middot;
+                <a href="/comments/?tab=qa">Hapus pencarian</a>
+            </div>
+            {% endif %}
+        </div>
+
+        {% for c in qa_comments %}
+        <div class="topic-card">
+            <div class="topic-context">{% icon 'film' size=12 css_class='inline-ico' %} {{ c.content_id.course.name }} &rsaquo; {{ c.content_id.name }}</div>
+            <div class="topic-top">
+                <div class="avatar">{{ c.member_id.user_id.username|slice:":2"|upper }}</div>
+                <div class="topic-meta">
+                    <strong>{{ c.member_id.user_id.username }}</strong>
+                    <span class="time">{% icon 'clock' size=11 css_class='inline-ico' %} {{ c.created_at }}</span>
+                </div>
+                {% if not c.replies.all %}<span class="unanswered-badge">{% icon 'x-circle' size=10 %} Belum dijawab</span>{% endif %}
+            </div>
+            <p class="topic-text">{{ c.comment }}</p>
+
+            {% if c.replies.all %}
+            <div class="reply-list">
+                {% for r in c.replies.all %}
+                <div class="reply-item">
+                    <div class="reply-head">{% icon 'badge-check' size=12 css_class='inline-ico' %} {{ r.admin.username }} (Admin) <span class="reply-time">&middot; {{ r.created_at }}</span></div>
+                    <p class="reply-text">{{ r.text }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if is_admin_user %}
+            <form method="POST" class="reply-form">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="reply">
+                <input type="hidden" name="comment_id" value="{{ c.id }}">
+                <input type="text" name="reply" placeholder="Tulis balasan sebagai admin..." required>
+                <button type="submit">Balas</button>
+            </form>
+            {% endif %}
+        </div>
+        {% empty %}
+        <div class="empty-state">
+            {% icon 'chat' size=18 css_class='inline-ico' %}
+            {% if search_query %}Tidak ada pertanyaan yang cocok dengan "{{ search_query }}".{% else %}Belum ada pertanyaan siswa pada materi mana pun.{% endif %}
+        </div>
+        {% endfor %}
+
+        {% elif tab == 'reviews' %}
+        {% for r in review_comments %}
+        <div class="topic-card">
+            <div class="topic-context">{% icon 'book' size=12 css_class='inline-ico' %} {{ r.course.name }}</div>
+            <div class="topic-top">
+                <div class="avatar">{{ r.member_id.user_id.username|slice:":2"|upper }}</div>
+                <div class="topic-meta">
+                    <strong>{{ r.member_id.user_id.username }}</strong>
+                    <span class="time">{% icon 'clock' size=11 css_class='inline-ico' %} {{ r.created_at }}</span>
+                </div>
+            </div>
+            <div class="review-stars">{% for i in "12345" %}{% if forloop.counter <= r.rating %}★{% else %}☆{% endif %}{% endfor %}</div>
+            <p class="topic-text">{{ r.comment }}</p>
+        </div>
+        {% empty %}
+        <div class="empty-state">{% icon 'star' size=18 css_class='inline-ico' %} Belum ada ulasan kursus dari siswa.</div>
+        {% endfor %}
+
+        {% else %}
         <div class="card post-form" style="margin-bottom:18px;">
             <form method="POST">
                 {% csrf_token %}
@@ -235,6 +338,7 @@
 
         <div class="card search-card" style="margin-bottom:18px;">
             <form method="get" class="search-form">
+                <input type="hidden" name="tab" value="general">
                 <span class="search-ico">{% icon 'search' size=14 %}</span>
                 <input type="text" name="search" placeholder="Cari diskusi berdasarkan user atau kata kunci..." value="{{ search_query|default:'' }}">
                 <button type="submit" class="search-btn">{% icon 'search' size=14 %}</button>
@@ -242,7 +346,7 @@
             {% if search_query %}
             <div class="search-result-note">
                 Hasil pencarian untuk "<strong>{{ search_query }}</strong>" &middot;
-                <a href="/comments/">Hapus pencarian</a>
+                <a href="/comments/?tab=general">Hapus pencarian</a>
             </div>
             {% endif %}
         </div>
@@ -265,6 +369,7 @@
             {% if search_query %}Tidak ada diskusi yang cocok dengan "{{ search_query }}".{% else %}Belum ada topik diskusi. Mulai diskusi pertama lewat form di atas!{% endif %}
         </div>
         {% endfor %}
+        {% endif %}
     </div>
 
     <div>

@@ -1,0 +1,402 @@
+{% load icons %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sagara Course — Empower Your Future</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; }
+
+:root {
+    --navy: #1E3A8A;
+    --navy-light: #2F4FB3;
+    --navy-soft: #e8edfb;
+    --ink: #111827;
+    --muted: #6b7280;
+    --border: #e6e8f0;
+    --bg: #F8FAFC;
+    --teal: #14B8A6;
+    --teal-bg: #ccfbf1;
+    --amber: #b45309;
+    --green: #16a34a;
+}
+
+body { margin: 0; font-family: 'Inter', sans-serif; background: #fff; color: var(--ink); }
+a { color: inherit; }
+
+.topbar {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.brand { display: flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 800; font-size: 18px; color: var(--navy); flex-shrink: 0; }
+.brand img { width: 30px; height: 30px; object-fit: contain; }
+
+.nav-links { display: flex; align-items: center; gap: 26px; font-size: 14px; font-weight: 600; color: var(--muted); }
+.nav-links a { text-decoration: none; color: inherit; padding-bottom: 4px; }
+.nav-links a.active { color: var(--navy); font-weight: 700; border-bottom: 2px solid var(--navy); }
+
+.topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 18px; flex-shrink: 0; }
+.topbar-actions .login-link { font-size: 14px; font-weight: 600; color: var(--ink); text-decoration: none; }
+
+.btn-navy {
+    display: inline-flex; align-items: center; gap: 6px; padding: 11px 20px; border-radius: 9px;
+    border: none; background: var(--navy); color: #fff; font-weight: 700; font-size: 14px; text-decoration: none; cursor: pointer;
+}
+.btn-navy:hover { background: var(--navy-light); }
+
+.btn-outline {
+    display: inline-flex; align-items: center; gap: 6px; padding: 11px 20px; border-radius: 9px;
+    border: 1.5px solid var(--border); background: #fff; color: var(--ink); font-weight: 700; font-size: 14px; text-decoration: none; cursor: pointer;
+}
+.btn-outline:hover { border-color: var(--navy); }
+
+.btn-light {
+    display: inline-flex; align-items: center; gap: 6px; padding: 11px 20px; border-radius: 9px;
+    border: none; background: var(--navy-soft); color: var(--navy); font-weight: 700; font-size: 14px; text-decoration: none; cursor: pointer;
+}
+
+@media (max-width: 900px) {
+    .nav-links { display: none; }
+}
+
+.hero {
+    position: relative;
+    background: var(--bg);
+    padding: 70px 32px;
+    overflow: hidden;
+}
+.hero-bg-img {
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 70%;
+    background-image: url('/static/img/bg-hero.png');
+    background-size: cover;
+    background-position: center right;
+}
+.hero-bg-fade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--bg) 0%, var(--bg) 38%, rgba(248,250,252,0.55) 60%, rgba(248,250,252,0.15) 100%);
+}
+.hero-inner { max-width: 1180px; margin: 0 auto; position: relative; z-index: 1; }
+.hero h1 { font-size: 40px; font-weight: 800; color: var(--navy); margin: 0 0 18px; line-height: 1.25; max-width: 680px; }
+.hero p { font-size: 15px; color: var(--muted); line-height: 1.7; max-width: 600px; margin: 0 0 28px; }
+.hero-actions { display: flex; gap: 14px; }
+
+.section { max-width: 1180px; margin: 0 auto; padding: 56px 32px; }
+
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.feature-card { background: var(--bg); border-radius: 14px; padding: 24px; }
+.feature-ico { width: 44px; height: 44px; border-radius: 10px; background: var(--teal-bg); color: var(--teal); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.feature-card h3 { font-size: 17px; font-weight: 800; color: var(--navy); margin: 0 0 8px; }
+.feature-card p { font-size: 13.5px; color: var(--muted); line-height: 1.6; margin: 0; }
+
+.stats-band { background: var(--navy); padding: 36px 32px; }
+.stats-grid { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; text-align: center; }
+.stats-grid .num { font-size: 30px; font-weight: 800; color: #fff; }
+.stats-grid .lbl { font-size: 11.5px; font-weight: 700; color: rgba(255,255,255,0.75); letter-spacing: 0.6px; text-transform: uppercase; margin-top: 4px; }
+
+.section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 26px; flex-wrap: wrap; gap: 10px; }
+.section-head h2 { font-size: 26px; font-weight: 800; color: var(--navy); margin: 0 0 6px; }
+.section-head p { font-size: 13.5px; color: var(--muted); margin: 0; }
+.section-head .view-all { font-size: 13.5px; font-weight: 700; color: var(--navy); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+
+.courses-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.course-card { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; text-decoration: none; color: inherit; }
+.course-cover { position: relative; height: 130px; background: linear-gradient(135deg, var(--navy-light), var(--navy)); }
+.course-cover img { width: 100%; height: 100%; object-fit: cover; }
+.cover-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 800; color: rgba(255,255,255,0.85); }
+.best-seller { position: absolute; top: 10px; right: 10px; background: var(--teal-bg); color: #0f766e; font-size: 10.5px; font-weight: 800; letter-spacing: 0.4px; padding: 5px 10px; border-radius: 999px; text-transform: uppercase; }
+
+.course-body { padding: 16px; }
+.course-tags { font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+.course-tags .cat { color: var(--teal); }
+.course-body h3 { font-size: 15px; font-weight: 800; color: var(--navy); margin: 0 0 10px; line-height: 1.4; }
+.course-stats { display: flex; align-items: center; gap: 12px; font-size: 12.5px; color: var(--muted); padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid var(--border); }
+.course-stats .rating { display: flex; align-items: center; gap: 4px; color: var(--amber); font-weight: 700; }
+.course-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.teacher-row { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--muted); }
+.teacher-avatar { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, var(--navy-light), var(--navy)); color: #fff; font-size: 10px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.course-price { font-weight: 800; color: var(--navy); font-size: 14.5px; flex-shrink: 0; }
+
+.empty-courses { grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--muted); }
+
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+.about-grid p { font-size: 14px; color: var(--muted); line-height: 1.8; margin: 0 0 14px; }
+.about-stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.about-stat-box { background: var(--bg); border-radius: 12px; padding: 18px; text-align: center; }
+.about-stat-box .num { font-size: 22px; font-weight: 800; color: var(--navy); }
+.about-stat-box .lbl { font-size: 11.5px; color: var(--muted); font-weight: 600; margin-top: 2px; }
+
+.pricing-card { background: var(--bg); border-radius: 18px; padding: 40px; text-align: center; }
+.pricing-range { font-size: 34px; font-weight: 800; color: var(--navy); margin: 6px 0 10px; }
+.pricing-range span { font-size: 16px; color: var(--muted); font-weight: 600; }
+.pricing-card p { font-size: 13.5px; color: var(--muted); max-width: 480px; margin: 0 auto 22px; line-height: 1.7; }
+
+.mentors-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.mentor-card { border: 1px solid var(--border); border-radius: 14px; padding: 22px; text-align: center; }
+.mentor-card .avatar { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--navy-light), var(--navy)); color: #fff; font-weight: 800; font-size: 18px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
+.mentor-card .name { font-weight: 800; font-size: 14.5px; color: var(--ink); margin-bottom: 4px; }
+.mentor-card .role { font-size: 11.5px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 8px; }
+.mentor-card .courses { font-size: 12.5px; color: var(--muted); }
+.empty-mentors { grid-column: 1 / -1; text-align: center; padding: 30px 20px; color: var(--muted); }
+
+.cta-card { background: var(--bg); border-radius: 20px; padding: 56px 40px; text-align: center; }
+.cta-card h2 { font-size: 28px; font-weight: 800; color: var(--navy); margin: 0 0 14px; }
+.cta-card p { font-size: 14px; color: var(--muted); max-width: 560px; margin: 0 auto 26px; line-height: 1.7; }
+.cta-actions { display: flex; gap: 14px; justify-content: center; }
+
+footer.site-footer { border-top: 1px solid var(--border); padding: 48px 32px 28px; }
+.footer-grid { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1.3fr; gap: 28px; margin-bottom: 30px; }
+footer .brand-line { font-weight: 800; color: var(--navy); font-size: 17px; margin-bottom: 12px; }
+footer .footer-desc { font-size: 13px; color: var(--muted); line-height: 1.7; margin: 0; }
+footer h4 { font-size: 14px; font-weight: 800; color: var(--ink); margin: 0 0 14px; }
+footer ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+footer ul a { color: var(--muted); text-decoration: underline; font-size: 13.5px; }
+footer ul a:hover { color: var(--navy); }
+footer .newsletter-text { font-size: 13px; color: var(--muted); line-height: 1.6; margin: 0 0 14px; }
+.newsletter-form { display: flex; gap: 8px; }
+.newsletter-form input { flex: 1; padding: 10px 14px; border-radius: 9px; border: 1px solid var(--border); background: var(--bg); font-size: 13px; font-family: inherit; }
+.newsletter-form input:focus { outline: none; border-color: var(--navy); background: #fff; }
+.newsletter-form button { width: 40px; height: 40px; border-radius: 9px; border: none; background: var(--navy); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+.footer-bottom { max-width: 1180px; margin: 0 auto; padding-top: 24px; border-top: 1px solid var(--border); text-align: center; font-size: 12.5px; color: var(--muted); }
+
+@media (max-width: 900px) {
+    .features-grid, .courses-grid, .mentors-grid { grid-template-columns: repeat(2, 1fr); }
+    .stats-grid, .about-stat-row { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .about-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+    <a href="/" class="brand"><img src="/static/img/sagara-mark.png" alt="Sagara Course"> Sagara Course</a>
+    <div class="nav-links" id="nav-links">
+        <a href="#featured-courses" class="active">Courses</a>
+        <a href="#about-us">About Us</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#mentors">Mentors</a>
+    </div>
+    <div class="topbar-actions">
+        <a href="/login/" class="login-link">Login</a>
+        <a href="/register/" class="btn-navy">Register</a>
+    </div>
+</div>
+
+<div class="hero">
+    <div class="hero-bg-img"></div>
+    <div class="hero-bg-fade"></div>
+    <div class="hero-inner">
+        <h1>Empower Your Future with Sagara Course</h1>
+        <p>Master in-demand professional skills with industry-leading mentors. Transform your career trajectory with certified courses designed for the modern digital economy.</p>
+        <div class="hero-actions">
+            <a href="#featured-courses" class="btn-navy">Explore Courses {% icon 'arrow-right' size=15 %}</a>
+            <a href="/register/" class="btn-outline">Get Started</a>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-ico">{% icon 'academic-cap' size=22 %}</div>
+            <h3>Expert Mentors</h3>
+            <p>Learn directly from industry practitioners who have years of real-world experience in top tech firms.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-ico">{% icon 'infinity' size=22 %}</div>
+            <h3>Lifetime Access</h3>
+            <p>Enroll once and keep your course materials forever. Stay updated with free curriculum updates as technology evolves.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-ico">{% icon 'shield-check' size=22 %}</div>
+            <h3>Certified Courses</h3>
+            <p>Gain industry-recognized certifications that validate your skills and boost your profile for top employers.</p>
+        </div>
+    </div>
+</div>
+
+<div class="section" id="about-us">
+    <div class="about-grid">
+        <div>
+            <h2 style="font-size: 26px; font-weight: 800; color: var(--navy); margin: 0 0 14px;">About Sagara Course</h2>
+            <p>Sagara Course adalah platform pembelajaran online yang memberdayakan talenta digital Indonesia melalui kursus berkualitas dan mentor industri berpengalaman.</p>
+            <p>Kami percaya setiap orang berhak mendapatkan akses pendidikan profesional yang relevan dengan kebutuhan dunia kerja saat ini — mulai dari pengembangan perangkat lunak, desain, data science, hingga bisnis dan marketing.</p>
+        </div>
+        <div class="about-stat-row">
+            <div class="about-stat-box"><div class="num">{{ total_students }}+</div><div class="lbl">Active Students</div></div>
+            <div class="about-stat-box"><div class="num">{{ total_courses }}+</div><div class="lbl">Total Courses</div></div>
+            <div class="about-stat-box"><div class="num">{{ total_mentors }}+</div><div class="lbl">Expert Mentors</div></div>
+        </div>
+    </div>
+</div>
+
+<div class="stats-band">
+    <div class="stats-grid">
+        <div><div class="num">{{ total_students }}+</div><div class="lbl">Active Students</div></div>
+        <div><div class="num">{{ total_courses }}+</div><div class="lbl">Total Courses</div></div>
+        <div><div class="num">{{ total_mentors }}+</div><div class="lbl">Expert Mentors</div></div>
+        <div><div class="num">{{ avg_platform_rating|floatformat:1 }}/5</div><div class="lbl">Average Rating</div></div>
+    </div>
+</div>
+
+<div class="section" id="featured-courses">
+    <div class="section-head">
+        <div>
+            <h2>Top Featured Courses</h2>
+            <p>Start your journey with our highest-rated professional tracks.</p>
+        </div>
+    </div>
+
+    <div class="courses-grid">
+        {% for course in featured_courses %}
+        <a href="/login/?next=/learn/courses/{{ course.id }}/" class="course-card">
+            <div class="course-cover">
+                {% if forloop.first and course.student_count > 0 %}<span class="best-seller">Best Seller</span>{% endif %}
+                {% if course.image %}<img src="{{ course.image.url }}" alt="{{ course.name }}">{% else %}<div class="cover-placeholder">{{ course.name|slice:":1"|upper }}</div>{% endif %}
+            </div>
+            <div class="course-body">
+                <div class="course-tags"><span class="cat">{{ course.get_category_display }}</span></div>
+                <h3>{{ course.name }}</h3>
+                <div class="course-stats">
+                    <span class="rating">{% icon 'star' size=13 %} {{ course.avg_rating|default:0|floatformat:"1" }} ({{ course.review_count }})</span>
+                    <span>{% icon 'users' size=13 %} {{ course.student_count }} siswa</span>
+                </div>
+                <div class="course-foot">
+                    <div class="teacher-row">
+                        <span class="teacher-avatar">{{ course.teacher.username|slice:":2"|upper }}</span>
+                        {{ course.teacher.username }}
+                    </div>
+                    <span class="course-price">Rp {{ course.price_fmt }}</span>
+                </div>
+            </div>
+        </a>
+        {% empty %}
+        <div class="empty-courses">{% icon 'inbox' size=32 %}<p>Belum ada kursus yang dipublikasikan.</p></div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="section" id="pricing">
+    <div class="pricing-card">
+        <h2 style="font-size: 24px; font-weight: 800; color: var(--navy); margin: 0;">Simple, Pay-Per-Course Pricing</h2>
+        <div class="pricing-range">Rp {{ min_price_fmt }} <span>&ndash;</span> Rp {{ max_price_fmt }}</div>
+        <p>Tidak ada biaya subscription bulanan. Bayar sekali per kursus dan dapatkan akses materi selamanya, termasuk update kurikulum di masa depan.</p>
+        <a href="#featured-courses" class="btn-navy">Lihat Semua Kursus {% icon 'arrow-right' size=14 %}</a>
+    </div>
+</div>
+
+<div class="section" id="mentors">
+    <div class="section-head">
+        <div>
+            <h2>Our Mentors</h2>
+            <p>Tim pengajar yang membimbing kurikulum Sagara Course.</p>
+        </div>
+    </div>
+    <div class="mentors-grid">
+        {% for mentor in mentors %}
+        <div class="mentor-card">
+            <div class="avatar">{{ mentor.username|slice:":2"|upper }}</div>
+            <div class="name">{{ mentor.username }}</div>
+            <div class="role">Pengajar</div>
+            <div class="courses">{{ mentor.course_count }} kursus diajarkan</div>
+        </div>
+        {% empty %}
+        <div class="empty-mentors">Belum ada mentor yang terdaftar.</div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="section">
+    <div class="cta-card">
+        <h2>Ready to Start Your Career Transformation?</h2>
+        <p>Join over {{ total_students }}+ students already learning on Sagara Course. Get unlimited access to all courses and become part of a global community.</p>
+        <div class="cta-actions">
+            <a href="/register/" class="btn-navy">Register Now</a>
+            <a href="mailto:habibi.ramadhani02@gmail.com" class="btn-light">Talk to an Advisor</a>
+        </div>
+    </div>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-grid">
+        <div>
+            <div class="brand-line">Sagara Course</div>
+            <p class="footer-desc">&copy; {% now "Y" %} Sagara Course. Empowering learners worldwide. High-quality online education designed for professional growth.</p>
+        </div>
+        <div>
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="/privacy-policy/">Privacy Policy</a></li>
+                <li><a href="/terms-of-service/">Terms of Service</a></li>
+                <li><a href="mailto:habibi.ramadhani02@gmail.com">Help Center</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Company</h4>
+            <ul>
+                <li><a href="/careers/">Careers</a></li>
+                <li><a href="mailto:habibi.ramadhani02@gmail.com">Contact</a></li>
+                <li><a href="#mentors">Mentors</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Newsletter</h4>
+            <p class="newsletter-text">Stay updated with our newest courses and offers.</p>
+            <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Fitur newsletter akan segera tersedia!');">
+                <input type="email" placeholder="Your email" required>
+                <button type="submit">{% icon 'paper-airplane' size=16 %}</button>
+            </form>
+        </div>
+    </div>
+    <div class="footer-bottom">Made with excellence for global learners.</div>
+</footer>
+
+<script>
+(function () {
+    var navLinks = document.querySelectorAll('#nav-links a');
+    var sections = Array.prototype.map.call(navLinks, function (a) {
+        return document.getElementById(a.getAttribute('href').slice(1));
+    });
+
+    function setActive(id) {
+        navLinks.forEach(function (a) {
+            a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+    }
+
+    var observer = new IntersectionObserver(function (entries) {
+        var visible = entries.filter(function (e) { return e.isIntersecting; });
+        if (visible.length) {
+            visible.sort(function (a, b) { return b.intersectionRatio - a.intersectionRatio; });
+            setActive(visible[0].target.id);
+        }
+    }, { rootMargin: '-35% 0px -55% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] });
+
+    sections.forEach(function (el) {
+        if (el) observer.observe(el);
+    });
+
+    navLinks.forEach(function (a) {
+        a.addEventListener('click', function () { setActive(a.getAttribute('href').slice(1)); });
+    });
+})();
+</script>
+
+</body>
+</html>

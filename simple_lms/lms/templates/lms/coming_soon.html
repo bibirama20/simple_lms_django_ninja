@@ -1,0 +1,19 @@
+{% extends "lms/base_student.html" %}
+{% load icons %}
+
+{% block title %}{{ feature|title }} — Sagara Course{% endblock %}
+
+{% block extra_style %}
+.empty-wrap { text-align: center; padding: 80px 20px; color: var(--muted); }
+.empty-wrap .icon { display: flex; justify-content: center; margin-bottom: 14px; color: var(--navy); }
+.empty-wrap h2 { color: var(--ink); font-size: 17px; margin-bottom: 6px; }
+{% endblock %}
+
+{% block content %}
+<div class="card empty-wrap">
+    <div class="icon">{% icon 'rocket' size=34 %}</div>
+    <h2>{{ feature|title }}</h2>
+    <p>Fitur ini akan segera hadir di Sagara Course.</p>
+    <a href="/learn/" class="btn-navy" style="margin-top: 14px;">{% icon 'arrow-right' size=13 %} Kembali ke Dashboard</a>
+</div>
+{% endblock %}

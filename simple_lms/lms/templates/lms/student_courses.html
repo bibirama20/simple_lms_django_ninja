@@ -1,0 +1,92 @@
+{% extends "lms/base_student.html" %}
+{% load icons %}
+
+{% block title %}My Courses — Sagara Course{% endblock %}
+
+{% block extra_style %}
+.section-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    margin-top: 26px;
+}
+
+.section-title:first-of-type { margin-top: 0; }
+
+.section-title h2 { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 16px; font-weight: 700; }
+.section-title a { font-size: 12.5px; font-weight: 700; color: var(--navy); text-decoration: none; }
+
+.my-course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+
+.my-course-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 16px; }
+.my-course-card .name { font-weight: 700; font-size: 14.5px; margin-bottom: 4px; }
+.my-course-card .teacher { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+
+.course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.course-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; text-decoration: none; color: inherit; }
+.course-cover { position: relative; height: 100px; background: linear-gradient(135deg, var(--navy-light), var(--navy)); }
+.course-cover img { width: 100%; height: 100%; object-fit: cover; }
+.cover-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 800; color: rgba(255,255,255,0.85); }
+.price-badge { position: absolute; bottom: 8px; right: 8px; background: rgba(255,255,255,0.94); color: var(--navy); font-weight: 800; font-size: 11.5px; padding: 4px 10px; border-radius: 999px; }
+.course-body { padding: 12px 14px 14px; }
+.course-body h3 { margin: 0 0 6px; font-size: 13.5px; }
+.course-rating { font-size: 11.5px; color: var(--muted); margin-bottom: 8px; }
+.course-rating .star { color: var(--amber); }
+
+.empty-state { grid-column: 1 / -1; text-align: center; padding: 30px 20px; color: var(--muted); font-size: 13px; }
+{% endblock %}
+
+{% block page_heading %}
+<div class="page-heading">
+    <h1>{% icon 'academic-cap' size=20 %} My Courses</h1>
+    <p>{{ my_courses|length }} kursus aktif</p>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="section-title"><h2>{% icon 'book' size=16 %} Kursus Saya</h2></div>
+
+<div class="my-course-grid">
+    {% for item in my_courses %}
+    <div class="my-course-card">
+        <div class="name">{{ item.course.name }}</div>
+        <div class="teacher">{% icon 'user' size=12 %} {{ item.course.teacher.username }}</div>
+        <div class="bar-label"><span>{{ item.done }}/{{ item.total }} Modul</span><span>{{ item.percent }}%</span></div>
+        <div class="bar-track" style="margin-bottom: 12px;"><div class="bar-fill" style="width: {{ item.percent }}%;"></div></div>
+        {% if item.percent == 100 %}
+        <a href="/learn/courses/{{ item.course.id }}/certificate/" class="btn-navy" style="width: 100%; justify-content: center;">{% icon 'badge-check' size=13 %} Unduh Sertifikat</a>
+        {% else %}
+        <a href="/learn/courses/{{ item.course.id }}/" class="btn-navy" style="width: 100%; justify-content: center;">{% icon 'play' size=13 %} Lanjutkan Belajar</a>
+        {% endif %}
+    </div>
+    {% empty %}
+    <div class="empty-state">Kamu belum mengikuti kursus apa pun. <a href="/learn/catalog/" style="color: var(--navy); font-weight: 700;">Jelajahi katalog kursus</a>.</div>
+    {% endfor %}
+</div>
+
+<div class="section-title">
+    <h2>{% icon 'sparkles' size=16 %} Rekomendasi Untukmu</h2>
+    <a href="/learn/catalog/">Lihat Semua</a>
+</div>
+
+<div class="course-grid">
+    {% for course in recommended %}
+    <a href="/learn/courses/{{ course.id }}/" class="course-card">
+        <div class="course-cover">
+            {% if course.image %}<img src="{{ course.image.url }}" alt="{{ course.name }}">{% else %}<div class="cover-placeholder">{{ course.name|slice:":1"|upper }}</div>{% endif %}
+            <span class="price-badge">Rp {{ course.price_fmt }}</span>
+        </div>
+        <div class="course-body">
+            <h3>{{ course.name }}</h3>
+            <div class="course-rating"><span class="star">{% icon 'star' size=11 %}</span> {{ course.avg_rating|default:0|floatformat:"1" }} ({{ course.review_count }})</div>
+            <span class="badge navy">{{ course.get_category_display }}</span>
+        </div>
+    </a>
+    {% empty %}
+    <div class="empty-state">Belum ada kursus lain untuk direkomendasikan.</div>
+    {% endfor %}
+</div>
+
+{% endblock %}

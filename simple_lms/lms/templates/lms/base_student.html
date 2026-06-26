@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{% block title %}Sagara Course{% endblock %}</title>
+<title>{% block title %}Sagara Course — Student Portal{% endblock %}</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -42,13 +42,8 @@ body {
 
 a { color: inherit; }
 
-/* ===== LAYOUT ===== */
-.app {
-    display: flex;
-    min-height: 100vh;
-}
+.app { display: flex; min-height: 100vh; }
 
-/* ===== SIDEBAR ===== */
 .sidebar {
     width: 250px;
     flex-shrink: 0;
@@ -90,11 +85,7 @@ a { color: inherit; }
     color: var(--muted);
 }
 
-.sidebar-nav {
-    flex: 1;
-    padding: 8px 14px;
-    overflow-y: auto;
-}
+.sidebar-nav { flex: 1; padding: 8px 14px; overflow-y: auto; }
 
 .nav-item {
     display: flex;
@@ -110,11 +101,7 @@ a { color: inherit; }
 }
 
 .nav-item:hover { background: var(--navy-soft); color: var(--navy); }
-
-.nav-item.active {
-    background: var(--navy-soft);
-    color: var(--navy);
-}
+.nav-item.active { background: var(--navy-soft); color: var(--navy); }
 
 .nav-item .icon, .sidebar-bottom-links .icon {
     width: 18px;
@@ -125,16 +112,8 @@ a { color: inherit; }
     justify-content: center;
 }
 
-.sidebar-footer {
-    padding: 14px;
-    border-top: 1px solid var(--border);
-}
-
-.sidebar-bottom-links {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
+.sidebar-footer { padding: 14px; border-top: 1px solid var(--border); }
+.sidebar-bottom-links { display: flex; flex-direction: column; gap: 2px; }
 
 .sidebar-bottom-links a {
     display: flex;
@@ -148,20 +127,10 @@ a { color: inherit; }
     border-radius: 8px;
 }
 
-.sidebar-bottom-links a:hover { background: var(--navy-soft); color: var(--navy); }
-.sidebar-bottom-links a.active { background: var(--navy-soft); color: var(--navy); }
+.sidebar-bottom-links a:hover { background: var(--red-bg); color: var(--red); }
 
-.sidebar-bottom-links a.logout-link:hover { background: var(--red-bg); color: var(--red); }
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 
-/* ===== MAIN ===== */
-.main {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-}
-
-/* ===== TOPBAR ===== */
 .topbar {
     background: #fff;
     border-bottom: 1px solid var(--border);
@@ -174,14 +143,8 @@ a { color: inherit; }
     z-index: 10;
 }
 
-.topbar-search {
-    flex: 1;
-    max-width: 420px;
-}
-
-.topbar-search form {
-    position: relative;
-}
+.topbar-search { flex: 1; max-width: 420px; }
+.topbar-search form { position: relative; }
 
 .topbar-search input {
     width: 100%;
@@ -193,11 +156,7 @@ a { color: inherit; }
     font-family: inherit;
 }
 
-.topbar-search input:focus {
-    outline: none;
-    border-color: var(--navy);
-    background: #fff;
-}
+.topbar-search input:focus { outline: none; border-color: var(--navy); background: #fff; }
 
 .topbar-search .search-ico {
     position: absolute;
@@ -208,12 +167,7 @@ a { color: inherit; }
     display: flex;
 }
 
-.topbar-actions {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+.topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
 
 .btn-outline {
     display: inline-flex;
@@ -261,13 +215,7 @@ a { color: inherit; }
     flex-shrink: 0;
 }
 
-.topbar-user {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding-left: 10px;
-    border-left: 1px solid var(--border);
-}
+.topbar-user { display: flex; align-items: center; gap: 10px; padding-left: 10px; border-left: 1px solid var(--border); }
 
 .topbar-user .avatar {
     width: 34px;
@@ -282,27 +230,12 @@ a { color: inherit; }
     justify-content: center;
 }
 
-.topbar-user .info strong {
-    display: block;
-    font-size: 13px;
-    font-weight: 700;
-}
+.topbar-user .info strong { display: block; font-size: 13px; font-weight: 700; }
+.topbar-user .info span { display: block; font-size: 11px; color: var(--muted); }
 
-.topbar-user .info span {
-    display: block;
-    font-size: 11px;
-    color: var(--muted);
-}
+.content { flex: 1; padding: 26px 28px 50px; }
 
-/* ===== CONTENT ===== */
-.content {
-    flex: 1;
-    padding: 26px 28px 50px;
-}
-
-.page-heading {
-    margin-bottom: 22px;
-}
+.page-heading { margin-bottom: 22px; }
 
 .page-heading h1 {
     display: flex;
@@ -317,19 +250,9 @@ a { color: inherit; }
 
 .page-heading h1 svg { color: var(--navy); flex-shrink: 0; }
 
-.page-heading p {
-    margin: 0;
-    font-size: 13.5px;
-    color: var(--muted);
-}
+.page-heading p { margin: 0; font-size: 13.5px; color: var(--muted); }
 
-/* ===== SHARED COMPONENTS ===== */
-.card {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-}
+.card { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
 
 .badge {
     display: inline-flex;
@@ -347,24 +270,18 @@ a { color: inherit; }
 .badge.navy { background: var(--navy-soft); color: var(--navy); }
 .badge.teal { background: var(--teal-bg); color: var(--teal); }
 
-.msg-stack {
-    margin-bottom: 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
+.msg-stack { margin-bottom: 18px; display: flex; flex-direction: column; gap: 8px; }
 
-.msg-banner {
-    padding: 11px 16px;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 600;
-}
+.msg-banner { padding: 11px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; }
 
 .msg-success { background: var(--green-bg); color: var(--green); }
 .msg-error { background: var(--red-bg); color: var(--red); }
 .msg-warning { background: var(--amber-bg); color: var(--amber); }
 .msg-info, .msg-debug { background: var(--navy-soft); color: var(--navy); }
+
+.bar-track { height: 8px; background: var(--bg); border-radius: 999px; overflow: hidden; }
+.bar-fill { height: 100%; background: linear-gradient(90deg, var(--navy-light), var(--navy)); border-radius: 999px; }
+.bar-label { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 600; margin-bottom: 6px; }
 
 @media (max-width: 980px) {
     .sidebar { display: none; }
@@ -381,43 +298,37 @@ a { color: inherit; }
 
     <!-- SIDEBAR -->
     <div class="sidebar">
-        <a href="/dashboard/" class="sidebar-brand">
+        <a href="/learn/" class="sidebar-brand">
             <img src="/static/img/sagara-mark.png" alt="Sagara Course" class="mark">
             <span class="text">
                 <strong>Sagara Course</strong>
-                <span>Learning Management</span>
+                <span>Student Portal</span>
             </span>
         </a>
 
         <div class="sidebar-nav">
-            <a href="/dashboard/" class="nav-item {% if active_page == 'dashboard' %}active{% endif %}">
+            <a href="/learn/" class="nav-item {% if active_page == 'student_dashboard' %}active{% endif %}">
                 <span class="icon">{% icon 'grid' %}</span> Dashboard
             </a>
-            <a href="/courses/create/" class="nav-item {% if active_page == 'course_management' %}active{% endif %}">
-                <span class="icon">{% icon 'edit' %}</span> Course Management
+            <a href="/learn/catalog/" class="nav-item {% if active_page == 'student_catalog' %}active{% endif %}">
+                <span class="icon">{% icon 'academic-cap' %}</span> My Courses
             </a>
-            <a href="/courses/list/" class="nav-item {% if active_page == 'course_list' %}active{% endif %}">
-                <span class="icon">{% icon 'book' %}</span> Course List
+            <a href="/learn/segera/assignments/" class="nav-item {% if active_page == 'student_assignments' %}active{% endif %}">
+                <span class="icon">{% icon 'clipboard-list' %}</span> Assignments
             </a>
-            <a href="/dashboard/stat/" class="nav-item {% if active_page == 'statistics' %}active{% endif %}">
-                <span class="icon">{% icon 'chart-bar' %}</span> Statistics
+            <a href="/learn/segera/schedule/" class="nav-item {% if active_page == 'student_schedule' %}active{% endif %}">
+                <span class="icon">{% icon 'clock' %}</span> Schedule
             </a>
-            <a href="/comments/" class="nav-item {% if active_page == 'discussions' %}active{% endif %}">
-                <span class="icon">{% icon 'chat' %}</span> Discussions
-            </a>
-            <a href="/users/" class="nav-item {% if active_page == 'users' %}active{% endif %}">
-                <span class="icon">{% icon 'users' %}</span> Users
-            </a>
-            <a href="/quick-actions/" class="nav-item {% if active_page == 'quick_actions' %}active{% endif %}">
-                <span class="icon">{% icon 'bolt' %}</span> Quick Actions
+            <a href="/learn/segera/resources/" class="nav-item {% if active_page == 'student_resources' %}active{% endif %}">
+                <span class="icon">{% icon 'folder' %}</span> Resources
             </a>
         </div>
 
         <div class="sidebar-footer">
             <div class="sidebar-bottom-links">
-                <a href="/admin/"><span class="icon">{% icon 'cog' %}</span> Settings</a>
-                <a href="/content/" class="{% if active_page == 'video_file' %}active{% endif %}"><span class="icon">{% icon 'film' %}</span> Video &amp; File</a>
-                <a href="/logout/" class="logout-link" onclick="history.replaceState(null, '', '/');"><span class="icon">{% icon 'logout' %}</span> Logout</a>
+                <a href="/learn/courses/" style="color: var(--navy);">{% icon 'chart-bar' %} View Grades</a>
+                <a href="/learn/segera/settings/">{% icon 'cog' %} Settings</a>
+                <a href="/logout/" style="color: var(--red);" onclick="history.replaceState(null, '', '/');">{% icon 'logout' %} Logout</a>
             </div>
         </div>
     </div>
@@ -426,27 +337,20 @@ a { color: inherit; }
     <div class="main">
 
         <div class="topbar">
-            {% if active_page != 'dashboard' and active_page != 'statistics' and active_page != 'discussions' and active_page != 'course_list' %}
             <div class="topbar-search">
-                <form method="get">
+                <form method="get" action="/learn/catalog/">
                     <span class="search-ico">{% icon 'search' size=14 %}</span>
-                    <input type="text" name="search" placeholder="{% if active_page == 'course_management' %}Search course...{% elif active_page == 'users' %}Search user...{% else %}Search courses, users, analytics...{% endif %}" value="{{ search_query|default:'' }}">
+                    <input type="text" name="search" placeholder="Cari kursus..." value="{{ search_query|default:'' }}">
                 </form>
             </div>
-            {% endif %}
 
             <div class="topbar-actions">
-                <a href="/courses/create/" class="btn-navy">{% icon 'plus' size=14 %} Add New</a>
-                <a href="/import/" class="btn-outline">{% icon 'upload' size=14 %} CSV Import</a>
                 <div class="topbar-icon">{% icon 'bell' size=17 %}</div>
-
                 <div class="topbar-user">
-                    <div class="avatar">
-                        {% if request.user.is_authenticated %}{{ request.user.username|slice:":2"|upper }}{% else %}AS{% endif %}
-                    </div>
+                    <div class="avatar">{{ request.user.username|slice:":2"|upper }}</div>
                     <div class="info">
-                        <strong>{% if request.user.is_authenticated %}{{ request.user.username }}{% else %}Alex Sagara{% endif %}</strong>
-                        <span>{% if request.user.is_superuser %}Administrator{% else %}LMS Coordinator{% endif %}</span>
+                        <strong>{{ request.user.username }}</strong>
+                        <span>Student</span>
                     </div>
                 </div>
             </div>

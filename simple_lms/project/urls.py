@@ -26,12 +26,22 @@ from lms.apiv2 import apiv2
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', views.dashboard),
+    path('', views.landing_view),
     path('dashboard/', views.dashboard),
 
+    path('privacy-policy/', views.privacy_policy_view),
+    path('terms-of-service/', views.terms_of_service_view),
+    path('careers/', views.careers_view),
+    path('sertifikat/verifikasi/<str:code>/', views.certificate_verify_view),
+
     path('login/', views.login_view),
+    path('login/google/', views.google_login_start),
+    path('login/google/callback/', views.google_login_callback),
     path('register/', views.register_view),
     path('logout/', views.logout_view),
+
+    path('forgot-password/', views.forgot_password_view),
+    path('reset-password/<str:uidb64>/<str:token>/', views.reset_password_view),
 
     path('users/', views.user_list),
     path('users/json/', views.user_json),
@@ -56,12 +66,21 @@ urlpatterns = [
     path('comments/', views.comment_list),
     path('content/', views.content_list),
     path('content/add/', views.add_content),
+    path('content/<int:id>/delete/', views.delete_content_view),
     path('content/<int:id>/', views.content_list),
 
     path('dashboard/stat/', views.course_dashboard_stat),
 
     path('courses-api/', views.courses_api_view),
     path('quick-actions/', views.quick_actions_view),
+
+    path('learn/', views.student_dashboard),
+    path('learn/courses/', views.student_courses),
+    path('learn/catalog/', views.course_catalog),
+    path('learn/courses/<int:id>/', views.course_detail),
+    path('learn/courses/<int:course_id>/certificate/', views.download_certificate_view),
+    path('learn/courses/<int:course_id>/learn/<int:content_id>/', views.lesson_player),
+    path('learn/segera/<str:feature>/', views.coming_soon),
 
     path('api/v1/', apiv1.urls),
     path('api/v2/', apiv2.urls),

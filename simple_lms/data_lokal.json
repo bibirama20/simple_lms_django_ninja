@@ -1,0 +1,555 @@
+[
+{
+  "model": "lms.course",
+  "pk": 1,
+  "fields": {
+    "name": "Python Dasar",
+    "description": "Belajar Python",
+    "price": 100000,
+    "image": "",
+    "max_students": null,
+    "teacher": 1,
+    "created_at": "2026-04-18T10:39:54.373Z",
+    "updated_at": "2026-04-18T10:39:54.373Z"
+  }
+},
+{
+  "model": "lms.course",
+  "pk": 2,
+  "fields": {
+    "name": "Django Basic",
+    "description": "Belajar Django",
+    "price": 150000,
+    "image": "",
+    "max_students": null,
+    "teacher": 1,
+    "created_at": "2026-04-18T10:39:54.427Z",
+    "updated_at": "2026-06-24T17:03:40.300Z"
+  }
+},
+{
+  "model": "lms.course",
+  "pk": 10,
+  "fields": {
+    "name": "Database SQL",
+    "description": "Belajar Database",
+    "price": 60000,
+    "image": "",
+    "max_students": null,
+    "teacher": 1,
+    "created_at": "2026-04-16T12:55:33.981Z",
+    "updated_at": "2026-06-24T17:05:34.054Z"
+  }
+},
+{
+  "model": "lms.course",
+  "pk": 11,
+  "fields": {
+    "name": "Belajar Figma",
+    "description": "Belajar dasar figma",
+    "price": 50000,
+    "image": "",
+    "max_students": null,
+    "teacher": 1,
+    "created_at": "2026-04-18T10:08:26.538Z",
+    "updated_at": "2026-06-24T17:04:32.018Z"
+  }
+},
+{
+  "model": "lms.course",
+  "pk": 12,
+  "fields": {
+    "name": "Pemrograman Sisi Server",
+    "description": "Belajar Backend",
+    "price": 900000,
+    "image": "",
+    "max_students": null,
+    "teacher": 1,
+    "created_at": "2026-04-18T12:44:22.609Z",
+    "updated_at": "2026-04-18T12:44:22.609Z"
+  }
+},
+{
+  "model": "lms.course",
+  "pk": 13,
+  "fields": {
+    "name": "Matematika Diskrit",
+    "description": "Belajar Matematika Diskrit",
+    "price": 100000,
+    "image": "",
+    "max_students": null,
+    "teacher": 1,
+    "created_at": "2026-04-30T06:06:30.485Z",
+    "updated_at": "2026-06-24T17:03:00.871Z"
+  }
+},
+{
+  "model": "lms.course",
+  "pk": 14,
+  "fields": {
+    "name": "Matriks & Ruang Vektor",
+    "description": "Belajar Matriks & Ruang Vektor",
+    "price": 150000,
+    "image": "",
+    "max_students": null,
+    "teacher": 1,
+    "created_at": "2026-04-30T06:06:30.486Z",
+    "updated_at": "2026-06-24T17:02:15.344Z"
+  }
+},
+{
+  "model": "lms.course",
+  "pk": 15,
+  "fields": {
+    "name": "Pemrograman Sisi Klien",
+    "description": "Belajar Pemrograman Sisi Klien",
+    "price": 200000,
+    "image": "",
+    "max_students": null,
+    "teacher": 1,
+    "created_at": "2026-04-30T06:06:30.486Z",
+    "updated_at": "2026-06-24T17:01:01.872Z"
+  }
+},
+{
+  "model": "lms.course",
+  "pk": 16,
+  "fields": {
+    "name": "Basis Data",
+    "description": "Belajar Database SQL",
+    "price": 180000,
+    "image": "",
+    "max_students": null,
+    "teacher": 1,
+    "created_at": "2026-04-30T06:06:30.486Z",
+    "updated_at": "2026-06-24T16:57:39.030Z"
+  }
+},
+{
+  "model": "lms.course",
+  "pk": 17,
+  "fields": {
+    "name": "Pemrograman Python",
+    "description": "Belajar Python dari dasar",
+    "price": 220000,
+    "image": "",
+    "max_students": null,
+    "teacher": 1,
+    "created_at": "2026-04-30T06:06:30.486Z",
+    "updated_at": "2026-06-24T16:54:08.387Z"
+  }
+},
+{
+  "model": "lms.course",
+  "pk": 18,
+  "fields": {
+    "name": "Machine Learning",
+    "description": "Dasar Machine Learning",
+    "price": 300000,
+    "image": "",
+    "max_students": null,
+    "teacher": 1,
+    "created_at": "2026-04-30T06:06:30.486Z",
+    "updated_at": "2026-06-24T17:16:33.573Z"
+  }
+},
+{
+  "model": "lms.course",
+  "pk": 19,
+  "fields": {
+    "name": "Pemrograman Sisi Server",
+    "description": "Belajar PSS",
+    "price": 100000,
+    "image": "",
+    "max_students": null,
+    "teacher": 1,
+    "created_at": "2026-05-24T09:13:35.654Z",
+    "updated_at": "2026-06-24T17:00:02.866Z"
+  }
+},
+{
+  "model": "lms.coursemember",
+  "pk": 2,
+  "fields": {
+    "course_id": 2,
+    "user_id": 3,
+    "roles": "std",
+    "created_at": "2026-04-18T10:39:54.578Z",
+    "updated_at": "2026-04-18T10:39:54.578Z"
+  }
+},
+{
+  "model": "lms.coursemember",
+  "pk": 3,
+  "fields": {
+    "course_id": 1,
+    "user_id": 2,
+    "roles": "std",
+    "created_at": "2026-04-18T11:30:32.820Z",
+    "updated_at": "2026-04-18T11:30:32.820Z"
+  }
+},
+{
+  "model": "lms.coursemember",
+  "pk": 4,
+  "fields": {
+    "course_id": 2,
+    "user_id": 3,
+    "roles": "std",
+    "created_at": "2026-04-18T11:30:44.739Z",
+    "updated_at": "2026-04-18T11:30:44.739Z"
+  }
+},
+{
+  "model": "lms.coursemember",
+  "pk": 5,
+  "fields": {
+    "course_id": 2,
+    "user_id": 2,
+    "roles": "std",
+    "created_at": "2026-06-08T14:09:40.881Z",
+    "updated_at": "2026-06-08T14:09:40.881Z"
+  }
+},
+{
+  "model": "lms.coursemember",
+  "pk": 6,
+  "fields": {
+    "course_id": 2,
+    "user_id": 2,
+    "roles": "std",
+    "created_at": "2026-06-08T14:10:48.723Z",
+    "updated_at": "2026-06-08T14:10:48.723Z"
+  }
+},
+{
+  "model": "lms.coursecontent",
+  "pk": 1,
+  "fields": {
+    "name": "Pengenalan Framework Django",
+    "description": "Pengenalan Framework Django",
+    "video_url": "https://www.youtube.com/watch?v=F5mRW0jo-U4",
+    "file_attachment": "",
+    "course": 12,
+    "parent": null,
+    "created_at": "2026-04-23T14:52:15.553Z",
+    "updated_at": "2026-05-06T04:13:44.522Z"
+  }
+},
+{
+  "model": "lms.coursecontent",
+  "pk": 2,
+  "fields": {
+    "name": "Pengenalan Python",
+    "description": "Pengenalan Python",
+    "video_url": "https://www.youtube.com/watch?v=rfscVS0vtbw",
+    "file_attachment": "",
+    "course": 1,
+    "parent": null,
+    "created_at": "2026-04-23T14:59:10.674Z",
+    "updated_at": "2026-05-06T04:14:32.505Z"
+  }
+},
+{
+  "model": "lms.coursecontent",
+  "pk": 3,
+  "fields": {
+    "name": "Materi Pengantar - Pemrograman Python",
+    "description": "-",
+    "video_url": "https://www.youtube.com/embed/iA8lLwmtKQM?rel=0",
+    "file_attachment": "",
+    "course": 17,
+    "parent": null,
+    "created_at": "2026-06-24T16:50:13.157Z",
+    "updated_at": "2026-06-24T16:54:08.403Z"
+  }
+},
+{
+  "model": "lms.coursecontent",
+  "pk": 6,
+  "fields": {
+    "name": "Materi Pengantar - Basis Data",
+    "description": "-",
+    "video_url": "https://www.youtube.com/embed/2ieOuuYZIsY?rel=0",
+    "file_attachment": "",
+    "course": 16,
+    "parent": null,
+    "created_at": "2026-06-24T16:57:39.046Z",
+    "updated_at": "2026-06-24T16:57:39.046Z"
+  }
+},
+{
+  "model": "lms.coursecontent",
+  "pk": 7,
+  "fields": {
+    "name": "Materi Pengantar - Pemrograman Sisi Server",
+    "description": "-",
+    "video_url": "https://www.youtube.com/embed/QbGd6OWRy8U?rel=0",
+    "file_attachment": "",
+    "course": 19,
+    "parent": null,
+    "created_at": "2026-06-24T17:00:02.880Z",
+    "updated_at": "2026-06-24T17:00:02.880Z"
+  }
+},
+{
+  "model": "lms.coursecontent",
+  "pk": 8,
+  "fields": {
+    "name": "Materi Pengantar - Pemrograman Sisi Klien",
+    "description": "-",
+    "video_url": "https://www.youtube.com/embed/z3slaXqmkT0?rel=0",
+    "file_attachment": "",
+    "course": 15,
+    "parent": null,
+    "created_at": "2026-06-24T17:01:01.885Z",
+    "updated_at": "2026-06-24T17:01:01.885Z"
+  }
+},
+{
+  "model": "lms.coursecontent",
+  "pk": 9,
+  "fields": {
+    "name": "Materi Pengantar - Matriks & Ruang Vektor",
+    "description": "-",
+    "video_url": "https://www.youtube.com/embed/vJps8jEyxxo?rel=0",
+    "file_attachment": "",
+    "course": 14,
+    "parent": null,
+    "created_at": "2026-06-24T17:02:15.358Z",
+    "updated_at": "2026-06-24T17:02:15.358Z"
+  }
+},
+{
+  "model": "lms.coursecontent",
+  "pk": 10,
+  "fields": {
+    "name": "Materi Pengantar - Matematika Diskrit",
+    "description": "-",
+    "video_url": "https://www.youtube.com/embed/fk6XJ1zIRFY?rel=0",
+    "file_attachment": "",
+    "course": 13,
+    "parent": null,
+    "created_at": "2026-06-24T17:03:00.888Z",
+    "updated_at": "2026-06-24T17:03:00.888Z"
+  }
+},
+{
+  "model": "lms.coursecontent",
+  "pk": 11,
+  "fields": {
+    "name": "Materi Pengantar - Django Basic",
+    "description": "-",
+    "video_url": "https://www.youtube.com/embed/hPXNP1NoVNQ?rel=0",
+    "file_attachment": "",
+    "course": 2,
+    "parent": null,
+    "created_at": "2026-06-24T17:03:40.314Z",
+    "updated_at": "2026-06-24T17:03:40.314Z"
+  }
+},
+{
+  "model": "lms.coursecontent",
+  "pk": 12,
+  "fields": {
+    "name": "Materi Pengantar - Belajar Figma",
+    "description": "-",
+    "video_url": "https://www.youtube.com/embed/qk3R3mYiuPA?rel=0",
+    "file_attachment": "",
+    "course": 11,
+    "parent": null,
+    "created_at": "2026-06-24T17:04:32.031Z",
+    "updated_at": "2026-06-24T17:04:32.031Z"
+  }
+},
+{
+  "model": "lms.coursecontent",
+  "pk": 13,
+  "fields": {
+    "name": "Materi Pengantar - Database SQL",
+    "description": "-",
+    "video_url": "https://www.youtube.com/embed/OfrTiLzHv3g?rel=0",
+    "file_attachment": "",
+    "course": 10,
+    "parent": null,
+    "created_at": "2026-06-24T17:05:34.068Z",
+    "updated_at": "2026-06-24T17:05:34.068Z"
+  }
+},
+{
+  "model": "lms.coursecontent",
+  "pk": 14,
+  "fields": {
+    "name": "Materi Pengantar - Machine Learning",
+    "description": "-",
+    "video_url": "https://www.youtube.com/embed/aO20B5g42Vw?rel=0",
+    "file_attachment": "",
+    "course": 18,
+    "parent": null,
+    "created_at": "2026-06-24T17:16:33.587Z",
+    "updated_at": "2026-06-24T17:16:33.587Z"
+  }
+},
+{
+  "model": "lms.comment",
+  "pk": 1,
+  "fields": {
+    "content_id": 1,
+    "title": "",
+    "member_id": 3,
+    "comment": "Mantap penjelasannya mudah dipahami",
+    "created_at": "2026-05-07T03:37:36.783Z",
+    "updated_at": "2026-05-07T03:37:36.784Z"
+  }
+},
+{
+  "model": "lms.comment",
+  "pk": 2,
+  "fields": {
+    "content_id": 2,
+    "title": "",
+    "member_id": 3,
+    "comment": "mantap keren",
+    "created_at": "2026-06-08T14:16:38.627Z",
+    "updated_at": "2026-06-08T14:16:38.627Z"
+  }
+},
+{
+  "model": "lms.comment",
+  "pk": 3,
+  "fields": {
+    "content_id": 2,
+    "title": "",
+    "member_id": 3,
+    "comment": "mantap",
+    "created_at": "2026-06-08T14:40:56.915Z",
+    "updated_at": "2026-06-08T14:40:56.915Z"
+  }
+},
+{
+  "model": "lms.comment",
+  "pk": 4,
+  "fields": {
+    "content_id": 2,
+    "title": "",
+    "member_id": 3,
+    "comment": "mantap keren",
+    "created_at": "2026-06-08T14:52:51.890Z",
+    "updated_at": "2026-06-08T14:52:51.890Z"
+  }
+},
+{
+  "model": "lms.comment",
+  "pk": 5,
+  "fields": {
+    "content_id": 2,
+    "title": "",
+    "member_id": 3,
+    "comment": "mantap keren",
+    "created_at": "2026-06-08T14:53:00.043Z",
+    "updated_at": "2026-06-08T14:53:00.043Z"
+  }
+},
+{
+  "model": "lms.comment",
+  "pk": 6,
+  "fields": {
+    "content_id": null,
+    "title": "Tes Topik Baru",
+    "member_id": 2,
+    "comment": "Ini komentar tes otomatis",
+    "created_at": "2026-06-24T15:51:55.851Z",
+    "updated_at": "2026-06-24T15:51:55.851Z"
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$fYn9Gnuil6tKa0Aq70HU4c$NzVGSctQ40ma0C8wWePjGymeC7NKLupFocajhoEszm0=",
+    "last_login": "2026-06-24T19:16:17.406Z",
+    "is_superuser": true,
+    "username": "habibi",
+    "first_name": "",
+    "last_name": "",
+    "email": "habibi.ramadhani02@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-04-16T11:50:48.006Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$ze8KAakC8nmJDlskNoXzd0$L4GvoxCc9zvHrS/MUHUCNx1yU1rx1OacwRwmB4teFaA=",
+    "last_login": "2026-06-24T22:45:16.445Z",
+    "is_superuser": false,
+    "username": "user1",
+    "first_name": "",
+    "last_name": "",
+    "email": "user1@email.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-04-18T10:38:00.671Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$D5kkt5pQwekORk5aePSW3A$StRsWvOytnitQLzn5Wo/a6i8DxXOolQYj1EtNk7PIzY=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "user2",
+    "first_name": "",
+    "last_name": "",
+    "email": "user2@email.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-04-18T10:38:01.105Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 10,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$LcstC7q5IhpCW1XyVvycEU$STjqxMA1rkMB2VdAriFnOapg0+PqTrQ44ge6LfMXRZw=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "kuebaloklumer",
+    "first_name": "",
+    "last_name": "",
+    "email": "habibi.ramadhani02@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-06-25T01:27:05.786Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 11,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$dKsDBRKf9mztPveof3BnbG$/TWS6Okqj08llis8I1auF144+P25fK1KwI0EzGZBo2U=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "ramadhani",
+    "first_name": "",
+    "last_name": "",
+    "email": "habibi.ramadhani02@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-06-25T03:00:51.143Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]

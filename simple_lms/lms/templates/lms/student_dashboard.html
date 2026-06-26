@@ -1,0 +1,202 @@
+{% extends "lms/base_student.html" %}
+{% load icons %}
+
+{% block title %}Dashboard — Sagara Course{% endblock %}
+
+{% block extra_style %}
+.hero-card {
+    background: linear-gradient(135deg, var(--navy), var(--navy-light));
+    color: #fff;
+    border-radius: 16px;
+    padding: 22px 26px;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.hero-card h2 { margin: 0 0 6px; font-size: 19px; font-weight: 800; }
+.hero-card p { margin: 0 0 14px; font-size: 13px; opacity: 0.85; max-width: 420px; }
+
+.hero-actions { display: flex; gap: 10px; }
+
+.btn-teal {
+    display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 9px;
+    border: none; background: var(--teal); color: #fff; font-weight: 700; font-size: 13px; text-decoration: none; cursor: pointer;
+}
+.btn-teal:hover { background: #0d9488; }
+
+.btn-white-outline {
+    display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 9px;
+    border: 1.5px solid rgba(255,255,255,0.5); background: transparent; color: #fff; font-weight: 700; font-size: 13px; text-decoration: none;
+}
+.btn-white-outline:hover { border-color: #fff; }
+
+.progress-ring {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: conic-gradient(#fff {{ overall_percent }}%, rgba(255,255,255,0.25) 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.progress-ring .inner {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--navy);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress-ring .inner .num { font-size: 17px; font-weight: 800; line-height: 1; }
+.progress-ring .inner .lbl { font-size: 9px; opacity: 0.8; margin-top: 2px; }
+
+.section-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.section-title h2 {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.section-title a { font-size: 12.5px; font-weight: 700; color: var(--navy); text-decoration: none; }
+
+.dash-columns { display: grid; grid-template-columns: 1.5fr 1fr; gap: 18px; margin-bottom: 26px; align-items: start; }
+
+.course-mini-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+
+.mini-course-card { border: 1px solid var(--border); border-radius: 14px; padding: 14px; }
+.mini-icon { width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+.mini-icon.c1 { background: var(--teal-bg); color: var(--teal); }
+.mini-icon.c2 { background: var(--pink-bg); color: var(--pink); }
+.mini-icon.c3 { background: var(--navy-soft); color: var(--navy); }
+.mini-icon.c4 { background: var(--amber-bg); color: var(--amber); }
+.mini-course-card .name { font-weight: 700; font-size: 13.5px; margin-bottom: 8px; }
+
+.continue-card .lbl { font-size: 11.5px; color: var(--muted); margin-bottom: 4px; }
+.continue-card .name { font-weight: 700; font-size: 14px; margin-bottom: 14px; }
+
+.course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+
+.course-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; text-decoration: none; color: inherit; transition: transform 0.15s ease; }
+.course-card:hover { transform: translateY(-3px); }
+
+.course-cover { position: relative; height: 100px; background: linear-gradient(135deg, var(--navy-light), var(--navy)); }
+.course-cover img { width: 100%; height: 100%; object-fit: cover; }
+.cover-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 800; color: rgba(255,255,255,0.85); }
+
+.price-badge { position: absolute; bottom: 8px; right: 8px; background: rgba(255,255,255,0.94); color: var(--navy); font-weight: 800; font-size: 11.5px; padding: 4px 10px; border-radius: 999px; }
+
+.course-body { padding: 12px 14px 14px; }
+.course-body h3 { margin: 0 0 6px; font-size: 13.5px; }
+.course-rating { font-size: 11.5px; color: var(--muted); margin-bottom: 8px; }
+.course-rating .star { color: var(--amber); }
+
+.empty-state { grid-column: 1 / -1; text-align: center; padding: 30px 20px; color: var(--muted); font-size: 13px; }
+{% endblock %}
+
+{% block page_heading %}
+<div class="page-heading">
+    <h1>{% icon 'grid' size=20 %} Dashboard</h1>
+    <p>Pantau progress belajar dan lanjutkan kursusmu</p>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="hero-card">
+    <div>
+        <h2>Halo, {{ request.user.first_name|default:request.user.username }}! 👋</h2>
+        <p>Senang melihatmu kembali. Kamu telah menyelesaikan {{ overall_percent }}% dari target belajar bulan ini. Pertahankan semangatmu!</p>
+        <div class="hero-actions">
+            {% if continue_learning %}
+            <a href="/learn/courses/{{ continue_learning.course.id }}/learn/{{ continue_learning.content.id }}/" class="btn-teal">{% icon 'play' size=13 %} Lanjutkan Belajar</a>
+            {% else %}
+            <a href="/learn/catalog/" class="btn-teal">{% icon 'play' size=13 %} Lanjutkan Belajar</a>
+            {% endif %}
+            <a href="/learn/courses/" class="btn-white-outline">{% icon 'chart-bar' size=13 %} Lihat Milestone</a>
+        </div>
+    </div>
+    <div class="progress-ring">
+        <div class="inner">
+            <span class="num">{{ overall_percent }}%</span>
+            <span class="lbl">PROGRESS</span>
+        </div>
+    </div>
+</div>
+
+<div class="dash-columns">
+    <div class="card">
+        <div class="section-title">
+            <h2>{% icon 'academic-cap' size=16 %} Kursus Saya</h2>
+            <a href="/learn/courses/">Lihat Semua</a>
+        </div>
+
+        {% if my_courses %}
+        <div class="course-mini-grid">
+            {% for item in my_courses|slice:":4" %}
+            <div class="mini-course-card">
+                <div class="mini-icon {% cycle 'c1' 'c2' 'c3' 'c4' %}">{% icon 'book' size=15 %}</div>
+                <span class="badge {% if item.percent == 100 %}teal{% else %}green{% endif %}" style="margin-bottom: 8px;">{% if item.percent == 100 %}Selesai{% else %}In Progress{% endif %}</span>
+                <div class="name">{{ item.course.name }}</div>
+                <div class="bar-label"><span>{{ item.done }}/{{ item.total }} Modul</span><span>{{ item.percent }}%</span></div>
+                <div class="bar-track"><div class="bar-fill" style="width: {{ item.percent }}%;"></div></div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p style="color: var(--muted); font-size: 13px;">Kamu belum mengikuti kursus apa pun. <a href="/learn/catalog/" style="color: var(--navy); font-weight: 700;">Jelajahi katalog</a>.</p>
+        {% endif %}
+    </div>
+
+    <div class="card continue-card">
+        <div class="section-title"><h2>{% icon 'play' size=16 %} Lanjutkan Belajar</h2></div>
+        {% if continue_learning %}
+        <div class="lbl">{{ continue_learning.course.name }}</div>
+        <div class="name">{{ continue_learning.content.name }}</div>
+        <a href="/learn/courses/{{ continue_learning.course.id }}/learn/{{ continue_learning.content.id }}/" class="btn-navy" style="width: 100%; justify-content: center;">{% icon 'arrow-right' size=14 %} Lanjutkan</a>
+        {% else %}
+        <p style="color: var(--muted); font-size: 13px;">Belum ada materi yang bisa dilanjutkan.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="section-title">
+    <h2>{% icon 'sparkles' size=16 %} Rekomendasi Untukmu</h2>
+    <a href="/learn/catalog/">Lihat Semua</a>
+</div>
+
+<div class="course-grid">
+    {% for course in recommended %}
+    <a href="/learn/courses/{{ course.id }}/" class="course-card">
+        <div class="course-cover">
+            {% if course.image %}<img src="{{ course.image.url }}" alt="{{ course.name }}">{% else %}<div class="cover-placeholder">{{ course.name|slice:":1"|upper }}</div>{% endif %}
+            <span class="price-badge">Rp {{ course.price_fmt }}</span>
+        </div>
+        <div class="course-body">
+            <h3>{{ course.name }}</h3>
+            <div class="course-rating"><span class="star">{% icon 'star' size=11 %}</span> {{ course.avg_rating|default:0|floatformat:"1" }} ({{ course.review_count }})</div>
+            <span class="badge navy">{{ course.get_category_display }}</span>
+        </div>
+    </a>
+    {% empty %}
+    <div class="empty-state">Belum ada kursus lain untuk direkomendasikan.</div>
+    {% endfor %}
+</div>
+
+{% endblock %}

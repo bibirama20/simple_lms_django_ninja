@@ -432,7 +432,7 @@ def enroll_course(request, course_id: int):
     user_id = User.objects.get(pk=request.user.id)
     course = get_object_or_404(Course, id=course_id)
 
-    enrollment = CourseMember.objects.create(
+    enrollment, _ = CourseMember.objects.get_or_create(
         user_id=user_id,
         course_id=course
     )

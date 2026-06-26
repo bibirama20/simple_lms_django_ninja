@@ -1,0 +1,67 @@
+{% load icons %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Sagara Course{% endblock %}</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; }
+
+:root {
+    --navy: #1E3A8A;
+    --navy-light: #2F4FB3;
+    --navy-soft: #e8edfb;
+    --ink: #111827;
+    --muted: #6b7280;
+    --border: #e6e8f0;
+    --bg: #F8FAFC;
+    --teal: #14B8A6;
+    --teal-bg: #ccfbf1;
+}
+
+body { margin: 0; font-family: 'Inter', sans-serif; background: #fff; color: var(--ink); }
+a { color: inherit; }
+
+.topbar {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.brand { text-decoration: none; font-weight: 800; font-size: 18px; color: var(--navy); }
+.back-link { font-size: 13.5px; font-weight: 700; color: var(--navy); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+
+.wrap { max-width: 860px; margin: 0 auto; padding: 48px 28px 70px; }
+.wrap h1 { font-size: 28px; font-weight: 800; color: var(--navy); margin: 0 0 8px; }
+.wrap .updated { font-size: 12.5px; color: var(--muted); margin-bottom: 32px; }
+.wrap h2 { font-size: 17px; font-weight: 800; color: var(--ink); margin: 28px 0 10px; }
+.wrap p, .wrap li { font-size: 14px; color: #334155; line-height: 1.75; }
+.wrap ul, .wrap ol { padding-left: 20px; margin: 10px 0; }
+
+footer.site-footer { border-top: 1px solid var(--border); padding: 24px 32px; text-align: center; font-size: 12.5px; color: var(--muted); }
+
+{% block extra_style %}{% endblock %}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+    <a href="/" class="brand">Sagara Course</a>
+    <a href="/" class="back-link"><span style="display:inline-flex; transform: rotate(180deg);">{% icon 'arrow-right' size=14 %}</span> Kembali ke Beranda</a>
+</div>
+
+<div class="wrap">
+{% block content %}{% endblock %}
+</div>
+
+<footer class="site-footer">&copy; {% now "Y" %} Sagara Course. Seluruh Hak Cipta Dilindungi.</footer>
+
+</body>
+</html>
