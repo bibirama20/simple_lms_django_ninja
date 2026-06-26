@@ -401,6 +401,7 @@ a { color: inherit; }
         z-index: 101;
         transform: translateX(-100%);
         transition: transform 0.25s ease;
+        will-change: transform;
         box-shadow: 0 0 30px rgba(17, 24, 39, 0.18);
     }
 
@@ -544,6 +545,11 @@ a { color: inherit; }
 
 <script>
 var sidebarScrollY = 0;
+function blockSidebarTouch(e) {
+    if (!e.target.closest('.sidebar')) {
+        e.preventDefault();
+    }
+}
 function openSidebar() {
     document.querySelector('.sidebar').classList.add('open');
     document.querySelector('.sidebar-backdrop').classList.add('open');
@@ -552,6 +558,7 @@ function openSidebar() {
     document.body.style.position = 'fixed';
     document.body.style.top = (-sidebarScrollY) + 'px';
     document.body.style.width = '100%';
+    document.addEventListener('touchmove', blockSidebarTouch, { passive: false });
 }
 function closeSidebar() {
     document.querySelector('.sidebar').classList.remove('open');
@@ -561,6 +568,7 @@ function closeSidebar() {
     document.body.style.top = '';
     document.body.style.width = '';
     window.scrollTo(0, sidebarScrollY);
+    document.removeEventListener('touchmove', blockSidebarTouch, { passive: false });
 }
 </script>
 
