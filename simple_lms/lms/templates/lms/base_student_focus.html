@@ -31,7 +31,8 @@
     --pink-bg: #fdf2f8;
 }
 
-body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); }
+html { overflow-x: hidden; max-width: 100%; }
+body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); overflow-x: hidden; max-width: 100%; }
 a { color: inherit; }
 
 .topnav {
@@ -98,6 +99,7 @@ a { color: inherit; }
 .mobile-nav-panel { display: none; }
 
 @media (max-width: 900px) {
+    .topnav { padding: 12px 16px; gap: 10px; }
     .topnav-links { display: none; }
     .topnav-search { display: none; }
 

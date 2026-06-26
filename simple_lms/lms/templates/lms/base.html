@@ -33,11 +33,15 @@
     --pink-bg: #fdf2f8;
 }
 
+html { overflow-x: hidden; max-width: 100%; }
+
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;
     background: var(--bg);
     color: var(--ink);
+    overflow-x: hidden;
+    max-width: 100%;
 }
 
 a { color: inherit; }
@@ -427,7 +431,12 @@ a { color: inherit; }
 
     body.sidebar-locked { overflow: hidden; }
 
+    .topbar { padding: 12px 16px; gap: 10px; }
     .topbar-search { display: none; }
+    .topbar-actions { gap: 8px; }
+    .topbar-actions a.btn-navy, .topbar-actions a.btn-outline { display: none; }
+    .topbar-user { padding-left: 8px; }
+    .topbar-user .info { display: none; }
 
     .content { padding: 18px 16px 40px; }
 }
